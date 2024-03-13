@@ -38,7 +38,7 @@ const Home: PageComponent = () => {
   return (
     <Grid container={true} spacing={6}>
       <h1>Pokemon List</h1>
-      <DataGrid></DataGrid>
+      {/* <DataGrid></DataGrid> */}
       <TableContainer component={Paper} sx={{ mt: 4 }}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
@@ -66,7 +66,7 @@ const Home: PageComponent = () => {
                   {row.id}
                 </TableCell>
                 <TableCell>
-                  <img alt="" src={row.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+                  <img alt="" src={row.image_url} />
                 </TableCell>
                 <TableCell>{row.pokemon}</TableCell>
                 <TableCell>{row.type}</TableCell>
