@@ -1,28 +1,29 @@
+import { combineReducers, createStore } from '@nxweb/core';
 import {
-  combineReducers, createStore
-} from '@nxweb/core';
-import {
-  createCommandHook, createDispatchHook, createStoreHook, createStoreProvider
+  createCommandHook,
+  createDispatchHook,
+  createStoreHook,
+  createStoreProvider
 } from '@nxweb/react';
 
-import { productsCommand } from './products/commands.js';
-import { productsReducer } from './products/reducers.js';
+import { pokemonsCommand } from './pokemon/commands.js';
+import { pokemonReducer } from './pokemon/reducers.js';
 
 import type { RootAction, RootModel } from './types.js';
 
 // ** Init reducers
 const rootReducer = combineReducers({
-  products: productsReducer
+  pokemons: pokemonReducer
 });
 
 // ** Init models
 const rootModel: RootModel = {
-  products: {}
+  pokemons: {}
 };
 
 // ** Init commands
 const rootCommand = {
-  products: productsCommand
+  pokemons: pokemonsCommand
 };
 
 // ** Create store
@@ -38,4 +39,4 @@ export const useStore = createStoreHook<RootModel, RootAction>();
 export const useCommand = createCommandHook(rootCommand);
 
 // ** Create dispatch hook
-export const useDipatch = createDispatchHook<RootModel, RootAction>();
+export const useDispatch = createDispatchHook<RootModel, RootAction>();

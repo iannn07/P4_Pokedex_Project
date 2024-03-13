@@ -1,3 +1,4 @@
+/*
 import type { MouseEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -96,3 +97,4 @@ const Products: PageComponent = () => {
 Products.displayName = 'Products';
 
 export default Products;
+*/

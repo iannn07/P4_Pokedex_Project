@@ -1,3 +1,4 @@
+/*
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -43,3 +44,4 @@ const Product: PageComponent = () => {
 Product.displayName = 'Product';
 
 export default Product;
+*/
