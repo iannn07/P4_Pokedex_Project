@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import { useEffect } from 'react';
 
-import { Button, CardContent, CardMedia, Typography } from '@mui/material';
+import { Box, Button, CardContent, CardMedia, Typography } from '@mui/material';
 
 import type { PageComponent } from '@nxweb/react';
 
@@ -24,7 +24,7 @@ const Home: PageComponent = () => {
 
   return (
     <Grid container={true} spacing={6}>
-      {state?.pokemon?.map((row) => (
+      {state?.pokemons?.map((row) => (
         <Grid item={true} md={3} sm={6} xs={12}>
           <Card sx={{ p: 4 }}>
             <CardMedia image={row.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
@@ -37,9 +37,18 @@ const Home: PageComponent = () => {
                 justifyContent: 'center'
               }}
             >
-              <Typography sx={{ mb: 2 }} variant="h5">
+              <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
                 {row.pokemon}
               </Typography>
+              <Box
+                px={4}
+                py={1.5}
+                sx={{ backgroundColor: '#4f4f4f', borderRadius: 8 }}
+              >
+                <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>
+                  {row.type}
+                </Typography>
+              </Box>
               <Button sx={{ mt: 6 }} variant="contained">
                 Add to Inventory
               </Button>
