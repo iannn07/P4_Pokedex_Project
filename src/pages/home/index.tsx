@@ -1,33 +1,52 @@
+/* eslint-disable react/jsx-key */
+import { useEffect } from 'react';
+
+import { Button, CardContent, CardMedia, Typography } from '@mui/material';
+
 import type { PageComponent } from '@nxweb/react';
 
-import { Card, CardContent, CardHeader, Grid, Typography } from '@components/material.js';
+import { Card, Grid } from '@components/material.js';
+import { useCommand, useStore } from '@models/store.js';
 
 const Home: PageComponent = () => {
+  const [state, dispatch] = useStore((store) => store.pokemons);
+  const command = useCommand((cmd) => cmd);
+
+  useEffect(() => {
+    dispatch(command.pokemons.load()).catch((err: unknown) => {
+      console.error(err);
+    });
+
+    return () => {
+      dispatch(command.pokemons.clear());
+    };
+  }, []);
+
   return (
     <Grid container={true} spacing={6}>
-      <Grid item={true} xs={12}>
-        <Card>
-          <CardHeader title="Kick start your project 🚀" />
-          <CardContent>
-            <Typography sx={{ mb: 2 }}>All the best for your new project.</Typography>
-            <Typography>
-              Please make sure to read our Template Documentation to understand where to go from here and how to use our
-              template.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item={true} xs={12}>
-        <Card>
-          <CardHeader title="ACL and JWT 🔒" />
-          <CardContent>
-            <Typography sx={{ mb: 2 }}>
-              Access Control (ACL) and Authentication (JWT) are the two main security features of our template and are implemented in the starter-kit as well.
-            </Typography>
-            <Typography>Please read our Authentication and ACL Documentations to get more out of them.</Typography>
-          </CardContent>
-        </Card>
-      </Grid>
+      {state?.pokemon?.map((row) => (
+        <Grid item={true} md={3} sm={6} xs={12}>
+          <Card sx={{ p: 4 }}>
+            <CardMedia image={row.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+            <CardContent
+              sx={{
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                justifyContent: 'center'
+              }}
+            >
+              <Typography sx={{ mb: 2 }} variant="h5">
+                {row.pokemon}
+              </Typography>
+              <Button sx={{ mt: 6 }} variant="contained">
+                Add to Inventory
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
     </Grid>
   );
 };
