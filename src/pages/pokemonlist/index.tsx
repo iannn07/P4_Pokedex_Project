@@ -36,7 +36,7 @@ const Home: PageComponent = () => {
   console.log(state);
 
   return (
-    <Grid container={true} spacing={6}>
+    <Grid container={true}>
       <h1>Pokemon List</h1>
       {/* <DataGrid></DataGrid> */}
       <TableContainer component={Paper} sx={{ mt: 4 }}>
