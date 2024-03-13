@@ -1,6 +1,7 @@
 {
   "extends": "@nxweb/builder/ts/react",
   "compilerOptions": {
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "typeRoots": ["types", "node_modules/@types"]
   },
