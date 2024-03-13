@@ -3,9 +3,6 @@ import { useEffect, useState } from 'react';
 import type { PageComponent } from '@nxweb/react';
 
 import {
-  Card,
-  CardContent,
-  CardHeader,
   Grid,
   Paper,
   Table,
@@ -14,7 +11,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
   useTheme
 } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
@@ -41,38 +37,7 @@ const Home: PageComponent = () => {
 
   return (
     <Grid container={true} spacing={6}>
-      <h1>Test API</h1>
-      <Grid item={true} xs={12}>
-        <Card>
-          <CardHeader title="Kick start your project 🚀" />
-          <CardContent>
-            <Typography sx={{ mb: 2 }}>
-              All the best for your new project.
-            </Typography>
-            <Typography>
-              Please make sure to read our Template Documentation to understand
-              where to go from here and how to use our template.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item={true} xs={12}>
-        <Card>
-          <CardHeader title="ACL and JWT 🔒" />
-          <CardContent>
-            <Typography sx={{ mb: 2 }}>
-              Access Control (ACL) and Authentication (JWT) are the two main
-              security features of our template and are implemented in the
-              starter-kit as well.
-            </Typography>
-            <Typography>
-              Please read our Authentication and ACL Documentations to get more
-              out of them.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-
+      <h1>Pokemon List</h1>
       {/* !! Delete the following !! */}
       {/* API Result Display */}
       <TableContainer component={Paper} sx={{ mt: 4 }}>
@@ -80,36 +45,33 @@ const Home: PageComponent = () => {
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>Pokemon Name</TableCell>
-              <TableCell>Pokemon Type</TableCell>
-              <TableCell>Pokemon Abilities</TableCell>
-              <TableCell>Pokemon Hit Points</TableCell>
-              <TableCell>Pokemon Evolution</TableCell>
-              <TableCell>Pokemon Location</TableCell>
-              <TableCell>image_url</TableCell>
+              <TableCell>Pokemon</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>Location</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {state?.pokemon?.map((row) => (
+            {state?.pokemons?.map((row) => (
               <TableRow
                 key={row.id}
                 sx={{
                   '&:last-child td, &:last-child th': {
                     border: 0
                   },
-                  backgroundColor: id === row.id ? theme.palette.divider : 'inherit'
+                  backgroundColor:
+                    id === row.id ? theme.palette.divider : 'inherit'
                 }}
               >
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>
+                <TableCell>
+                  <img alt="" src={row.image_url} />
+                </TableCell>
                 <TableCell>{row.pokemon}</TableCell>
                 <TableCell>{row.type}</TableCell>
-                <TableCell>{row.abilities}</TableCell>
-                <TableCell>{row.hitpoints}</TableCell>
-                <TableCell>{row.evolutions}</TableCell>
                 <TableCell>{row.location}</TableCell>
-                <TableCell>{row.image_url}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -7,13 +7,13 @@ import {
 } from '@nxweb/react';
 
 import { pokemonsCommand } from './pokemon/commands.js';
-import { pokemonReducer } from './pokemon/reducers.js';
+import { pokemonsReducer } from './pokemon/reducers.js';
 
 import type { RootAction, RootModel } from './types.js';
 
 // ** Init reducers
 const rootReducer = combineReducers({
-  pokemons: pokemonReducer
+  pokemons: pokemonsReducer
 });
 
 // ** Init models

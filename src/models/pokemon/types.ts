@@ -11,12 +11,12 @@ interface Pokemons {
 
 // Page Model
 interface PokemonsModel {
-  pokemon?: Pokemons[]
+  pokemons?: Pokemons[]
 }
 
 enum PokemonsActionType {
-  Load = 'pokemon-load',
-  Clear = 'pokemon-clear'
+  Load = 'pokemons-load',
+  Clear = 'pokemons-clear'
 }
 
 type PokemonsAction = {

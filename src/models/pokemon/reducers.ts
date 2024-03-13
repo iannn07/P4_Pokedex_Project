@@ -1,8 +1,8 @@
-import { PokemonsActionType } from './types';
+import { PokemonsActionType } from './types.js';
 
-import type { PokemonsAction, PokemonsModel } from './types';
+import type { PokemonsAction, PokemonsModel } from './types.js';
 
-const pokemonReducer = (
+const pokemonsReducer = (
   state: PokemonsModel = {},
   action: Readonly<PokemonsAction>
 ): PokemonsModel => {
@@ -17,4 +17,4 @@ const pokemonReducer = (
   }
 };
 
-export { pokemonReducer };
+export { pokemonsReducer };

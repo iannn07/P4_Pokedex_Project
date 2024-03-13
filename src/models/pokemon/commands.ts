@@ -22,7 +22,7 @@ const pokemonsCommand = {
 
         if (res) {
           const value: PokemonsModel = {
-            pokemon: res
+            pokemons: res
           };
 
           dispatch({
