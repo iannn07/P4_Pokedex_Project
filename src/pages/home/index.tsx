@@ -24,7 +24,7 @@ const Home: PageComponent = () => {
 
   return (
     <Grid container={true} spacing={6}>
-      {state?.pokemon?.map((row) => (
+      {state?.pokemons?.map((row) => (
         <Grid item={true} md={3} sm={6} xs={12}>
           <Card sx={{ p: 4 }}>
             <CardMedia image={row.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
