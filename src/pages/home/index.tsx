@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import { useEffect } from 'react';
 
-import { Button, CardContent, CardMedia, Typography } from '@mui/material';
+import { Box, Button, CardContent, CardMedia, Typography } from '@mui/material';
 
 import type { PageComponent } from '@nxweb/react';
 
@@ -37,9 +37,18 @@ const Home: PageComponent = () => {
                 justifyContent: 'center'
               }}
             >
-              <Typography sx={{ mb: 2 }} variant="h5">
+              <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
                 {row.pokemon}
               </Typography>
+              <Box
+                px={4}
+                py={1.5}
+                sx={{ backgroundColor: '#4f4f4f', borderRadius: 8 }}
+              >
+                <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>
+                  {row.type}
+                </Typography>
+              </Box>
               <Button sx={{ mt: 6 }} variant="contained">
                 Add to Inventory
               </Button>
