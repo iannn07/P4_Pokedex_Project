@@ -8,6 +8,7 @@ import type { PageComponent } from '@nxweb/react';
 
 import { Card, Grid } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
+// Import { getPokemon } from '@api/clients/pokemons';
 
 const Home: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store.pokemons);

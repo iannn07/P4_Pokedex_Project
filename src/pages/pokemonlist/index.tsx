@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
-import { useEffect } from 'react';
+import type { FormEvent } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Box, Card, Stack } from '@mui/material';
+import { Box, Button, Card, Dialog, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import type { PageComponent } from '@nxweb/react';
@@ -11,21 +12,28 @@ import CustomToolbar from '@components/custom/table/data-grid/custom-toolbar';
 import { Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
+import AddPokemonDialog from './addDialog';
+
 import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
 const PokemonList: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
 
-  useEffect(() => {
-    dispatch(command.pokemons.load()).catch((err: unknown) => {
-      console.error(err);
-    });
+  const [open, setOpen] = useState<boolean>(false);
 
-    return () => {
-      dispatch(command.pokemons.clear());
-    };
-  }, []);
+  const handleAddDialog = () => {
+    setOpen(!open);
+  };
+
+  const handleDeleteDialog = () => {
+    setOpen(!open);
+  };
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    setOpen(false);
+    e.preventDefault();
+  };
 
   const getColorForType = (type: string) => {
     // Generate a consistent color based on the type
@@ -36,6 +44,16 @@ const PokemonList: PageComponent = () => {
 
     return `hsl(${hue}, 70%, 30%)`; // Adjust saturation and lightness as needed
   };
+
+  useEffect(() => {
+    dispatch(command.pokemons.load()).catch((err: unknown) => {
+      console.error(err);
+    });
+
+    return () => {
+      dispatch(command.pokemons.clear());
+    };
+  }, []);
 
   const rows: GridRowsProp = [
     ...state?.pokemons?.map((row, index) => ({
@@ -119,6 +137,24 @@ const PokemonList: PageComponent = () => {
   return (
     <>
       <h1>Pokemon List</h1>
+      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+        <Box sx={{ width: '50%' }}>
+          <h3>Pokemon Add, Edit, Delete</h3>
+        </Box>
+        <Box sx={{ display: 'flex' }}>
+          <Button sx={{ m: 2 }} variant="contained" onClick={handleAddDialog}>
+            Add New Pokemon
+          </Button>
+          <Button
+            color="error"
+            sx={{ m: 2 }}
+            variant="contained"
+            onClick={handleDeleteDialog}
+          >
+            Delete All Pokemon
+          </Button>
+        </Box>
+      </Box>
       <Card>
         <DataGrid
           autoHeight={true}
@@ -141,6 +177,11 @@ const PokemonList: PageComponent = () => {
           }}
           slots={{ toolbar: CustomToolbar }} />
       </Card>
+      <Dialog fullWidth={true} maxWidth="sm" open={open} onClose={handleAddDialog}>
+        <AddPokemonDialog
+          handleDialogToggle={handleAddDialog}
+          onSubmit={onSubmit} />
+      </Dialog>
     </>
   );
 };
