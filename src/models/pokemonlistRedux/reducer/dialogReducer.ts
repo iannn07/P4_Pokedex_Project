@@ -1,4 +1,4 @@
-import { ActionTypes } from '../constants/action-types';
+import { ActionTypes } from '../action-types/action-types';
 
 import type { DialogAction } from '../actions/dialogAction';
 
@@ -12,8 +12,10 @@ const initialState: AppState = {
 
 const dialogReducer = (state = initialState, action: DialogAction) => {
   switch (action.type) {
-    case ActionTypes.TOGGLE_DIALOG:
-      return { ...state, open: !state.open };
+    case ActionTypes.OPEN_DIALOG:
+      return { ...state, open: true };
+    case ActionTypes.CLOSE_DIALOG:
+      return { ...state, open: false };
 
     default:
       return state;
