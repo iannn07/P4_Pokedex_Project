@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 /*
  *Import type { MouseEvent } from 'react';
  *import { useEffect, useState } from 'react';

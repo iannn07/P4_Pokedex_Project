@@ -1,13 +1,18 @@
 /* eslint-disable logical-assignment-operators */
 /* eslint-disable react/jsx-key */
-import { useEffect } from 'react';
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
+<<<<<<< Updated upstream
 import { Box, Button, CardContent, CardMedia, Typography } from '@mui/material';
+=======
+import { Button, CardContent, CardMedia, Typography } from "@mui/material";
+>>>>>>> Stashed changes
 
-import type { PageComponent } from '@nxweb/react';
+import type { PageComponent } from "@nxweb/react";
 
-import { Card, Grid } from '@components/material.js';
-import { useCommand, useStore } from '@models/store.js';
+import { Card, Grid } from "@components/material.js";
+import { useCommand, useStore } from "@models/store.js";
 
 const Home: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store.pokemons);
@@ -35,6 +40,7 @@ const Home: PageComponent = () => {
     <Grid container={true} spacing={6}>
       {state?.pokemons?.map((data) => (
         <Grid item={true} md={3} sm={6} xs={12}>
+<<<<<<< Updated upstream
           <Card sx={{ p: 4 }}>
             <CardMedia image={data.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
             <CardContent
@@ -70,12 +76,41 @@ const Home: PageComponent = () => {
               </Button>
             </CardContent>
           </Card>
+=======
+          <Link
+            to={`../pokemondetails/${row.id}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Card sx={{ p: 4 }}>
+              <CardMedia
+                image={row.image_url}
+                sx={{ height: "14rem", objectFit: "contain", width: "100%" }}
+              />
+              <CardContent
+                sx={{
+                  alignItems: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography sx={{ mb: 2 }} variant="h5">
+                  {row.pokemon}
+                </Typography>
+                <Button sx={{ mt: 6 }} variant="contained">
+                  Add to Inventory
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
+>>>>>>> Stashed changes
         </Grid>
       ))}
     </Grid>
   );
 };
 
-Home.displayName = 'Home';
+Home.displayName = "Home";
 
 export default Home;
