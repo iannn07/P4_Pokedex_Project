@@ -26,7 +26,7 @@ const Details: PageComponent = () => {
   }, []);
 
   return (
-      <PokemonDetails pokemon={state?.pokemon} />
+      <PokemonDetails pokemon={state?.pokemons} />
 
   );
 };

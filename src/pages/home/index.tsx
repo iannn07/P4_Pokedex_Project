@@ -3,11 +3,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-<<<<<<< Updated upstream
-import { Box, Button, CardContent, CardMedia, Typography } from '@mui/material';
-=======
 import { Button, CardContent, CardMedia, Typography } from "@mui/material";
->>>>>>> Stashed changes
 
 import type { PageComponent } from "@nxweb/react";
 
@@ -38,45 +34,8 @@ const Home: PageComponent = () => {
 
   return (
     <Grid container={true} spacing={6}>
-      {state?.pokemons?.map((data) => (
+      {state?.pokemons?.map((row) => (
         <Grid item={true} md={3} sm={6} xs={12}>
-<<<<<<< Updated upstream
-          <Card sx={{ p: 4 }}>
-            <CardMedia image={data.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
-            <CardContent
-              sx={{
-                alignItems: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                justifyContent: 'center'
-              }}
-            >
-              <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
-                {data.pokemon}
-              </Typography>
-              <Box
-                sx={{ borderRadius: 8, display: 'flex', gap: 2, height: 'auto' }}
-              >
-                {data.type.split('/').map((type) => (
-                  <Box
-                    key={type}
-                    px={4}
-                    py={1.5}
-                    sx={{ backgroundColor: getColorForType(type), borderRadius: 8, display: 'flex', gap: 8 }}
-                  >
-                    <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>
-                      {type.trim()}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-              <Button sx={{ mt: 6 }} variant="contained">
-                Add to Inventory
-              </Button>
-            </CardContent>
-          </Card>
-=======
           <Link
             to={`../pokemondetails/${row.id}`}
             style={{ textDecoration: "none" }}
@@ -104,7 +63,6 @@ const Home: PageComponent = () => {
               </CardContent>
             </Card>
           </Link>
->>>>>>> Stashed changes
         </Grid>
       ))}
     </Grid>
