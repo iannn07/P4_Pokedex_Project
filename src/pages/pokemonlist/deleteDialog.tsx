@@ -6,14 +6,14 @@ import { Box, Button, Checkbox, DialogContent, DialogTitle, FormControlLabel } f
 
 import { Typography } from '@components/material.js';
 
-interface AddPokemonDialogProps {
-  handleAddDialog: () => void
-  onAddSubmit: (e: FormEvent<HTMLFormElement>) => void
+interface DeletePokemonDialogProps {
+  handleDeleteDialog: () => void
+  onDeleteSubmit: (e: FormEvent<HTMLFormElement>) => void
 }
 
-const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
-  onAddSubmit,
-  handleAddDialog
+const DeletePokemonDialog: React.FC<DeletePokemonDialogProps> = ({
+  onDeleteSubmit,
+  handleDeleteDialog
 }) => {
   return (
     <>
@@ -32,7 +32,7 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
         }}
       >
         <Typography sx={{ mb: 2 }} variant="h3">
-          Add New Permission
+          DELETE ALL POKEMON
         </Typography>
         <Typography color="text.secondary">
           Permissions you may use and assign to your users.
@@ -61,7 +61,7 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
             alignItems: 'center',
             flexDirection: 'column'
           }}
-          onSubmit={(e) => onAddSubmit(e)}
+          onSubmit={(e) => onDeleteSubmit(e)}
         >
           {/* <CustomTextField
             fullWidth
@@ -78,14 +78,14 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
             className="demo-space-x"
             sx={{ '& > :last-child': { mr: '0 !important' } }}
           >
-            <Button type="submit" variant="contained">
+            <Button color="error" type="submit" variant="contained">
               Create Permission
             </Button>
             <Button
               color="secondary"
               type="reset"
               variant="tonal"
-              onClick={handleAddDialog}
+              onClick={handleDeleteDialog}
             >
               Discard
             </Button>
@@ -96,6 +96,6 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
   );
 };
 
-AddPokemonDialog.displayName = 'AddPokemonDialog';
+DeletePokemonDialog.displayName = 'DeletePokemonDialog';
 
-export default AddPokemonDialog;
+export default DeletePokemonDialog;
