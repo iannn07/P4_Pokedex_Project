@@ -1,4 +1,5 @@
 import {
+  Accessible,
   Backpack,
   LayoutGrid,
   Pokeball,
@@ -25,6 +26,12 @@ export const navigation: readonly HorizontalNavItemsType[] = [
     id: 'pokemon-list',
     link: '/pokemonlist',
     text: 'Pokemon List'
+  },
+  {
+    icon: <Accessible />,
+    id: 'trainer-log',
+    link: '/trainer',
+    text: 'Trainer Log'
   },
   {
     icon: <LayoutGrid />,

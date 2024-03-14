@@ -1,17 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
 import { useEffect } from 'react';
 
-import { Box, Stack } from '@mui/material';
+import { Box, Card, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import type { PageComponent } from '@nxweb/react';
 
-import { Grid, Typography } from '@components/material.js';
+import CustomToolbar from '@components/custom/table/data-grid/custom-toolbar';
+import { Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
 import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
-const Home: PageComponent = () => {
+const PokemonList: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
 
@@ -117,9 +119,12 @@ const Home: PageComponent = () => {
   return (
     <>
       <h1>Pokemon List</h1>
-      <Grid container={true}>
+      <Card>
         <DataGrid
+          autoHeight={true}
           columns={columns}
+          disableColumnSelector={true}
+          disableDensitySelector={true}
           getRowHeight={() => 'auto'}
           initialState={{
             pagination: {
@@ -128,12 +133,18 @@ const Home: PageComponent = () => {
           }}
           pageSizeOptions={[5, 10, 25]}
           rows={rows}
-          sx={{ m: 4 }} />
-      </Grid>
+          slotProps={{
+            baseButton: {
+              size: 'medium',
+              variant: 'outlined'
+            }
+          }}
+          slots={{ toolbar: CustomToolbar }} />
+      </Card>
     </>
   );
 };
 
-Home.displayName = 'Home';
+PokemonList.displayName = 'PokemonList';
 
-export default Home;
+export default PokemonList;
