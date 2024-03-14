@@ -1,11 +1,12 @@
 /* eslint sort-keys: 0 */
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 
+import { Box, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import type { PageComponent } from '@nxweb/react';
 
-import { Grid } from '@components/material.js';
+import { Grid, Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
 import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
@@ -24,8 +25,15 @@ const Home: PageComponent = () => {
     };
   }, []);
 
-  // If you encounter "Unexpected console statement", kindly ignore it. It's just a warning
-  console.log(state);
+  const getColorForType = (type: string) => {
+    // Generate a consistent color based on the type
+    const hash = type
+      .split('')
+      .reduce((acc, char) => char.charCodeAt(0) + acc, 0);
+    const hue = hash % 400;
+
+    return `hsl(${hue}, 70%, 30%)`; // Adjust saturation and lightness as needed
+  };
 
   const rows: GridRowsProp = [
     ...state?.pokemons?.map((row, index) => ({
@@ -49,8 +57,37 @@ const Home: PageComponent = () => {
       filterable: false
     },
     { field: 'Name', headerName: 'Name', width: 150 },
-    { field: 'Type', headerName: 'Type', width: 150 },
-    { field: 'Location', headerName: 'Location', width: 450 },
+    {
+      field: 'Type',
+      headerName: 'Type',
+      width: 200,
+      renderCell: (params) => (
+        <Box sx={{ borderRadius: 8, display: 'flex', gap: 2, height: 'auto' }}>
+          <Stack gap={2}>
+            {(params.value.split('/') as string[]).map((type) => (
+              <Box
+                key={type}
+                px={4}
+                py={1.5}
+                sx={{
+                  backgroundColor: getColorForType(type),
+                  borderRadius: 8,
+                  display: 'flex',
+                  gap: 8
+                }}
+              >
+                <Typography
+                  sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}
+                >
+                  {type.trim()}
+                </Typography>
+              </Box>
+            ))}
+          </Stack>
+        </Box>
+      )
+    },
+    { field: 'Location', headerName: 'Location', width: 400 },
     {
       field: 'Abilities',
       headerName: 'Abilities',
@@ -91,7 +128,7 @@ const Home: PageComponent = () => {
           }}
           pageSizeOptions={[5, 10, 25]}
           rows={rows}
-          sx={{ m: 4, fontSize: '1rem' }} />
+          sx={{ m: 4 }} />
       </Grid>
     </>
   );

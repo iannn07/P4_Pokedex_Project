@@ -1,5 +1,6 @@
 import {
   Backpack,
+  LayoutGrid,
   Pokeball,
   SmartHome
 } from '@nxweb/icons/tabler';
@@ -24,5 +25,11 @@ export const navigation: readonly HorizontalNavItemsType[] = [
     id: 'pokemon-list',
     link: '/pokemonlist',
     text: 'Pokemon List'
+  },
+  {
+    icon: <LayoutGrid />,
+    id: 'admin',
+    link: '/admin',
+    text: 'Admin'
   }
 ];
