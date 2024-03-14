@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable logical-assignment-operators */
+/* eslint-disable react/jsx-key */
+import { useEffect } from 'react';
+
+import { Box, CardContent, CardMedia, Typography } from '@mui/material';
 
 import type { PageComponent } from '@nxweb/react';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  Typography
-} from '@components/material.js';
+import { Card, Grid } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
-const Home: PageComponent = () => {
+const Inventory: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
 
@@ -25,46 +23,63 @@ const Home: PageComponent = () => {
     };
   }, []);
 
-  // If you encounter "Unexpected console statement", kindly ignore it. It's just a warning
-  console.log(state);
+  const getColorForType = (type: string) => {
+    // Generate a consistent color based on the type
+    const hash = type.split('').reduce((acc, char) => char.charCodeAt(0) + acc, 0);
+    const hue = hash % 400;
+
+    return `hsl(${hue}, 70%, 30%)`; // Adjust saturation and lightness as needed
+  };
 
   return (
-    <Grid container={true} spacing={6}>
-      <h1>Inventory Page</h1>
-      <Grid item={true} xs={12}>
-        <Card>
-          <CardHeader title="Kick start your project 🚀" />
-          <CardContent>
-            <Typography sx={{ mb: 2 }}>
-              All the best for your new project.
-            </Typography>
-            <Typography>
-              Please make sure to read our Template Documentation to understand
-              where to go from here and how to use our template.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item={true} xs={12}>
-        <Card>
-          <CardHeader title="ACL and JWT 🔒" />
-          <CardContent>
-            <Typography sx={{ mb: 2 }}>
-              Access Control (ACL) and Authentication (JWT) are the two main
-              security features of our template and are implemented in the
-              starter-kit as well.
-            </Typography>
-            <Typography>
-              Please read our Authentication and ACL Documentations to get more
-              out of them.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-    </Grid>
+    <>
+      <h1>Inventory</h1>
+      <Box sx={{ overflowX: 'scroll' }}>
+        <Grid container={true} spacing={6} sx={{ display: 'flex', flexWrap: 'nowrap' }}>
+          {state?.pokemons?.map((data) => (
+            <Grid item={true} md={3}>
+              <Box>
+                <Card sx={{ p: 10, width: '16rem' }}>
+                  <CardMedia image={data.image_url} sx={{ height: '12rem', objectFit: 'contain', width: '100%' }} />
+                  <CardContent
+                    sx={{
+                      alignItems: 'center',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      height: '100%',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
+                      {data.pokemon}
+                    </Typography>
+                    <Box
+                      sx={{ borderRadius: 8, display: 'flex', gap: 2, height: 'auto' }}
+                    >
+                      {data.type.split('/').map((type) => (
+                        <Box
+                          key={type}
+                          px={4}
+                          py={1.5}
+                          sx={{ backgroundColor: getColorForType(type), borderRadius: 8, display: 'flex', gap: 8 }}
+                        >
+                          <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>
+                            {type.trim()}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </>
   );
 };
 
-Home.displayName = 'Home';
+Inventory.displayName = 'Inventory';
 
-export default Home;
+export default Inventory;
