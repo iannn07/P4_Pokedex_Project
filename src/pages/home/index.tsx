@@ -1,3 +1,4 @@
+/* eslint-disable logical-assignment-operators */
 /* eslint-disable react/jsx-key */
 import { useEffect } from 'react';
 
@@ -22,6 +23,14 @@ const Home: PageComponent = () => {
     };
   }, []);
 
+  const getColorForType = (type: string) => {
+    // Generate a consistent color based on the type
+    const hash = type.split('').reduce((acc, char) => char.charCodeAt(0) + acc, 0);
+    const hue = hash % 400;
+
+    return `hsl(${hue}, 70%, 30%)`; // Adjust saturation and lightness as needed
+  };
+
   return (
     <Grid container={true} spacing={6}>
       {state?.pokemons?.map((data) => (
@@ -45,9 +54,10 @@ const Home: PageComponent = () => {
               >
                 {data.type.split('/').map((type) => (
                   <Box
+                    key={type}
                     px={4}
                     py={1.5}
-                    sx={{ backgroundColor: '#4f4f4f', borderRadius: 8, display: 'flex', gap: 8 }}
+                    sx={{ backgroundColor: getColorForType(type), borderRadius: 8, display: 'flex', gap: 8 }}
                   >
                     <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>
                       {type.trim()}
