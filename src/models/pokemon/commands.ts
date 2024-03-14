@@ -1,5 +1,6 @@
 import type { Command } from '@nxweb/core';
 
+// Import { getPokemon } from '@api/clients/pokemons.js';
 import type { RootModel } from '@models/types.js';
 
 import { PokemonsActionType } from './types.js';
