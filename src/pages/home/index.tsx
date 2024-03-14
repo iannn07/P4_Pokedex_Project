@@ -24,10 +24,10 @@ const Home: PageComponent = () => {
 
   return (
     <Grid container={true} spacing={6}>
-      {state?.pokemons?.map((row) => (
+      {state?.pokemons?.map((data) => (
         <Grid item={true} md={3} sm={6} xs={12}>
           <Card sx={{ p: 4 }}>
-            <CardMedia image={row.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+            <CardMedia image={data.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
             <CardContent
               sx={{
                 alignItems: 'center',
@@ -38,16 +38,22 @@ const Home: PageComponent = () => {
               }}
             >
               <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
-                {row.pokemon}
+                {data.pokemon}
               </Typography>
               <Box
-                px={4}
-                py={1.5}
-                sx={{ backgroundColor: '#4f4f4f', borderRadius: 8 }}
+                sx={{ borderRadius: 8, display: 'flex', gap: 2, height: 'auto' }}
               >
-                <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>
-                  {row.type}
-                </Typography>
+                {data.type.split('/').map((type) => (
+                  <Box
+                    px={4}
+                    py={1.5}
+                    sx={{ backgroundColor: '#4f4f4f', borderRadius: 8, display: 'flex', gap: 8 }}
+                  >
+                    <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>
+                      {type.trim()}
+                    </Typography>
+                  </Box>
+                ))}
               </Box>
               <Button sx={{ mt: 6 }} variant="contained">
                 Add to Inventory
