@@ -33,7 +33,7 @@ const PokemonList: PageComponent = () => {
   };
 
   const onAddSubmit = (e: FormEvent<HTMLFormElement>) => {
-    setOpenAddDialog(false);
+    setOpenAddDialog(true);
     e.preventDefault();
   };
 

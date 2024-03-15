@@ -1,12 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
-import {  useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 
-import { Box, Button, DialogContent, DialogTitle } from '@mui/material';
+import {
+  Box,
+  Button,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  InputAdornment
+} from '@mui/material';
+
+import { Accessible, Category, ChevronsUP, MapPin, Pokeball, Upload } from '@nxweb/icons/tabler';
 
 import { Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store';
+
+import CustomTextField from '../../components/custom/text-field/text-field';
 
 interface AddPokemonDialogProps {
   handleAddDialog: () => void
@@ -23,6 +34,8 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
   useEffect(() => {
     dispatch(command.pokeList.addPokemon({}));
   }, []);
+
+  // Const [file, setFile] = useState<File[]>([]);
 
   return (
     <>
@@ -56,8 +69,98 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
           ]
         }}
       >
-        <Box>
-          <p>Test Form</p>
+        <Box
+          sx={{
+            display: 'flex',
+            textAlign: 'center',
+            alignItems: 'center',
+            flexDirection: 'column'
+          }}
+        >
+          <Box>
+            <form onSubmit={(e) => e.preventDefault()}>
+              <Grid container={true} spacing={5}>
+                <Grid item={true} xs={12}>
+                  <CustomTextField
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Pokeball />
+                        </InputAdornment>
+                      )
+                    }}
+                    fullWidth={true}
+                    label="Pokemon Name"
+                    placeholder="Pikachu" />
+                </Grid>
+                <Grid item={true} xs={12}>
+                  <CustomTextField
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Category />
+                        </InputAdornment>
+                      )
+                    }}
+                    fullWidth={true}
+                    label="Type"
+                    placeholder="Electric" />
+                </Grid>
+                <Grid item={true} xs={12}>
+                  <CustomTextField
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <MapPin />
+                        </InputAdornment>
+                      )
+                    }}
+                    fullWidth={true}
+                    label="Location"
+                    placeholder="Madiun" />
+                </Grid>
+                <Grid item={true} xs={12}>
+                  <CustomTextField
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Accessible />
+                        </InputAdornment>
+                      )
+                    }}
+                    fullWidth={true}
+                    label="Abilities"
+                    placeholder="Abilities"
+                    sx={{
+                      '& .MuiInputBase-root.MuiFilledInput-root': {
+                        alignItems: 'baseline'
+                      }
+                    }} />
+                </Grid>
+                <Grid item={true} xs={12}>
+                  <CustomTextField
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <ChevronsUP />
+                        </InputAdornment>
+                      )
+                    }}
+                    fullWidth={true}
+                    label="Evolution"
+                    placeholder="Evolution"
+                    sx={{
+                      '& .MuiInputBase-root.MuiFilledInput-root': {
+                        alignItems: 'baseline'
+                      }
+                    }} />
+                </Grid>
+                <Grid item={true} xs={12}>
+                  <Upload />
+                </Grid>
+              </Grid>
+            </form>
+          </Box>
         </Box>
         <Box
           component="form"
@@ -77,7 +180,7 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
             sx={{ '& > :last-child': { mr: '0 !important' } }}
           >
             <Button type="submit" variant="contained">
-              Create Permission
+              Add Pokemon
             </Button>
             <Button
               color="secondary"
@@ -85,7 +188,7 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
               variant="tonal"
               onClick={handleAddDialog}
             >
-              Discard
+              Discard Pokemon
             </Button>
           </Box>
         </Box>
