@@ -24,7 +24,7 @@ const Details: PageComponent = () => {
     return () => {
       dispatch(command.pokemons.clear());
     };
-  }, []);
+  }, [command.pokemons, dispatch]);
 
   return <PokemonDetails pokemon={pokemon} />;
 };

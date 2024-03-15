@@ -26,8 +26,6 @@ interface PokemonDetailsProps {
 }
 
 const PokemonDetails: React.FC<PokemonDetailsProps> = ({ pokemon }) => {
-  console.log(pokemon);
-
   return (
     <Box
       sx={{
