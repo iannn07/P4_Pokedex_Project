@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
-import { useEffect, useState } from 'react';
-import type { ChangeEvent, FormEvent } from 'react';
+import { useEffect } from 'react';
+import type { FormEvent } from 'react';
 
 import {
   Box,
