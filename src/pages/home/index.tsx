@@ -58,15 +58,7 @@ const Home: PageComponent = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          backgroundColor: 'transparent',
-          mb: 8,
-          p: 4,
-          border: '1px solid #2f3349',
-          borderRadius: '5px'
-        }}
-      >
+      <Card sx={{ mb: 8, p: 4 }}>
         <FormControl sx={{ width: '100%', m: 0, p: 0 }}>
           <Form onSubmit={submitHandler}>
             <Input
@@ -82,7 +74,7 @@ const Home: PageComponent = () => {
               onChange={(e) => setTerm(e.target.value)} />
           </Form>
         </FormControl>
-      </Box>
+      </Card>
       <Grid container={true} spacing={6}>
         {filteredPokemons?.map((pokemon, index) => (
           <Grid item={true} key={index} md={3} sm={6} xs={12}>
