@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
 import { useEffect, useState } from 'react';
-import type { FormEvent } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 
 import {
   Box,
@@ -34,8 +34,6 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
   useEffect(() => {
     dispatch(command.pokeList.addPokemon({}));
   }, []);
-
-  // Const [file, setFile] = useState<File[]>([]);
 
   return (
     <>

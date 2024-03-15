@@ -1,30 +1,13 @@
-/* eslint-disable sort-keys */
-/* eslint-disable no-console */
-/* eslint-disable logical-assignment-operators */
-/* eslint-disable react/jsx-key */
-import { useEffect, useState } from 'react';
-import { Form, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  CardContent,
-  CardMedia,
-  FormControl,
-  Input,
-  Select,
-  Typography
-} from '@mui/material';
+import { Card, FormControl, Grid, MenuItem, Select } from '@mui/material';
 
-import { Search } from '@nxweb/icons/tabler';
-import type { PageComponent } from '@nxweb/react';
-
-import { Card, Grid, MenuItem } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
-// Import { getPokemon } from '@api/clients/pokemons';
+import DisplayCards from './DisplayCards';
+import SearchBar from './SearchBar';
 
-const Home: PageComponent = () => {
+const Home = () => {
   const [term, setTerm] = useState('');
   const [filteredTerm, setFilteredTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('');
@@ -37,10 +20,8 @@ const Home: PageComponent = () => {
         pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())
     ) ?? [];
 
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (term === '') return alert('Please enter search term!');
-    setTerm('');
+  const submitHandler = (searchTerm: string) => {
+    setTerm(searchTerm);
   };
 
   const handleFilter = (type: string) => {
@@ -49,7 +30,7 @@ const Home: PageComponent = () => {
   };
 
   useEffect(() => {
-    dispatch(command.pokemons.load()).catch((err: unknown) => {
+    dispatch(command.pokemons.load()).catch((err) => {
       console.error(err);
     });
 
@@ -59,13 +40,12 @@ const Home: PageComponent = () => {
   }, []);
 
   const getColorForType = (type: string) => {
-    // Generate a consistent color based on the type
     const hash = type
       .split('')
       .reduce((acc, char) => char.charCodeAt(0) + acc, 0);
     const hue = hash % 400;
 
-    return `hsl(${hue}, 70%, 30%)`; // Adjust saturation and lightness as needed
+    return `hsl(${hue}, 70%, 30%)`;
   };
 
   return (
@@ -74,28 +54,14 @@ const Home: PageComponent = () => {
         container={true}
         spacing={6}
         sx={{
-          mb: 6,
-          flexDirection: { xs: 'column', sm: 'row' }, // Column layout for mobile, row layout for other screen sizes
-          alignItems: 'flex-start' // Align items at the start of the container
+          alignItems: 'flex-start',
+          flexDirection: { sm: 'row', xs: 'column' },
+          mb: 6
         }}
       >
         <Grid item={true} sm={10} xs={6}>
           <Card sx={{ p: 2.5 }}>
-            <FormControl sx={{ width: '100%', m: 0, p: 0 }}>
-              <Form onSubmit={submitHandler}>
-                <Input
-                  endAdornment={
-                    <Button type="submit">
-                      <Search />
-                    </Button>
-                  }
-                  placeholder="Search Pokemon..."
-                  sx={{ width: '100%' }}
-                  type="text"
-                  value={term}
-                  onChange={(e) => setTerm(e.target.value)} />
-              </Form>
-            </FormControl>
+            <SearchBar onSubmit={submitHandler} />
           </Card>
         </Grid>
         <Grid
@@ -138,68 +104,7 @@ const Home: PageComponent = () => {
         </Grid>
       </Grid>
       <Grid container={true} spacing={6}>
-        {filteredPokemons?.map((pokemon, index) => (
-          <Grid item={true} key={index} md={3} sm={6} xs={12}>
-            <Link
-              style={{ textDecoration: 'none' }}
-              to={`../pokemondetails/${pokemon.id}`}
-            >
-              <Card sx={{ p: 4 }}>
-                <CardMedia
-                  image={pokemon.image_url}
-                  sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
-                <CardContent
-                  sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
-                    {pokemon.pokemon}
-                  </Typography>
-                  <Box
-                    sx={{
-                      borderRadius: 8,
-                      display: 'flex',
-                      gap: 2,
-                      height: 'auto'
-                    }}
-                  >
-                    {pokemon.type.split('/').map((type: string) => (
-                      <Box
-                        key={type}
-                        px={4}
-                        py={1.5}
-                        sx={{
-                          backgroundColor: getColorForType(type),
-                          borderRadius: 8,
-                          display: 'flex',
-                          gap: 8
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            color: 'white',
-                            fontSize: 10,
-                            letterSpacing: 1.5
-                          }}
-                        >
-                          {type.trim()}
-                        </Typography>
-                      </Box>
-                    ))}
-                  </Box>
-                  <Button sx={{ mt: 6 }} variant="contained">
-                    Add to Inventory
-                  </Button>
-                </CardContent>
-              </Card>
-            </Link>
-          </Grid>
-        ))}
+        <DisplayCards filteredPokemons={filteredPokemons} getColorForType={getColorForType} />
       </Grid>
     </>
   );
