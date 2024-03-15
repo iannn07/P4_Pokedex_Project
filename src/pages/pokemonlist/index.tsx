@@ -13,6 +13,7 @@ import { Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
 import AddPokemonDialog from './addDialog';
+import DeletePokemonDialog from './deleteDialog';
 
 import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
@@ -20,18 +21,24 @@ const PokemonList: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
 
-  const [open, setOpen] = useState<boolean>(false);
+  const [openAddDialog, setOpenAddDialog] = useState<boolean>(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
   const handleAddDialog = () => {
-    setOpen(!open);
+    setOpenAddDialog(!openAddDialog);
   };
 
   const handleDeleteDialog = () => {
-    setOpen(!open);
+    setOpenDeleteDialog(!openDeleteDialog);
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    setOpen(false);
+  const onAddSubmit = (e: FormEvent<HTMLFormElement>) => {
+    setOpenAddDialog(false);
+    e.preventDefault();
+  };
+
+  const onDeleteSubmit = (e: FormEvent<HTMLFormElement>) => {
+    setOpenDeleteDialog(false);
     e.preventDefault();
   };
 
@@ -177,11 +184,31 @@ const PokemonList: PageComponent = () => {
           }}
           slots={{ toolbar: CustomToolbar }} />
       </Card>
-      <Dialog fullWidth={true} maxWidth="sm" open={open} onClose={handleAddDialog}>
-        <AddPokemonDialog
-          handleDialogToggle={handleAddDialog}
-          onSubmit={onSubmit} />
-      </Dialog>
+      {openAddDialog
+        ? (
+        <Dialog
+          fullWidth={true}
+          maxWidth="sm"
+          open={openAddDialog}
+          onClose={handleAddDialog}
+        >
+          <AddPokemonDialog
+            handleAddDialog={handleAddDialog}
+            onAddSubmit={onAddSubmit} />
+        </Dialog>
+        )
+        : (
+        <Dialog
+          fullWidth={true}
+          maxWidth="sm"
+          open={openDeleteDialog}
+          onClose={handleDeleteDialog}
+        >
+          <DeletePokemonDialog
+            handleDeleteDialog={handleDeleteDialog}
+            onDeleteSubmit={onDeleteSubmit} />
+        </Dialog>
+        )}
     </>
   );
 };
