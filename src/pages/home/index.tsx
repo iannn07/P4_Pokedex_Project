@@ -63,7 +63,7 @@ const Home = () => {
           </Card>
         </Grid>
         <Grid item={true} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end' }} xs={6}>
-          <Card>
+          <Card sx={{ width: '100%' }}>
             <FilterButton activeFilter={activeFilter} handleFilter={handleFilter} />
           </Card>
         </Grid>
