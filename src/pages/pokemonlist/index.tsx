@@ -184,31 +184,26 @@ const PokemonList: PageComponent = () => {
           }}
           slots={{ toolbar: CustomToolbar }} />
       </Card>
-      {openAddDialog
-        ? (
-        <Dialog
-          fullWidth={true}
-          maxWidth="sm"
-          open={openAddDialog}
-          onClose={handleAddDialog}
-        >
-          <AddPokemonDialog
-            handleAddDialog={handleAddDialog}
-            onAddSubmit={onAddSubmit} />
-        </Dialog>
-        )
-        : openDeleteDialog && (
-          <Dialog
-            fullWidth={true}
-            maxWidth="sm"
-            open={openDeleteDialog}
-            onClose={handleDeleteDialog}
-          >
-            <DeletePokemonDialog
-              handleDeleteDialog={handleDeleteDialog}
-              onDeleteSubmit={onDeleteSubmit} />
-          </Dialog>
-        )}
+      <Dialog
+        fullWidth={true}
+        maxWidth="sm"
+        open={openAddDialog}
+        onClose={handleAddDialog}
+      >
+        <AddPokemonDialog
+          handleAddDialog={handleAddDialog}
+          onAddSubmit={onAddSubmit} />
+      </Dialog>
+      <Dialog
+        fullWidth={true}
+        maxWidth="sm"
+        open={openDeleteDialog}
+        onClose={handleDeleteDialog}
+      >
+        <DeletePokemonDialog
+          handleDeleteDialog={handleDeleteDialog}
+          onDeleteSubmit={onDeleteSubmit} />
+      </Dialog>
     </>
   );
 };

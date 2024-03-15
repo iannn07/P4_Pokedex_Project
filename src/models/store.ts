@@ -6,6 +6,7 @@ import {
   createStoreProvider
 } from '@nxweb/react';
 
+import { pokeListCommand } from './pokeListCRUD/commands.js';
 import { pokemonsCommand } from './pokemon/commands.js';
 import { pokemonsReducer } from './pokemon/reducers.js';
 
@@ -18,11 +19,13 @@ const rootReducer = combineReducers({
 
 // ** Init models
 const rootModel: RootModel = {
+  pokeList: {},
   pokemons: {}
 };
 
 // ** Init commands
 const rootCommand = {
+  pokeList: pokeListCommand,
   pokemons: pokemonsCommand
 };
 

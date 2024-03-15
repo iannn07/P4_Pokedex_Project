@@ -2,7 +2,7 @@
 /* eslint sort-keys: 0 */
 import type { FormEvent } from 'react';
 
-import { Box, Button, Checkbox, DialogContent, DialogTitle, FormControlLabel } from '@mui/material';
+import { Box, Button, DialogContent, DialogTitle } from '@mui/material';
 
 import { Typography } from '@components/material.js';
 
@@ -32,10 +32,7 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
         }}
       >
         <Typography sx={{ mb: 2 }} variant="h3">
-          Add New Permission
-        </Typography>
-        <Typography color="text.secondary">
-          Permissions you may use and assign to your users.
+          Add New Pokemon
         </Typography>
       </DialogTitle>
       <DialogContent
@@ -50,6 +47,9 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
           ]
         }}
       >
+        <Box>
+          <p>Test Form</p>
+        </Box>
         <Box
           component="form"
           sx={{
@@ -61,19 +61,8 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
             alignItems: 'center',
             flexDirection: 'column'
           }}
-          onSubmit={(e) => onAddSubmit(e)}
+          onSubmit={onAddSubmit}
         >
-          {/* <CustomTextField
-            fullWidth
-            sx={{ mb: 1 }}
-            label="Permission Name"
-            placeholder="Enter Permission Name"
-          /> */}
-          <Box sx={{ width: '100%', display: 'flex' }}>
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Set as core permission" />
-          </Box>
           <Box
             className="demo-space-x"
             sx={{ '& > :last-child': { mr: '0 !important' } }}
