@@ -26,6 +26,7 @@ const App: FC<LayoutWrapperProps> = ({
     <CacheProvider value={emotionCache}>
       <Head>
         <title>{app.name}</title>
+        <link href="../assets/images/pages/pokeball.svg" rel="icon" />
         <meta content={`${app.name} — ${app.description}`} name="description" />
         <meta content={app.keywords.join(',')} name="keywords" />
         <meta content="initial-scale=1, width=device-width" name="viewport" />

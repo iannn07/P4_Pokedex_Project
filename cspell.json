@@ -1,0 +1,20 @@
+{
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [],
+  "ignoreWords": [
+    "Pokemon",
+    "Pokemons",
+    "Pokedex",
+    "hitpoints",
+    "pokeball",
+    "pokemondetails",
+    "nxweb",
+    "tabler",
+    "pikachu",
+    "madiun"
+  ],
+  "import": []
+}

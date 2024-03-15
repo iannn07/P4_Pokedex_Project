@@ -1,6 +1,6 @@
 export const app = {
-  name: 'App Name',
-  title: 'App Title',
+  name: 'Pokedex',
+  title: 'Pokedex',
   url: '/',
 
   description: 'App Description',

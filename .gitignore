@@ -2,6 +2,6 @@ cache/
 dist/
 reports/
 node_modules/
-.env
+# .env
 .env.*
 ~*

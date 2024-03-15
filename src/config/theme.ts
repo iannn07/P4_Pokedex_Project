@@ -57,7 +57,7 @@ export const config: ThemeConfig = {
   layout: 'horizontal' /* vertical | horizontal */,
   mode: 'light' as Mode /* light | dark | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,
   skin: 'default' /* default | bordered */,
-  templateName: 'Vuexy' /* App Name */,
+  templateName: 'Pokedex' /* App Name */,
 
   // ** Routing Configs
   routingLoader: true /* true | false */,

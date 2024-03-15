@@ -1,7 +1,9 @@
-import type { ProductsAction, ProductsModel } from './products/types';
+import type { PokeListAction, PokeListModel } from './pokeListCRUD/types';
+import type { PokemonsAction, PokemonsModel } from './pokemon/types';
 
 export interface RootModel {
-  products?: ProductsModel
+  pokeList?: PokeListModel
+  pokemons?: PokemonsModel
 }
 
-export type RootAction = ProductsAction;
+export type RootAction = PokeListAction | PokemonsAction;

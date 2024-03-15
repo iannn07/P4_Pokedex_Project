@@ -1,0 +1,20 @@
+/* eslint-disable sort-keys */
+import type { Command } from '@nxweb/core';
+
+// Import { getPokemon } from '@api/clients/pokemons.js';
+import type { RootModel } from '@models/types.js';
+
+import { PokeListActionType } from './types.js';
+
+import type { PokeListAction, PokeListModel } from './types.js';
+
+const pokeListCommand = {
+  addPokemon: (value: PokeListModel): PokeListAction => {
+    return {
+      type: PokeListActionType.ADD_POKEMON,
+      payload: value
+    };
+  }
+} satisfies Command<RootModel, PokeListAction>;
+
+export { pokeListCommand };
