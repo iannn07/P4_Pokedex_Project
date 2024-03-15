@@ -1,5 +1,5 @@
 /* eslint-disable @stylistic/js/linebreak-style */
-import React from "react";
+import React from 'react';
 
 import {
   Box,
@@ -7,47 +7,46 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  CircularProgress,
   Grid,
-  Typography,
   List,
   ListItem,
-  ListItemText,
   ListItemIcon,
-} from "@mui/material";
-import { Point } from "@nxweb/icons/tabler";
+  ListItemText,
+  Typography
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
-import { useTheme } from "@mui/material/styles";
+import { Point } from '@nxweb/icons/tabler';
 
-import type { Pokemons } from "../../models/pokemon/types";
+import type { Pokemons } from '../../models/pokemon/types';
 
 interface PokemonDetailsProps {
-  pokemon: Pokemons;
+  pokemon: Pokemons | undefined
 }
 
 const PokemonDetails: React.FC<PokemonDetailsProps> = ({ pokemon }) => {
-  //   Const classes = useStyles();
-  console.log(pokemon);
-
   return (
     <Box
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}
     >
-      <Card sx={{ width: "45%" }}>
+      {pokemon? (
+      <Card sx={{ width: '45%' }}>
         <CardHeader subheader={pokemon?.type} title={pokemon?.pokemon} />
         <CardContent>
           <Grid container={true} spacing={6}>
             <Grid item={true} sm={7} xs={12}>
               <Typography variant="h1">{pokemon?.hitpoints}</Typography>
-              <Typography sx={{ mb: 6, color: "text.secondary" }}>
+              <Typography sx={{ mb: 6, color: 'text.secondary' }}>
                 Total Hitpoints
               </Typography>
               <Grid container={true} spacing={6}>
                 <Grid item={true} sm={5} xs={12}>
-                  <Typography sx={{ color: "text.secondary" }}>
+                  <Typography sx={{ color: 'text.secondary' }}>
                     Abilities :
                   </Typography>
                   <List>
@@ -61,13 +60,13 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ pokemon }) => {
                     ))}
                   </List>
                 </Grid>
-                {pokemon?.evolutions.length > 0 && (
+                {pokemon?.evolutions?.length > 0 && (
                   <Grid item={true} sm={5} xs={12}>
-                    <Typography sx={{ color: "text.secondary" }}>
+                    <Typography sx={{ color: 'text.secondary' }}>
                       Evolution :
                     </Typography>
                     <List>
-                      {pokemon?.evolutions.map((evolution, index) => (
+                      {pokemon?.evolutions?.map((evolution, index) => (
                         <ListItem key={index}>
                           <ListItemIcon>
                             <Point />
@@ -79,7 +78,7 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ pokemon }) => {
                   </Grid>
                 )}
               </Grid>
-              <Typography sx={{ color: "text.secondary" }}>
+              <Typography sx={{ color: 'text.secondary' }}>
                 Can be obtained from :
               </Typography>
               <Typography variant="h4">{pokemon?.location}</Typography>
@@ -87,24 +86,24 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ pokemon }) => {
             <Grid
               item={true}
               sm={5}
-              xs={12}
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "30%",
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '30%'
               }}
+              xs={12}
             >
               <CardMedia
                 alt={pokemon?.pokemon}
                 component="img"
                 image={pokemon?.image_url}
-                sx={{ height: "14rem", objectFit: "fit", width: "100%" }}
-              />
+                sx={{ height: '14rem', objectFit: 'fit', width: '100%' }} />
             </Grid>
           </Grid>
         </CardContent>
       </Card>
+      ):<CircularProgress/>}
     </Box>
   );
 };

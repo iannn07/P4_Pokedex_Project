@@ -13,18 +13,13 @@ const pokemonsCommand = {
       type: PokemonsActionType.Clear
     };
   },
-  load: (id: string | null = null) => {
+  load: () => {
     return async (dispatch) => {
       try {
         // Const res = await getPokemon(token, options);
 
         // Here's the error solution for now
-        let apiUrl = 'https://dummyapi.online/api/pokemon';
-
-        if (id !== null) {
-          apiUrl = `https://dummyapi.online/api/pokemon/${id}`;
-        }
-
+        const apiUrl = 'https://dummyapi.online/api/pokemon';
         const res = await fetch(apiUrl).then((res) => res.json());
 
         if (res) {
