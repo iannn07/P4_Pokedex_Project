@@ -43,15 +43,14 @@ const Home: PageComponent = () => {
             <Card sx={{ p: 4 }}>
               <CardMedia
                 image={data.image_url}
-                sx={{ height: '14rem', objectFit: 'contain', width: '100%' }}
-              />
+                sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
               <CardContent
                 sx={{
                   alignItems: 'center',
                   display: 'flex',
                   flexDirection: 'column',
                   height: '100%',
-                  justifyContent: 'center',
+                  justifyContent: 'center'
                 }}
               >
                 <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
@@ -62,7 +61,7 @@ const Home: PageComponent = () => {
                     borderRadius: 8,
                     display: 'flex',
                     gap: 2,
-                    height: 'auto',
+                    height: 'auto'
                   }}
                 >
                   {data.type.split('/').map((type) => (
@@ -74,14 +73,14 @@ const Home: PageComponent = () => {
                         backgroundColor: getColorForType(type),
                         borderRadius: 8,
                         display: 'flex',
-                        gap: 8,
+                        gap: 8
                       }}
                     >
                       <Typography
                         sx={{
                           color: 'white',
                           fontSize: 10,
-                          letterSpacing: 1.5,
+                          letterSpacing: 1.5
                         }}
                       >
                         {type.trim()}

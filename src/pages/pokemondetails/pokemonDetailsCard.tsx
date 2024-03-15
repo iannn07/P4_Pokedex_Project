@@ -1,3 +1,5 @@
+/* eslint-disable sort-keys */
+/* eslint-disable react/display-name */
 /* eslint-disable @stylistic/js/linebreak-style */
 import React from 'react';
 
@@ -15,14 +17,13 @@ import {
   ListItemText,
   Typography
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 
 import { Point } from '@nxweb/icons/tabler';
 
 import type { Pokemons } from '../../models/pokemon/types';
 
 interface PokemonDetailsProps {
-  pokemon: Pokemons | undefined
+  readonly pokemon: Pokemons | undefined
 }
 
 const PokemonDetails: React.FC<PokemonDetailsProps> = ({ pokemon }) => {
@@ -34,7 +35,8 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ pokemon }) => {
         justifyContent: 'center'
       }}
     >
-      {pokemon? (
+      {pokemon
+        ? (
       <Card sx={{ width: '45%' }}>
         <CardHeader subheader={pokemon?.type} title={pokemon?.pokemon} />
         <CardContent>
@@ -103,7 +105,8 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ pokemon }) => {
           </Grid>
         </CardContent>
       </Card>
-      ):<CircularProgress/>}
+        )
+        : <CircularProgress />}
     </Box>
   );
 };
