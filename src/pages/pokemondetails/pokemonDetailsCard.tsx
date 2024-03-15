@@ -57,6 +57,7 @@ const PokemonDetails: React.FC<PokemonDetailsProps> = ({ pokemon }) => {
           <CardHeader
             action={
               <ArrowBackUP
+                cursor="pointer"
                 height="32px"
                 width="32px"
                 onClick={() => navigate(-1)} />
