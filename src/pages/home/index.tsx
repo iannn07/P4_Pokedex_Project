@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Button, CardContent, CardMedia, Typography } from '@mui/material';
+import { Box, Button, CardContent, CardMedia, Typography } from '@mui/material';
 
 import type { PageComponent } from '@nxweb/react';
 
@@ -34,28 +34,61 @@ const Home: PageComponent = () => {
 
   return (
     <Grid container={true} spacing={6}>
-      {state?.pokemons?.map((row, index) => (
+      {state?.pokemons?.map((data, index) => (
         <Grid item={true} key={index} md={3} sm={6} xs={12}>
           <Link
             style={{ textDecoration: 'none' }}
-            to={`../pokemondetails/${row.id}`}
+            to={`../pokemondetails/${data.id}`}
           >
             <Card sx={{ p: 4 }}>
               <CardMedia
-                image={row.image_url}
-                sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+                image={data.image_url}
+                sx={{ height: '14rem', objectFit: 'contain', width: '100%' }}
+              />
               <CardContent
                 sx={{
                   alignItems: 'center',
                   display: 'flex',
                   flexDirection: 'column',
                   height: '100%',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
                 }}
               >
-                <Typography sx={{ mb: 2 }} variant="h5">
-                  {row.pokemon}
+                <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
+                  {data.pokemon}
                 </Typography>
+                <Box
+                  sx={{
+                    borderRadius: 8,
+                    display: 'flex',
+                    gap: 2,
+                    height: 'auto',
+                  }}
+                >
+                  {data.type.split('/').map((type) => (
+                    <Box
+                      key={type}
+                      px={4}
+                      py={1.5}
+                      sx={{
+                        backgroundColor: getColorForType(type),
+                        borderRadius: 8,
+                        display: 'flex',
+                        gap: 8,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          color: 'white',
+                          fontSize: 10,
+                          letterSpacing: 1.5,
+                        }}
+                      >
+                        {type.trim()}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
                 <Button sx={{ mt: 6 }} variant="contained">
                   Add to Inventory
                 </Button>
