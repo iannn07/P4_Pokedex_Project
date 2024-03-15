@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import { combineReducers, createStore } from '@nxweb/core';
 import {
   createCommandHook,
@@ -7,6 +8,7 @@ import {
 } from '@nxweb/react';
 
 import { pokeListCommand } from './pokeListCRUD/commands.js';
+import { initialState, pokeListReducer } from './pokeListCRUD/reducers.js';
 import { pokemonsCommand } from './pokemon/commands.js';
 import { pokemonsReducer } from './pokemon/reducers.js';
 
@@ -14,12 +16,13 @@ import type { RootAction, RootModel } from './types.js';
 
 // ** Init reducers
 const rootReducer = combineReducers({
-  pokemons: pokemonsReducer
+  pokemons: pokemonsReducer,
+  pokeList: pokeListReducer
 });
 
 // ** Init models
 const rootModel: RootModel = {
-  pokeList: {},
+  pokeList: initialState,
   pokemons: {}
 };
 

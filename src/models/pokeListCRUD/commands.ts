@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import type { Command } from '@nxweb/core';
 
 // Import { getPokemon } from '@api/clients/pokemons.js';
@@ -11,23 +12,7 @@ const pokeListCommand = {
   addPokemon: (value: PokeListModel): PokeListAction => {
     return {
       type: PokeListActionType.ADD_POKEMON,
-      value
-    };
-  },
-  clear: (): PokeListAction => {
-    return {
-      type: PokeListActionType.CLEAR
-    };
-  },
-  deletePokemon: (): PokeListAction => {
-    return {
-      type: PokeListActionType.DELETE_POKEMON
-    };
-  },
-  editPokemon: (value?: PokeListModel): PokeListAction => {
-    return {
-      type: PokeListActionType.EDIT_POKEMON,
-      value
+      payload: value
     };
   }
 } satisfies Command<RootModel, PokeListAction>;

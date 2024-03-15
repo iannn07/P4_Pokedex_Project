@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 interface PokeList {
   abilities: string[]
   evolutions: string[]
@@ -18,19 +19,17 @@ enum PokeListActionType {
   ADD_POKEMON = 'ADD_POKEMON',
   EDIT_POKEMON = 'EDIT_POKEMON',
   DELETE_POKEMON = 'DELETE_POKEMON',
-  CLEAR = 'CLEAR'
+  SHOW_POKEMON = 'SHOW_POKEMON'
 }
 
 type PokeListAction = {
   type: PokeListActionType.ADD_POKEMON
-  value: PokeListModel
-} | {
-  type: PokeListActionType.CLEAR
+  payload?: PokeListModel
 } | {
   type: PokeListActionType.DELETE_POKEMON
 } | {
   type: PokeListActionType.EDIT_POKEMON
-  value?: PokeListModel
+  payload?: PokeListModel
 };
 
 export { PokeListActionType };
