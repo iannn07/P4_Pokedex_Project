@@ -31,8 +31,11 @@ const Home: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
 
-  const filteredPokemons = state?.pokemons?.filter((pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
-  pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())) ?? [];
+  const filteredPokemons =
+    state?.pokemons?.filter(
+      (pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
+        pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())
+    ) ?? [];
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,7 +98,12 @@ const Home: PageComponent = () => {
             </FormControl>
           </Card>
         </Grid>
-        <Grid item={true} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end' }} xs={6}>
+        <Grid
+          item={true}
+          sm={2}
+          sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          xs={6}
+        >
           <Card>
             <FormControl>
               <Select
@@ -105,7 +113,25 @@ const Home: PageComponent = () => {
                 onChange={(e) => handleFilter(e.target.value as string)}
               >
                 <MenuItem value="">All Types</MenuItem>
-                {['Dragon', 'Electric', 'Fighting', 'Fire', 'Flying', 'Ghost', 'Grass', 'Ground', 'Ice', 'Normal', 'Psychic', 'Rock', 'Water'].map((type) => <MenuItem key={type} value={type}>{type}</MenuItem>)}
+                {[
+                  'Dragon',
+                  'Electric',
+                  'Fighting',
+                  'Fire',
+                  'Flying',
+                  'Ghost',
+                  'Grass',
+                  'Ground',
+                  'Ice',
+                  'Normal',
+                  'Psychic',
+                  'Rock',
+                  'Water'
+                ].map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {type}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Card>
