@@ -21,14 +21,13 @@ import {
   ListItemText,
   Typography
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 
 import { ArrowBackUP, Point } from '@nxweb/icons/tabler';
 
 import type { Pokemons } from '../../models/pokemon/types';
 
 interface PokemonDetailsProps {
-  pokemon: Pokemons | undefined
+  readonly pokemon: Pokemons | undefined
 }
 
 const getColorForType = (type: string) => {

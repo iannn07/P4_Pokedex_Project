@@ -1,10 +1,19 @@
+/* eslint-disable sort-keys */
 /* eslint-disable no-console */
 /* eslint-disable logical-assignment-operators */
 /* eslint-disable react/jsx-key */
 import { useEffect, useState } from 'react';
 import { Form, Link } from 'react-router-dom';
 
-import { Box, Button, CardContent, CardMedia, Input, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CardContent,
+  CardMedia,
+  FormControl,
+  Input,
+  Typography
+} from '@mui/material';
 
 import { Search } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
@@ -39,7 +48,9 @@ const Home: PageComponent = () => {
 
   const getColorForType = (type: string) => {
     // Generate a consistent color based on the type
-    const hash = type.split('').reduce((acc, char) => char.charCodeAt(0) + acc, 0);
+    const hash = type
+      .split('')
+      .reduce((acc, char) => char.charCodeAt(0) + acc, 0);
     const hue = hash % 400;
 
     return `hsl(${hue}, 70%, 30%)`; // Adjust saturation and lightness as needed
@@ -47,29 +58,39 @@ const Home: PageComponent = () => {
 
   return (
     <>
-    <Box
-      sx={{ backgroundColor: 'transparent', mb: 8 }}
-    >
-      <Form onSubmit={submitHandler}>
-        <Input
-          placeholder="Search Pokemon"
-          sx={{ width: '90%' }}
-          type="text"
-          value={term}
-          onChange={(e) => setTerm(e.target.value)} />
-        <Button type="submit">
-          <Search />
-        </Button>
-      </Form>
-    </Box>
+      <Box
+        sx={{
+          backgroundColor: 'transparent',
+          mb: 8,
+          p: 4,
+          border: '1px solid #2f3349',
+          borderRadius: '5px'
+        }}
+      >
+        <FormControl sx={{ width: '100%', m: 0, p: 0 }}>
+          <Form onSubmit={submitHandler}>
+            <Input
+              endAdornment={
+                <Button type="submit">
+                  <Search />
+                </Button>
+              }
+              placeholder="Search Pokemon..."
+              sx={{ width: '100%' }}
+              type="text"
+              value={term}
+              onChange={(e) => setTerm(e.target.value)} />
+          </Form>
+        </FormControl>
+      </Box>
       <Grid container={true} spacing={6}>
-      {filteredPokemons?.map((pokemon, index) => (
+        {filteredPokemons?.map((pokemon, index) => (
           <Grid item={true} key={index} md={3} sm={6} xs={12}>
             <Link
               style={{ textDecoration: 'none' }}
               to={`../pokemondetails/${pokemon.id}`}
             >
-            <Card sx={{ p: 4 }}>
+              <Card sx={{ p: 4 }}>
                 <CardMedia
                   image={pokemon.image_url}
                   sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
@@ -121,10 +142,10 @@ const Home: PageComponent = () => {
                     Add to Inventory
                   </Button>
                 </CardContent>
-            </Card>
+              </Card>
             </Link>
           </Grid>
-      ))}
+        ))}
       </Grid>
     </>
   );
