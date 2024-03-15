@@ -197,17 +197,17 @@ const PokemonList: PageComponent = () => {
             onAddSubmit={onAddSubmit} />
         </Dialog>
         )
-        : (
-        <Dialog
-          fullWidth={true}
-          maxWidth="sm"
-          open={openDeleteDialog}
-          onClose={handleDeleteDialog}
-        >
-          <DeletePokemonDialog
-            handleDeleteDialog={handleDeleteDialog}
-            onDeleteSubmit={onDeleteSubmit} />
-        </Dialog>
+        : openDeleteDialog && (
+          <Dialog
+            fullWidth={true}
+            maxWidth="sm"
+            open={openDeleteDialog}
+            onClose={handleDeleteDialog}
+          >
+            <DeletePokemonDialog
+              handleDeleteDialog={handleDeleteDialog}
+              onDeleteSubmit={onDeleteSubmit} />
+          </Dialog>
         )}
     </>
   );

@@ -4,6 +4,6 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [],
-    "ignoreWords": ["Pokemon", "Pokemons", "Pokedex", "hitpoints", "pokeball"],
+    "ignoreWords": ["Pokemon", "Pokemons", "Pokedex", "hitpoints", "pokeball", "pokemondetails", "nxweb", "tabler"],
     "import": []
 }
