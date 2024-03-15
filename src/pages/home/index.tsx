@@ -12,28 +12,37 @@ import {
   CardMedia,
   FormControl,
   Input,
+  Select,
   Typography
 } from '@mui/material';
 
 import { Search } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
-import { Card, Grid } from '@components/material.js';
+import { Card, Grid, MenuItem } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
 // Import { getPokemon } from '@api/clients/pokemons';
 
 const Home: PageComponent = () => {
   const [term, setTerm] = useState('');
+  const [filteredTerm, setFilteredTerm] = useState('');
+  const [activeFilter, setActiveFilter] = useState('');
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
 
-  const filteredPokemons = state?.pokemons?.filter((pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase())) ?? [];
+  const filteredPokemons = state?.pokemons?.filter((pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
+  pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())) ?? [];
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (term === '') return alert('Please enter search term!');
     setTerm('');
+  };
+
+  const handleFilter = (type: string) => {
+    setFilteredTerm(type);
+    setActiveFilter(type);
   };
 
   useEffect(() => {
@@ -58,23 +67,50 @@ const Home: PageComponent = () => {
 
   return (
     <>
-      <Card sx={{ mb: 8, p: 4 }}>
-        <FormControl sx={{ width: '100%', m: 0, p: 0 }}>
-          <Form onSubmit={submitHandler}>
-            <Input
-              endAdornment={
-                <Button type="submit">
-                  <Search />
-                </Button>
-              }
-              placeholder="Search Pokemon..."
-              sx={{ width: '100%' }}
-              type="text"
-              value={term}
-              onChange={(e) => setTerm(e.target.value)} />
-          </Form>
-        </FormControl>
-      </Card>
+      <Grid
+        container={true}
+        spacing={6}
+        sx={{
+          mb: 6,
+          flexDirection: { xs: 'column', sm: 'row' }, // Column layout for mobile, row layout for other screen sizes
+          alignItems: 'flex-start' // Align items at the start of the container
+        }}
+      >
+        <Grid item={true} sm={10} xs={6}>
+          <Card sx={{ p: 2.5 }}>
+            <FormControl sx={{ width: '100%', m: 0, p: 0 }}>
+              <Form onSubmit={submitHandler}>
+                <Input
+                  endAdornment={
+                    <Button type="submit">
+                      <Search />
+                    </Button>
+                  }
+                  placeholder="Search Pokemon..."
+                  sx={{ width: '100%' }}
+                  type="text"
+                  value={term}
+                  onChange={(e) => setTerm(e.target.value)} />
+              </Form>
+            </FormControl>
+          </Card>
+        </Grid>
+        <Grid item={true} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end' }} xs={6}>
+          <Card>
+            <FormControl>
+              <Select
+                displayEmpty={true}
+                sx={{ minWidth: '120px' }}
+                value={activeFilter}
+                onChange={(e) => handleFilter(e.target.value as string)}
+              >
+                <MenuItem value="">All Types</MenuItem>
+                {['Dragon', 'Electric', 'Fighting', 'Fire', 'Flying', 'Ghost', 'Grass', 'Ground', 'Ice', 'Normal', 'Psychic', 'Rock', 'Water'].map((type) => <MenuItem key={type} value={type}>{type}</MenuItem>)}
+              </Select>
+            </FormControl>
+          </Card>
+        </Grid>
+      </Grid>
       <Grid container={true} spacing={6}>
         {filteredPokemons?.map((pokemon, index) => (
           <Grid item={true} key={index} md={3} sm={6} xs={12}>
