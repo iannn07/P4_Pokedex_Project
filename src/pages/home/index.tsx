@@ -12,8 +12,6 @@ import type { PageComponent } from '@nxweb/react';
 import { Card, Grid } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
-import { setSearchTerm } from '@src/redux/home/actions';
-
 // Import { getPokemon } from '@api/clients/pokemons';
 
 const Home: PageComponent = () => {
@@ -26,7 +24,6 @@ const Home: PageComponent = () => {
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (term === '') return alert('Please enter search term!');
-    dispatch(setSearchTerm(term));
     setTerm('');
   };
 
