@@ -1,4 +1,4 @@
-import type { PokeListModel } from './pokeListCRUD/types';
+import type { PokeListAction, PokeListModel } from './pokeListCRUD/types';
 import type { PokemonsAction, PokemonsModel } from './pokemon/types';
 
 export interface RootModel {
@@ -6,4 +6,4 @@ export interface RootModel {
   pokemons?: PokemonsModel
 }
 
-export type RootAction = PokemonsAction;
+export type RootAction = PokeListAction & PokemonsAction;

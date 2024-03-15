@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
+import {  useEffect } from 'react';
 import type { FormEvent } from 'react';
 
 import { Box, Button, DialogContent, DialogTitle } from '@mui/material';
 
 import { Typography } from '@components/material.js';
+import { useCommand, useStore } from '@models/store';
 
 interface AddPokemonDialogProps {
   handleAddDialog: () => void
@@ -15,6 +17,13 @@ const AddPokemonDialog: React.FC<AddPokemonDialogProps> = ({
   onAddSubmit,
   handleAddDialog
 }) => {
+  const [state, dispatch] = useStore((store) => store.pokemons);
+  const command = useCommand((cmd) => cmd);
+
+  useEffect(() => {
+    dispatch(command.pokeList.addPokemon({}));
+  }, []);
+
   return (
     <>
       <DialogTitle
