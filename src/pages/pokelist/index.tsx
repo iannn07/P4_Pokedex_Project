@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-key */
 
 import type { FormEventHandler } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import {
   Box,
@@ -24,8 +24,10 @@ import {
   Bug,
   Category,
   ChevronsUP,
+  Edit,
   MapPin,
-  Pokeball
+  Pokeball,
+  Trash
 } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
@@ -66,6 +68,14 @@ const PokeListCRUD: PageComponent = () => {
     });
 
     dispatch(command.pokeList.addPokemon(data));
+  };
+
+  const handleEditPokemon = (data: number) => {
+    console.log(data);
+  };
+
+  const handleDeletePokemon = (data: number) => {
+    console.log(data);
   };
 
   return (
@@ -226,7 +236,7 @@ const PokeListCRUD: PageComponent = () => {
       <Box>
         <Table>
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ textAlign: 'center' }}>
               <TableCell>Pokemon</TableCell>
               <TableCell>Type</TableCell>
               <TableCell>Location</TableCell>
@@ -252,20 +262,12 @@ const PokeListCRUD: PageComponent = () => {
                 <TableCell>{row.location}</TableCell>
                 <TableCell>{row.abilities}</TableCell>
                 <TableCell>{row.evolutions}</TableCell>
-                <TableCell>
-                  <Button
-                    color="error"
-                    // OnClick={() => handleDeletePokemon(row.id)}
-                    variant="contained"
-                  >
-                    Delete
+                <TableCell sx={{ textAlign: 'center' }}>
+                  <Button color="warning" sx={{ mr: 5 }} variant="contained">
+                    <Edit size={20} onClick={() => handleDeletePokemon(row.id)} />
                   </Button>
-                  <Button
-                    color="warning"
-                    // OnClick={() => handleEditPokemon(row.id)}
-                    variant="contained"
-                  >
-                    Edit
+                  <Button color="error" variant="contained">
+                    <Trash size={20} onClick={() => handleEditPokemon(row.id)} />
                   </Button>
                 </TableCell>
               </TableRow>

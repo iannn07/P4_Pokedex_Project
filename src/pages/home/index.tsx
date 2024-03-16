@@ -5,8 +5,8 @@ import { Card, Grid } from '@mui/material';
 import { useCommand, useStore } from '@models/store.js';
 
 import DisplayCards from './DisplayCards';
-import FilterButton from './FilterButton';
 import SearchBar from './SearchBar';
+import FilterButton from './filterButton';
 
 const Home = () => {
   const [term, setTerm] = useState('');
