@@ -1,24 +1,30 @@
+/* eslint-disable import/exports-last */
 import { PokeListActionType } from './types.js';
 
 import type { PokeListAction, PokeListModel } from './types.js';
 
-const pokemonsReducer = (
-  state: PokeListModel = {},
+export const initialState = {
+  pokemons: []
+};
+
+const pokeListReducer = (
+  state: PokeListModel = initialState,
   action: Readonly<PokeListAction>
 ): PokeListModel => {
   switch (action.type) {
-    case PokeListActionType.CLEAR:
-      return {};
-    case PokeListActionType.ADD_POKEMON:
-      return { ...state, ...action.value };
-    case PokeListActionType.EDIT_POKEMON:
-      return { ...state, ...action.value };
-    case PokeListActionType.DELETE_POKEMON:
-      return { ...state };
+    case PokeListActionType.ADD_POKEMON: {
+      const updatedPokemons = action.payload?.pokemons || [];
+      const pokemons = state.pokemons || [];
+
+      return {
+        ...state,
+        pokemons: [...pokemons, ...updatedPokemons]
+      };
+    }
 
     default:
       return state;
   }
 };
 
-export { pokemonsReducer };
+export { pokeListReducer };

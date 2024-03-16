@@ -1,7 +1,7 @@
 import {
   Accessible,
   Backpack,
-  LayoutGrid,
+  Bug,
   Pokeball,
   SmartHome
 } from '@nxweb/icons/tabler';
@@ -34,9 +34,9 @@ export const navigation: readonly HorizontalNavItemsType[] = [
     text: 'Trainer Log'
   },
   {
-    icon: <LayoutGrid />,
-    id: 'admin',
-    link: '/admin',
-    text: 'Admin'
+    icon: <Bug />,
+    id: 'pokelist',
+    link: '/pokelist',
+    text: 'Poke List CRUD'
   }
 ];

@@ -6,4 +6,4 @@ export interface RootModel {
   pokemons?: PokemonsModel
 }
 
-export type RootAction = PokeListAction & PokemonsAction;
+export type RootAction = PokeListAction | PokemonsAction;

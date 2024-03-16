@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Card, Grid } from '@mui/material';
 
@@ -15,8 +15,11 @@ const Home = () => {
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
 
-  const filteredPokemons = state?.pokemons?.filter((pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
-    pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())) ?? [];
+  const filteredPokemons =
+    state?.pokemons?.filter(
+      (pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
+        pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())
+    ) ?? [];
 
   const submitHandler = (searchTerm: string) => {
     setTerm(searchTerm);
