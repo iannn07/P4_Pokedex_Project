@@ -17,9 +17,13 @@ interface Pokemon {
 interface DisplayCardsProps {
   readonly filteredPokemons: Pokemon[]
   readonly getColorForType: (type: string) => string
+  readonly obtainedPokemons: number[]
+  readonly handleObtainPokemon: (pokemonId: number) => void;
 }
 
-const DisplayCards: React.FC<DisplayCardsProps> = ({ filteredPokemons, getColorForType }) => {
+const DisplayCards: React.FC<DisplayCardsProps> = ({ filteredPokemons, getColorForType, obtainedPokemons, handleObtainPokemon }) => {
+  const isObtained = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
+
   return (
     <>
       {filteredPokemons.map((pokemon, index) => (
@@ -76,8 +80,13 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({ filteredPokemons, getColorF
                     </Box>
                   ))}
                 </Box>
-                <Button sx={{ mt: 6 }} variant="contained">
-                  Add to Inventory
+                <Button
+                  disabled={isObtained(pokemon.id)}
+                  sx={{ mt: 6, backgroundColor: isObtained(pokemon.id) ? '#ccc' : '' }} // Change background color when obtained
+                  variant="contained"
+                  onClick={() => handleObtainPokemon(pokemon.id)}
+                >
+                  {isObtained(pokemon.id) ? 'Obtained' : 'Add to Inventory'}
                 </Button>
               </CardContent>
             </Card>

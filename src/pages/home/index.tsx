@@ -12,6 +12,7 @@ const Home = () => {
   const [term, setTerm] = useState('');
   const [filteredTerm, setFilteredTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('');
+  const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
 
@@ -28,6 +29,12 @@ const Home = () => {
   const handleFilter = (type: string) => {
     setFilteredTerm(type);
     setActiveFilter(type);
+  };
+
+  const handleObtainPokemon = (pokemonId: number) => {
+    if (!obtainedPokemons.includes(pokemonId)) {
+      setObtainedPokemons([...obtainedPokemons, pokemonId]);
+    }
   };
 
   useEffect(() => {
@@ -72,7 +79,11 @@ const Home = () => {
         </Grid>
       </Grid>
       <Grid container={true} spacing={6}>
-        <DisplayCards filteredPokemons={filteredPokemons} getColorForType={getColorForType} />
+        <DisplayCards
+          filteredPokemons={filteredPokemons}
+          getColorForType={getColorForType}
+          obtainedPokemons={obtainedPokemons}
+          handleObtainPokemon={handleObtainPokemon} />
       </Grid>
     </>
   );
