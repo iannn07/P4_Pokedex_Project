@@ -1,7 +1,6 @@
 import {
   Accessible,
   Backpack,
-  Bug,
   Pokeball,
   SmartHome
 } from '@nxweb/icons/tabler';
@@ -32,11 +31,5 @@ export const navigation: readonly HorizontalNavItemsType[] = [
     id: 'trainer-log',
     link: '/trainer',
     text: 'Trainer Log'
-  },
-  {
-    icon: <Bug />,
-    id: 'pokelist',
-    link: '/pokelist',
-    text: 'Poke List CRUD'
   }
 ];

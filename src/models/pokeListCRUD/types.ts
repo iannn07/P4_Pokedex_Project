@@ -12,6 +12,7 @@ interface PokeList {
 
 // Page Model
 interface PokeListModel {
+  id: number
   pokemons?: PokeList[]
 }
 
@@ -27,6 +28,7 @@ type PokeListAction = {
   payload?: PokeListModel
 } | {
   type: PokeListActionType.DELETE_POKEMON
+  payload?: number
 } | {
   type: PokeListActionType.EDIT_POKEMON
   payload?: PokeListModel

@@ -14,6 +14,18 @@ const pokeListCommand = {
       type: PokeListActionType.ADD_POKEMON,
       payload: value
     };
+  },
+  editPokemon: (value: PokeListModel): PokeListAction => {
+    return {
+      type: PokeListActionType.EDIT_POKEMON,
+      payload: value
+    };
+  },
+  deletePokemon: (value: number): PokeListAction => {
+    return {
+      type: PokeListActionType.DELETE_POKEMON,
+      payload: value
+    };
   }
 } satisfies Command<RootModel, PokeListAction>;
 

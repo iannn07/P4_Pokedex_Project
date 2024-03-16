@@ -10,11 +10,11 @@ import {
   Button,
   Card,
   Collapse,
+  Dialog,
   DialogContent,
   DialogTitle,
   Grid,
   InputAdornment,
-  Slide,
   Stack,
   Table,
   TableBody,
@@ -42,7 +42,7 @@ import { Typography } from '@components/material.js';
 import type { PokeListModel } from '@models/pokeListCRUD/types';
 import { useCommand, useStore } from '@models/store.js';
 
-import { handleDeletePokemon, handleEditPokemon } from './editHandler';
+import { handleEditPokemon } from './editHandler';
 
 const EditPokemonList: PageComponent = () => {
   const [pokeAPIState, pokeAPIDispatch] = useStore((store) => store.pokemons);
@@ -64,6 +64,7 @@ const EditPokemonList: PageComponent = () => {
     e.preventDefault();
 
     const data: PokeListModel = {
+      id: Math.round(Math.random() * 1000),
       pokemons: [pokemon]
     };
 
@@ -78,6 +79,10 @@ const EditPokemonList: PageComponent = () => {
     });
 
     pokeLISTDispatch(command.pokeList.addPokemon(data));
+  };
+
+  const handleDeletePokemon = (data: number) => {
+    pokeLISTDispatch(command.pokeList.deletePokemon(data));
   };
 
   const handleToggleCard = () => {
@@ -138,7 +143,7 @@ const EditPokemonList: PageComponent = () => {
           </Button>
         </Box>
       </Box>
-      <Collapse in={showCard}>
+      <Dialog open={showCard} onClose={handleToggleCard}>
         <Card sx={{ mb: 5 }}>
           <DialogTitle
             component="div"
@@ -277,10 +282,10 @@ const EditPokemonList: PageComponent = () => {
                         className="demo-space-x"
                         sx={{ '& > :last-child': { mr: '0 !important' } }}
                       >
-                        <Button type="submit" variant="contained">
+                        <Button type="submit" variant="contained" onClick={handleToggleCard}>
                           Add Pokemon
                         </Button>
-                        <Button color="secondary" type="reset" variant="tonal">
+                        <Button color="secondary" type="reset" variant="tonal" onClick={handleToggleCard}>
                           Discard Pokemon
                         </Button>
                       </Box>
@@ -291,179 +296,177 @@ const EditPokemonList: PageComponent = () => {
             </Box>
           </DialogContent>
         </Card>
-      </Collapse>
-      <Slide direction="up" in={true} mountOnEnter={true} unmountOnExit={true}>
-        <Card>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Pokemon Name</TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Location</TableCell>
-                <TableCell>Abilities</TableCell>
-                <TableCell>Evolution</TableCell>
-                <TableCell>Actions</TableCell>
+      </Dialog>
+      <Card>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Pokemon Name</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Abilities</TableCell>
+              <TableCell>Evolution</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {pokeAPIState?.pokemons?.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{
+                  '&:last-child td, &:last-child th': {
+                    border: 0
+                  }
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.pokemon}
+                </TableCell>
+                <TableCell>
+                  <Box
+                    sx={{
+                      borderRadius: 8,
+                      display: 'flex',
+                      gap: 2,
+                      height: 'auto'
+                    }}
+                  >
+                    <Stack gap={2}>
+                      {(row.type.split('/') as string[]).map((type) => (
+                        <Box
+                          key={type}
+                          px={4}
+                          py={1.5}
+                          sx={{
+                            backgroundColor: getColorForType(type),
+                            borderRadius: 8,
+                            display: 'flex',
+                            gap: 8
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              color: 'white',
+                              fontSize: 10,
+                              letterSpacing: 1.5
+                            }}
+                          >
+                            {type.trim()}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Stack>
+                  </Box>
+                </TableCell>
+                <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
+                  {row.location}
+                </TableCell>
+                <TableCell>
+                  <ul>
+                    {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
+                  </ul>
+                </TableCell>
+                <TableCell>
+                  <ul>
+                    {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
+                  </ul>
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>
+                  <Box sx={{ display: 'flex', gap: 5 }}>
+                    <Button color="warning" variant="contained">
+                      <Edit
+                        size={20}
+                        onClick={() => handleEditPokemon(row.id)} />
+                    </Button>
+                    <Button color="error" variant="contained">
+                      <Trash
+                        size={20}
+                        onClick={() => handleDeletePokemon(row.id)} />
+                    </Button>
+                  </Box>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {pokeAPIState?.pokemons?.map((row) => (
-                <TableRow
-                  key={row.id}
-                  sx={{
-                    '&:last-child td, &:last-child th': {
-                      border: 0
-                    }
-                  }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.pokemon}
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        borderRadius: 8,
-                        display: 'flex',
-                        gap: 2,
-                        height: 'auto'
-                      }}
-                    >
-                      <Stack gap={2}>
-                        {(row.type.split('/') as string[]).map((type) => (
-                          <Box
-                            key={type}
-                            px={4}
-                            py={1.5}
+            ))}
+            {pokeLISTState?.pokemons?.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{
+                  '&:last-child td, &:last-child th': {
+                    border: 0
+                  }
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.pokemon}
+                </TableCell>
+                <TableCell>
+                  <Box
+                    sx={{
+                      borderRadius: 8,
+                      display: 'flex',
+                      gap: 2,
+                      height: 'auto'
+                    }}
+                  >
+                    <Stack gap={2}>
+                      {(row.type.split('/') as string[]).map((type) => (
+                        <Box
+                          key={type}
+                          px={4}
+                          py={1.5}
+                          sx={{
+                            backgroundColor: getColorForType(type),
+                            borderRadius: 8,
+                            display: 'flex',
+                            gap: 8
+                          }}
+                        >
+                          <Typography
                             sx={{
-                              backgroundColor: getColorForType(type),
-                              borderRadius: 8,
-                              display: 'flex',
-                              gap: 8
+                              color: 'white',
+                              fontSize: 10,
+                              letterSpacing: 1.5
                             }}
                           >
-                            <Typography
-                              sx={{
-                                color: 'white',
-                                fontSize: 10,
-                                letterSpacing: 1.5
-                              }}
-                            >
-                              {type.trim()}
-                            </Typography>
-                          </Box>
-                        ))}
-                      </Stack>
-                    </Box>
-                  </TableCell>
-                  <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
-                    {row.location}
-                  </TableCell>
-                  <TableCell>
-                    <ul>
-                      {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
-                    </ul>
-                  </TableCell>
-                  <TableCell>
-                    <ul>
-                      {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
-                    </ul>
-                  </TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>
-                    <Box sx={{ display: 'flex', gap: 5 }}>
-                      <Button color="warning" variant="contained">
-                        <Edit
-                          size={20}
-                          onClick={() => handleEditPokemon(row.id)} />
-                      </Button>
-                      <Button color="error" variant="contained">
-                        <Trash
-                          size={20}
-                          onClick={() => handleDeletePokemon(row.id)} />
-                      </Button>
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {pokeLISTState?.pokemons?.map((row) => (
-                <TableRow
-                  key={row.id}
-                  sx={{
-                    '&:last-child td, &:last-child th': {
-                      border: 0
-                    }
-                  }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.pokemon}
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        borderRadius: 8,
-                        display: 'flex',
-                        gap: 2,
-                        height: 'auto'
-                      }}
-                    >
-                      <Stack gap={2}>
-                        {(row.type.split('/') as string[]).map((type) => (
-                          <Box
-                            key={type}
-                            px={4}
-                            py={1.5}
-                            sx={{
-                              backgroundColor: getColorForType(type),
-                              borderRadius: 8,
-                              display: 'flex',
-                              gap: 8
-                            }}
-                          >
-                            <Typography
-                              sx={{
-                                color: 'white',
-                                fontSize: 10,
-                                letterSpacing: 1.5
-                              }}
-                            >
-                              {type.trim()}
-                            </Typography>
-                          </Box>
-                        ))}
-                      </Stack>
-                    </Box>
-                  </TableCell>
-                  <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
-                    {row.location}
-                  </TableCell>
-                  <TableCell>
-                    <ul>
-                      {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
-                    </ul>
-                  </TableCell>
-                  <TableCell>
-                    <ul>
-                      {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
-                    </ul>
-                  </TableCell>
-                  <TableCell sx={{ textAlign: 'center' }}>
-                    <Box sx={{ display: 'flex', gap: 5 }}>
-                      <Button color="warning" variant="contained">
-                        <Edit
-                          size={20}
-                          onClick={() => handleEditPokemon(row.id)} />
-                      </Button>
-                      <Button color="error" variant="contained">
-                        <Trash
-                          size={20}
-                          onClick={() => handleDeletePokemon(row.id)} />
-                      </Button>
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Card>
-      </Slide>
+                            {type.trim()}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Stack>
+                  </Box>
+                </TableCell>
+                <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
+                  {row.location}
+                </TableCell>
+                <TableCell>
+                  <ul>
+                    {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
+                  </ul>
+                </TableCell>
+                <TableCell>
+                  <ul>
+                    {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
+                  </ul>
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>
+                  <Box sx={{ display: 'flex', gap: 5 }}>
+                    <Button color="warning" variant="contained">
+                      <Edit
+                        size={20}
+                        onClick={() => handleEditPokemon(row.id)} />
+                    </Button>
+                    <Button color="error" variant="contained">
+                      <Trash
+                        size={20}
+                        onClick={() => handleDeletePokemon(row.id)} />
+                    </Button>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Card>
     </>
   );
 };
