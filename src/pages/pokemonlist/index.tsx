@@ -10,6 +10,7 @@ import { Edit } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
 import CustomToolbar from '@components/custom/table/data-grid/custom-toolbar';
+import getColorForType from '@components/custom/type-color/type-color';
 import { Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
@@ -18,16 +19,6 @@ import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
 const PokemonList: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
-
-  const getColorForType = (type: string) => {
-    // Generate a consistent color based on the type
-    const hash = type
-      .split('')
-      .reduce((acc, char) => char.charCodeAt(0) + acc, 0);
-    const hue = hash % 400;
-
-    return `hsl(${hue}, 70%, 30%)`; // Adjust saturation and lightness as needed
-  };
 
   useEffect(() => {
     dispatch(command.pokemons.load()).catch((err: unknown) => {

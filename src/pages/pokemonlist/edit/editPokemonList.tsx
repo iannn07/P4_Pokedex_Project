@@ -9,10 +9,12 @@ import {
   Box,
   Button,
   Card,
+  Collapse,
   DialogContent,
   DialogTitle,
   Grid,
   InputAdornment,
+  Slide,
   Stack,
   Table,
   TableBody,
@@ -35,6 +37,7 @@ import {
 import type { PageComponent } from '@nxweb/react';
 
 import CustomTextField from '@components/custom/text-field/text-field';
+import getColorForType from '@components/custom/type-color/type-color';
 import { Typography } from '@components/material.js';
 import type { PokeListModel } from '@models/pokeListCRUD/types';
 import { useCommand, useStore } from '@models/store.js';
@@ -44,6 +47,7 @@ import { handleDeletePokemon, handleEditPokemon } from './editHandler';
 const EditPokemonList: PageComponent = () => {
   const [pokeAPIState, pokeAPIDispatch] = useStore((store) => store.pokemons);
   const [pokeLISTState, pokeLISTDispatch] = useStore((store) => store.pokeList);
+  const [showCard, setShowCard] = useState<boolean>(false);
   const command = useCommand((cmd) => cmd);
 
   const [pokemon, setPokemon] = useState({
@@ -76,14 +80,8 @@ const EditPokemonList: PageComponent = () => {
     pokeLISTDispatch(command.pokeList.addPokemon(data));
   };
 
-  const getColorForType = (type: string) => {
-    // Generate a consistent color based on the type
-    const hash = type
-      .split('')
-      .reduce((acc, char) => char.charCodeAt(0) + acc, 0);
-    const hue = hash % 400;
-
-    return `hsl(${hue}, 70%, 30%)`; // Adjust saturation and lightness as needed
+  const handleToggleCard = () => {
+    setShowCard(!showCard);
   };
 
   useEffect(() => {
@@ -130,334 +128,342 @@ const EditPokemonList: PageComponent = () => {
             Go Back
             <ArrowBackUP height="32px" width="32px" />
           </Button>
-          <Button sx={{ height: '50px' }} variant="contained">
+          <Button
+            sx={{ height: '50px' }}
+            variant="contained"
+            onClick={handleToggleCard}
+          >
             <Plus height="32px" width="32px" />
             Add New Pokemon
           </Button>
         </Box>
       </Box>
-      <Card sx={{ mb: 5 }}>
-        <DialogTitle
-          component="div"
-          sx={{
-            textAlign: 'center',
-            px: (theme) => [
-              `${theme.spacing(5)} !important`,
-              `${theme.spacing(15)} !important`
-            ],
-            pt: (theme) => [
-              `${theme.spacing(8)} !important`,
-              `${theme.spacing(12.5)} !important`
-            ]
-          }}
-        >
-          <Typography sx={{ mb: 2 }} variant="h3">
-            Add New Pokemon
-          </Typography>
-        </DialogTitle>
-        <DialogContent
-          sx={{
-            px: (theme) => [
-              `${theme.spacing(5)} !important`,
-              `${theme.spacing(15)} !important`
-            ],
-            pb: (theme) => [
-              `${theme.spacing(8)} !important`,
-              `${theme.spacing(12.5)} !important`
-            ]
-          }}
-        >
-          <Box
+      <Collapse in={showCard}>
+        <Card sx={{ mb: 5 }}>
+          <DialogTitle
+            component="div"
             sx={{
-              display: 'flex',
               textAlign: 'center',
-              alignItems: 'center',
-              flexDirection: 'column'
+              px: (theme) => [
+                `${theme.spacing(5)} !important`,
+                `${theme.spacing(15)} !important`
+              ],
+              pt: (theme) => [
+                `${theme.spacing(8)} !important`,
+                `${theme.spacing(12.5)} !important`
+              ]
             }}
           >
-            <Box>
-              <form onSubmit={handleNewPokemon}>
-                <Grid container={true} spacing={5}>
-                  <Grid item={true} xs={12}>
-                    <CustomTextField
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Pokeball />
-                          </InputAdornment>
-                        )
-                      }}
-                      fullWidth={true}
-                      label="Pokemon Name"
-                      placeholder="Pikachu"
-                      required={true}
-                      onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
-                  </Grid>
-                  <Grid item={true} xs={12}>
-                    <CustomTextField
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Category />
-                          </InputAdornment>
-                        )
-                      }}
-                      fullWidth={true}
-                      label="Type"
-                      placeholder="Electric"
-                      required={true}
-                      onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
-                  </Grid>
-                  <Grid item={true} xs={12}>
-                    <CustomTextField
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <MapPin />
-                          </InputAdornment>
-                        )
-                      }}
-                      fullWidth={true}
-                      label="Location"
-                      placeholder="Madiun"
-                      required={true}
-                      onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
-                  </Grid>
-                  <Grid item={true} xs={12}>
-                    <CustomTextField
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Accessible />
-                          </InputAdornment>
-                        )
-                      }}
-                      fullWidth={true}
-                      label="Abilities"
-                      placeholder="Abilities"
-                      required={true}
-                      onChange={(e) => setPokemon({
-                        ...pokemon,
-                        abilities: e.target.value.split(',')
-                      })} />
-                  </Grid>
-                  <Grid item={true} xs={12}>
-                    <CustomTextField
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <ChevronsUP />
-                          </InputAdornment>
-                        )
-                      }}
-                      fullWidth={true}
-                      label="Evolution"
-                      placeholder="Evolution"
-                      required={true}
-                      onChange={(e) => setPokemon({
-                        ...pokemon,
-                        evolutions: e.target.value.split(',')
-                      })} />
-                  </Grid>
-                  <Box
-                    sx={{
-                      mt: 4,
-                      mx: 'auto',
-                      width: '100%',
-                      maxWidth: 360,
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexDirection: 'column'
-                    }}
-                  >
+            <Typography sx={{ mb: 2 }} variant="h3">
+              Add New Pokemon
+            </Typography>
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              px: (theme) => [
+                `${theme.spacing(5)} !important`,
+                `${theme.spacing(15)} !important`
+              ],
+              pb: (theme) => [
+                `${theme.spacing(8)} !important`,
+                `${theme.spacing(12.5)} !important`
+              ]
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                textAlign: 'center',
+                alignItems: 'center',
+                flexDirection: 'column'
+              }}
+            >
+              <Box>
+                <form onSubmit={handleNewPokemon}>
+                  <Grid container={true} spacing={5}>
+                    <Grid item={true} xs={12}>
+                      <CustomTextField
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Pokeball />
+                            </InputAdornment>
+                          )
+                        }}
+                        fullWidth={true}
+                        label="Pokemon Name"
+                        placeholder="Pikachu"
+                        required={true}
+                        onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                      <CustomTextField
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Category />
+                            </InputAdornment>
+                          )
+                        }}
+                        fullWidth={true}
+                        label="Type"
+                        placeholder="Electric"
+                        required={true}
+                        onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                      <CustomTextField
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <MapPin />
+                            </InputAdornment>
+                          )
+                        }}
+                        fullWidth={true}
+                        label="Location"
+                        placeholder="Madiun"
+                        required={true}
+                        onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                      <CustomTextField
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Accessible />
+                            </InputAdornment>
+                          )
+                        }}
+                        fullWidth={true}
+                        label="Abilities"
+                        placeholder="Abilities"
+                        required={true}
+                        onChange={(e) => setPokemon({
+                          ...pokemon,
+                          abilities: e.target.value.split(',')
+                        })} />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                      <CustomTextField
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <ChevronsUP />
+                            </InputAdornment>
+                          )
+                        }}
+                        fullWidth={true}
+                        label="Evolution"
+                        placeholder="Evolution"
+                        required={true}
+                        onChange={(e) => setPokemon({
+                          ...pokemon,
+                          evolutions: e.target.value.split(',')
+                        })} />
+                    </Grid>
                     <Box
-                      className="demo-space-x"
-                      sx={{ '& > :last-child': { mr: '0 !important' } }}
+                      sx={{
+                        mt: 4,
+                        mx: 'auto',
+                        width: '100%',
+                        maxWidth: 360,
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column'
+                      }}
                     >
-                      <Button type="submit" variant="contained">
-                        Add Pokemon
+                      <Box
+                        className="demo-space-x"
+                        sx={{ '& > :last-child': { mr: '0 !important' } }}
+                      >
+                        <Button type="submit" variant="contained">
+                          Add Pokemon
+                        </Button>
+                        <Button color="secondary" type="reset" variant="tonal">
+                          Discard Pokemon
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Grid>
+                </form>
+              </Box>
+            </Box>
+          </DialogContent>
+        </Card>
+      </Collapse>
+      <Slide direction="up" in={true} mountOnEnter={true} unmountOnExit={true}>
+        <Card>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Pokemon Name</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Location</TableCell>
+                <TableCell>Abilities</TableCell>
+                <TableCell>Evolution</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {pokeAPIState?.pokemons?.map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': {
+                      border: 0
+                    }
+                  }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.pokemon}
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        borderRadius: 8,
+                        display: 'flex',
+                        gap: 2,
+                        height: 'auto'
+                      }}
+                    >
+                      <Stack gap={2}>
+                        {(row.type.split('/') as string[]).map((type) => (
+                          <Box
+                            key={type}
+                            px={4}
+                            py={1.5}
+                            sx={{
+                              backgroundColor: getColorForType(type),
+                              borderRadius: 8,
+                              display: 'flex',
+                              gap: 8
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                color: 'white',
+                                fontSize: 10,
+                                letterSpacing: 1.5
+                              }}
+                            >
+                              {type.trim()}
+                            </Typography>
+                          </Box>
+                        ))}
+                      </Stack>
+                    </Box>
+                  </TableCell>
+                  <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
+                    {row.location}
+                  </TableCell>
+                  <TableCell>
+                    <ul>
+                      {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
+                    </ul>
+                  </TableCell>
+                  <TableCell>
+                    <ul>
+                      {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
+                    </ul>
+                  </TableCell>
+                  <TableCell sx={{ textAlign: 'center' }}>
+                    <Box sx={{ display: 'flex', gap: 5 }}>
+                      <Button color="warning" variant="contained">
+                        <Edit
+                          size={20}
+                          onClick={() => handleEditPokemon(row.id)} />
                       </Button>
-                      <Button color="secondary" type="reset" variant="tonal">
-                        Discard Pokemon
+                      <Button color="error" variant="contained">
+                        <Trash
+                          size={20}
+                          onClick={() => handleDeletePokemon(row.id)} />
                       </Button>
                     </Box>
-                  </Box>
-                </Grid>
-              </form>
-            </Box>
-          </Box>
-        </DialogContent>
-      </Card>
-      <Card>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Pokemon Name</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Abilities</TableCell>
-              <TableCell>Evolution</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {pokeAPIState?.pokemons?.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{
-                  '&:last-child td, &:last-child th': {
-                    border: 0
-                  }
-                }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.pokemon}
-                </TableCell>
-                <TableCell>
-                  <Box
-                    sx={{
-                      borderRadius: 8,
-                      display: 'flex',
-                      gap: 2,
-                      height: 'auto'
-                    }}
-                  >
-                    <Stack gap={2}>
-                      {(row.type.split('/') as string[]).map((type) => (
-                        <Box
-                          key={type}
-                          px={4}
-                          py={1.5}
-                          sx={{
-                            backgroundColor: getColorForType(type),
-                            borderRadius: 8,
-                            display: 'flex',
-                            gap: 8
-                          }}
-                        >
-                          <Typography
+                  </TableCell>
+                </TableRow>
+              ))}
+              {pokeLISTState?.pokemons?.map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{
+                    '&:last-child td, &:last-child th': {
+                      border: 0
+                    }
+                  }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.pokemon}
+                  </TableCell>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        borderRadius: 8,
+                        display: 'flex',
+                        gap: 2,
+                        height: 'auto'
+                      }}
+                    >
+                      <Stack gap={2}>
+                        {(row.type.split('/') as string[]).map((type) => (
+                          <Box
+                            key={type}
+                            px={4}
+                            py={1.5}
                             sx={{
-                              color: 'white',
-                              fontSize: 10,
-                              letterSpacing: 1.5
+                              backgroundColor: getColorForType(type),
+                              borderRadius: 8,
+                              display: 'flex',
+                              gap: 8
                             }}
                           >
-                            {type.trim()}
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Stack>
-                  </Box>
-                </TableCell>
-                <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
-                  {row.location}
-                </TableCell>
-                <TableCell>
-                  <ul>
-                    {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
-                  </ul>
-                </TableCell>
-                <TableCell>
-                  <ul>
-                    {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
-                  </ul>
-                </TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>
-                  <Box sx={{ display: 'flex', gap: 5 }}>
-                    <Button color="warning" variant="contained">
-                      <Edit
-                        size={20}
-                        onClick={() => handleEditPokemon(row.id)} />
-                    </Button>
-                    <Button color="error" variant="contained">
-                      <Trash
-                        size={20}
-                        onClick={() => handleDeletePokemon(row.id)} />
-                    </Button>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ))}
-            {pokeLISTState?.pokemons?.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{
-                  '&:last-child td, &:last-child th': {
-                    border: 0
-                  }
-                }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.pokemon}
-                </TableCell>
-                <TableCell>
-                  <Box
-                    sx={{
-                      borderRadius: 8,
-                      display: 'flex',
-                      gap: 2,
-                      height: 'auto'
-                    }}
-                  >
-                    <Stack gap={2}>
-                      {(row.type.split('/') as string[]).map((type) => (
-                        <Box
-                          key={type}
-                          px={4}
-                          py={1.5}
-                          sx={{
-                            backgroundColor: getColorForType(type),
-                            borderRadius: 8,
-                            display: 'flex',
-                            gap: 8
-                          }}
-                        >
-                          <Typography
-                            sx={{
-                              color: 'white',
-                              fontSize: 10,
-                              letterSpacing: 1.5
-                            }}
-                          >
-                            {type.trim()}
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Stack>
-                  </Box>
-                </TableCell>
-                <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
-                  {row.location}
-                </TableCell>
-                <TableCell>
-                  <ul>
-                    {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
-                  </ul>
-                </TableCell>
-                <TableCell>
-                  <ul>
-                    {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
-                  </ul>
-                </TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>
-                  <Box sx={{ display: 'flex', gap: 5 }}>
-                    <Button color="warning" variant="contained">
-                      <Edit
-                        size={20}
-                        onClick={() => handleEditPokemon(row.id)} />
-                    </Button>
-                    <Button color="error" variant="contained">
-                      <Trash
-                        size={20}
-                        onClick={() => handleDeletePokemon(row.id)} />
-                    </Button>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
+                            <Typography
+                              sx={{
+                                color: 'white',
+                                fontSize: 10,
+                                letterSpacing: 1.5
+                              }}
+                            >
+                              {type.trim()}
+                            </Typography>
+                          </Box>
+                        ))}
+                      </Stack>
+                    </Box>
+                  </TableCell>
+                  <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
+                    {row.location}
+                  </TableCell>
+                  <TableCell>
+                    <ul>
+                      {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
+                    </ul>
+                  </TableCell>
+                  <TableCell>
+                    <ul>
+                      {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
+                    </ul>
+                  </TableCell>
+                  <TableCell sx={{ textAlign: 'center' }}>
+                    <Box sx={{ display: 'flex', gap: 5 }}>
+                      <Button color="warning" variant="contained">
+                        <Edit
+                          size={20}
+                          onClick={() => handleEditPokemon(row.id)} />
+                      </Button>
+                      <Button color="error" variant="contained">
+                        <Trash
+                          size={20}
+                          onClick={() => handleDeletePokemon(row.id)} />
+                      </Button>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Card>
+      </Slide>
     </>
   );
 };

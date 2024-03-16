@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Card, Grid } from '@mui/material';
 
+import getColorForType from '@components/custom/type-color/type-color';
 import { useCommand, useStore } from '@models/store.js';
 
 import DisplayCards from './DisplayCards';
@@ -47,15 +48,6 @@ const Home = () => {
     };
   }, []);
 
-  const getColorForType = (type: string) => {
-    const hash = type
-      .split('')
-      .reduce((acc, char) => char.charCodeAt(0) + acc, 0);
-    const hue = hash % 400;
-
-    return `hsl(${hue}, 70%, 30%)`;
-  };
-
   return (
     <>
       <Grid
@@ -82,8 +74,8 @@ const Home = () => {
         <DisplayCards
           filteredPokemons={filteredPokemons}
           getColorForType={getColorForType}
-          obtainedPokemons={obtainedPokemons}
-          handleObtainPokemon={handleObtainPokemon} />
+          handleObtainPokemon={handleObtainPokemon}
+          obtainedPokemons={obtainedPokemons} />
       </Grid>
     </>
   );
