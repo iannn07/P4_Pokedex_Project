@@ -17,8 +17,8 @@ interface Pokemon {
 interface DisplayCardsProps {
   readonly filteredPokemons: Pokemon[]
   readonly getColorForType: (type: string) => string
+  readonly handleObtainPokemon: (pokemonId: number) => void
   readonly obtainedPokemons: number[]
-  readonly handleObtainPokemon: (pokemonId: number) => void;
 }
 
 const DisplayCards: React.FC<DisplayCardsProps> = ({ filteredPokemons, getColorForType, obtainedPokemons, handleObtainPokemon }) => {
@@ -26,8 +26,8 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({ filteredPokemons, getColorF
 
   return (
     <>
-      {filteredPokemons.map((pokemon, index) => (
-        <Grid item={true} key={index} md={3} sm={6} xs={12}>
+      {filteredPokemons.map((pokemon) => (
+        <Grid item={true} key={pokemon.id} md={3} sm={6} xs={12}>
           <Link
             style={{ textDecoration: 'none' }}
             to={`../pokemondetails/${pokemon.id}`}

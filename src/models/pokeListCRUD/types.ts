@@ -12,15 +12,13 @@ interface PokeList {
 
 // Page Model
 interface PokeListModel {
-  id: number
   pokemons?: PokeList[]
 }
 
 enum PokeListActionType {
   ADD_POKEMON = 'ADD_POKEMON',
   EDIT_POKEMON = 'EDIT_POKEMON',
-  DELETE_POKEMON = 'DELETE_POKEMON',
-  SHOW_POKEMON = 'SHOW_POKEMON'
+  DELETE_POKEMON = 'DELETE_POKEMON'
 }
 
 type PokeListAction = {
@@ -31,7 +29,7 @@ type PokeListAction = {
   payload?: number
 } | {
   type: PokeListActionType.EDIT_POKEMON
-  payload?: PokeListModel
+  payload?: PokeList
 };
 
 export { PokeListActionType };

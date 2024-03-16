@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import type { Command } from '@nxweb/core';
 
 // Import { getPokemon } from '@api/clients/pokemons.js';
@@ -35,6 +36,12 @@ const pokemonsCommand = {
       } catch (err) {
         console.error(err);
       }
+    };
+  },
+  delete: (id: number): PokemonsAction => {
+    return {
+      type: PokemonsActionType.Delete,
+      value: id
     };
   }
 } satisfies Command<RootModel, PokemonsAction>;

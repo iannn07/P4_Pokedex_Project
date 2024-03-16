@@ -16,11 +16,15 @@ interface PokemonsModel {
 
 enum PokemonsActionType {
   Load = 'pokemons-load',
-  Clear = 'pokemons-clear'
+  Clear = 'pokemons-clear',
+  Delete = 'pokemons-delete'
 }
 
 type PokemonsAction = {
   type: PokemonsActionType.Clear
+} | {
+  type: PokemonsActionType.Delete
+  value?: number
 } | {
   type: PokemonsActionType.Load
   value?: PokemonsModel
