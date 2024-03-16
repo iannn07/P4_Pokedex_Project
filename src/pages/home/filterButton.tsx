@@ -13,10 +13,10 @@ const types: string[] = ['Dragon', 'Electric', 'Fighting', 'Fire', 'Flying', 'Gh
 
 const FilterButton: React.FC<FilterButtonProps> = ({ activeFilter, handleFilter }) => {
   return (
-    <FormControl>
+    <FormControl sx={{ width: '100%' }}>
       <Select
         displayEmpty={true}
-        sx={{ minWidth: '180px' }}
+        sx={{ width: '100%' }}
         value={activeFilter}
         onChange={(e) => handleFilter(e.target.value as string)}
       >
