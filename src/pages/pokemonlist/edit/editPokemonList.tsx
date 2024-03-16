@@ -42,7 +42,8 @@ import { useCommand, useStore } from '@models/store.js';
 import { handleDeletePokemon, handleEditPokemon } from './editHandler';
 
 const EditPokemonList: PageComponent = () => {
-  const [state, dispatch] = useStore((store) => store.pokemons);
+  const [pokeAPIState, pokeAPIDispatch] = useStore((store) => store.pokemons);
+  const [pokeLISTState, pokeLISTDispatch] = useStore((store) => store.pokeList);
   const command = useCommand((cmd) => cmd);
 
   const [pokemon, setPokemon] = useState({
@@ -72,7 +73,7 @@ const EditPokemonList: PageComponent = () => {
       type: ''
     });
 
-    dispatch(command.pokeList.addPokemon(data));
+    pokeLISTDispatch(command.pokeList.addPokemon(data));
   };
 
   const getColorForType = (type: string) => {
@@ -86,12 +87,12 @@ const EditPokemonList: PageComponent = () => {
   };
 
   useEffect(() => {
-    dispatch(command.pokemons.load()).catch((err: unknown) => {
+    pokeAPIDispatch(command.pokemons.load()).catch((err: unknown) => {
       console.error(err);
     });
 
     return () => {
-      dispatch(command.pokemons.clear());
+      pokeAPIDispatch(command.pokemons.clear());
     };
   }, []);
 
@@ -300,7 +301,84 @@ const EditPokemonList: PageComponent = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {state?.pokemons?.map((row) => (
+            {pokeAPIState?.pokemons?.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{
+                  '&:last-child td, &:last-child th': {
+                    border: 0
+                  }
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.pokemon}
+                </TableCell>
+                <TableCell>
+                  <Box
+                    sx={{
+                      borderRadius: 8,
+                      display: 'flex',
+                      gap: 2,
+                      height: 'auto'
+                    }}
+                  >
+                    <Stack gap={2}>
+                      {(row.type.split('/') as string[]).map((type) => (
+                        <Box
+                          key={type}
+                          px={4}
+                          py={1.5}
+                          sx={{
+                            backgroundColor: getColorForType(type),
+                            borderRadius: 8,
+                            display: 'flex',
+                            gap: 8
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              color: 'white',
+                              fontSize: 10,
+                              letterSpacing: 1.5
+                            }}
+                          >
+                            {type.trim()}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Stack>
+                  </Box>
+                </TableCell>
+                <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
+                  {row.location}
+                </TableCell>
+                <TableCell>
+                  <ul>
+                    {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
+                  </ul>
+                </TableCell>
+                <TableCell>
+                  <ul>
+                    {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
+                  </ul>
+                </TableCell>
+                <TableCell sx={{ textAlign: 'center' }}>
+                  <Box sx={{ display: 'flex', gap: 5 }}>
+                    <Button color="warning" variant="contained">
+                      <Edit
+                        size={20}
+                        onClick={() => handleEditPokemon(row.id)} />
+                    </Button>
+                    <Button color="error" variant="contained">
+                      <Trash
+                        size={20}
+                        onClick={() => handleDeletePokemon(row.id)} />
+                    </Button>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+            {pokeLISTState?.pokemons?.map((row) => (
               <TableRow
                 key={row.id}
                 sx={{
