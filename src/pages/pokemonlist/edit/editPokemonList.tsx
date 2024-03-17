@@ -1,122 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
-import type { FormEventHandler } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
   Box,
-  Button,
-  Card,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  InputAdornment
+  Button
 } from '@mui/material';
 
 import {
-  Accessible,
   ArrowBackUP,
-  Category,
-  ChevronsUP,
-  MapPin,
-  Plus,
-  Pokeball
+  Plus
 } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
-import CustomTextField from '@components/custom/text-field/text-field';
 import { Typography } from '@components/material.js';
-import type { PokeList, PokeListModel } from '@models/pokeListCRUD/types';
-import { useCommand, useStore } from '@models/store.js';
+import { useStore } from '@models/store.js';
 
 import PokeListTable from './PokeListTable/pokeListTable';
-
-interface PokemonProps {
-  abilities: string[]
-  evolutions: string[]
-  hitpoints: number
-  id: number
-  image_url?: string
-  location: string
-  pokemon: string
-  type: string
-}
+import AddPokeList from './form/addPokeList';
 
 const EditPokemonList: PageComponent = () => {
   const [pokeLISTState, pokeLISTDispatch] = useStore((store) => store.pokeList);
   const [showCard, setShowCard] = useState<boolean>(false);
   const [showEditCard, setShowEditCard] = useState<boolean>(false);
-  const command = useCommand((cmd) => cmd);
-
-  const pokeListID = 60;
-
-  const [pokemon, setPokemon] = useState<PokemonProps>({
-    abilities: [] as string[],
-    evolutions: [] as string[],
-    hitpoints: 0,
-    id: 0,
-    location: '',
-    pokemon: '',
-    type: ''
-  });
-
-  const handleNewPokemon: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    setPokemon({
-      abilities: [] as string[],
-      evolutions: [] as string[],
-      hitpoints: Math.round(Math.random() * 1000),
-      id: pokeListID + 1,
-      location: '',
-      pokemon: '',
-      type: ''
-    });
-    const data: PokeListModel = {
-      pokemons: [pokemon]
-    };
-
-    console.log(data);
-
-    pokeLISTDispatch(command.pokeList.addPokemon(data));
-  };
-
-  const handleEditPokemon: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    setPokemon({
-      abilities: [] as string[],
-      evolutions: [] as string[],
-      hitpoints: Math.round(Math.random() * 1000),
-      id: pokemon.id,
-      location: '',
-      pokemon: '',
-      type: ''
-    });
-
-    const data: PokeList = {
-      abilities: pokemon.abilities,
-      evolutions: pokemon.evolutions,
-      hitpoints: pokemon.hitpoints,
-      id: pokemon.id,
-      location: pokemon.location,
-      pokemon: pokemon.pokemon,
-      type: pokemon.type
-    };
-
-    console.log(data);
-
-    pokeLISTDispatch(command.pokeList.editPokemon(data));
-  };
 
   const handleToggleCard = () => {
     setShowCard(!showCard);
-  };
-
-  const handleEditToggleCard = () => {
-    setShowEditCard(!showEditCard);
   };
 
   const navigate = useNavigate();
@@ -164,301 +74,11 @@ const EditPokemonList: PageComponent = () => {
         </Box>
       </Box>
 
-      {/* CRUD */}
-      <Dialog open={showCard} onClose={handleToggleCard}>
-        <Card sx={{ mb: 5 }}>
-          <DialogTitle
-            component="div"
-            sx={{
-              textAlign: 'center',
-              px: (theme) => [
-                `${theme.spacing(5)} !important`,
-                `${theme.spacing(15)} !important`
-              ],
-              pt: (theme) => [
-                `${theme.spacing(8)} !important`,
-                `${theme.spacing(12.5)} !important`
-              ]
-            }}
-          >
-            <Typography sx={{ mb: 2 }} variant="h3">
-              Add New Pokemon
-            </Typography>
-          </DialogTitle>
-          <DialogContent
-            sx={{
-              px: (theme) => [
-                `${theme.spacing(5)} !important`,
-                `${theme.spacing(15)} !important`
-              ],
-              pb: (theme) => [
-                `${theme.spacing(8)} !important`,
-                `${theme.spacing(12.5)} !important`
-              ]
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                textAlign: 'center',
-                alignItems: 'center',
-                flexDirection: 'column'
-              }}
-            >
-              <Box>
-                <form onSubmit={handleNewPokemon}>
-                  <Grid container={true} spacing={5}>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Pokeball />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Pokemon Name"
-                        placeholder="Pikachu"
-                        onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Category />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Type"
-                        placeholder="Electric"
-                        onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <MapPin />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Location"
-                        placeholder="Madiun"
-                        onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Accessible />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Abilities"
-                        placeholder="Abilities"
-                        onChange={(e) => setPokemon({
-                          ...pokemon,
-                          abilities: e.target.value.split(',')
-                        })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <ChevronsUP />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Evolution"
-                        placeholder="Evolution"
-                        onChange={(e) => setPokemon({
-                          ...pokemon,
-                          evolutions: e.target.value.split(',')
-                        })} />
-                    </Grid>
-                    <Box
-                      sx={{
-                        mt: 4,
-                        mx: 'auto',
-                        width: '100%',
-                        maxWidth: 360,
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column'
-                      }}
-                    >
-                      <Box>
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          onClick={handleToggleCard}
-                        >
-                          Add Pokemon
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Grid>
-                </form>
-              </Box>
-            </Box>
-          </DialogContent>
-        </Card>
-      </Dialog>
-      <Dialog open={showEditCard} onClose={handleEditToggleCard}>
-        <Card sx={{ mb: 5 }}>
-          <DialogTitle
-            component="div"
-            sx={{
-              textAlign: 'center',
-              px: (theme) => [
-                `${theme.spacing(5)} !important`,
-                `${theme.spacing(15)} !important`
-              ],
-              pt: (theme) => [
-                `${theme.spacing(8)} !important`,
-                `${theme.spacing(12.5)} !important`
-              ]
-            }}
-          >
-            <Typography sx={{ mb: 2 }} variant="h3">
-              Edit Pokemon
-            </Typography>
-          </DialogTitle>
-          <DialogContent
-            sx={{
-              px: (theme) => [
-                `${theme.spacing(5)} !important`,
-                `${theme.spacing(15)} !important`
-              ],
-              pb: (theme) => [
-                `${theme.spacing(8)} !important`,
-                `${theme.spacing(12.5)} !important`
-              ]
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                textAlign: 'center',
-                alignItems: 'center',
-                flexDirection: 'column'
-              }}
-            >
-              <Box>
-                <form onSubmit={handleEditPokemon}>
-                  <Grid container={true} spacing={5}>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Pokeball />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Pokemon Name"
-                        placeholder="Pikachu"
-                        onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Category />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Type"
-                        placeholder="Electric"
-                        onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <MapPin />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Location"
-                        placeholder="Madiun"
-                        onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Accessible />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Abilities"
-                        placeholder="Abilities"
-                        onChange={(e) => setPokemon({
-                          ...pokemon,
-                          abilities: e.target.value.split(',')
-                        })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <ChevronsUP />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Evolution"
-                        placeholder="Evolution"
-                        onChange={(e) => setPokemon({
-                          ...pokemon,
-                          evolutions: e.target.value.split(',')
-                        })} />
-                    </Grid>
-                    <Box
-                      sx={{
-                        mt: 4,
-                        mx: 'auto',
-                        width: '100%',
-                        maxWidth: 360,
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column'
-                      }}
-                    >
-                      <Box>
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          onClick={handleEditToggleCard}
-                        >
-                          Edit Pokemon
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Grid>
-                </form>
-              </Box>
-            </Box>
-          </DialogContent>
-        </Card>
-      </Dialog>
+      {/* Add Card */}
+      <AddPokeList
+        pokeLISTDispatch={pokeLISTDispatch}
+        setShowCard={setShowCard}
+        showCard={showCard} />
 
       {/* PokeListTable */}
       <PokeListTable

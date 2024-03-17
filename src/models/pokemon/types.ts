@@ -17,7 +17,8 @@ interface PokemonsModel {
 enum PokemonsActionType {
   Load = 'pokemons-load',
   Clear = 'pokemons-clear',
-  Delete = 'pokemons-delete'
+  Delete = 'pokemons-delete',
+  Edit = 'pokemons-edit'
 }
 
 type PokemonsAction = {
