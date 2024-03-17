@@ -77,7 +77,7 @@ const EditPokeList = ({
   return (
     <>
       {/* Edit Card */}
-      <Dialog open={showEditCard} onClose={handleEditToggleCard}>
+      <Dialog open={showEditCard}>
         <Card sx={{ mb: 5 }}>
           <DialogTitle
             component="div"
@@ -129,9 +129,14 @@ const EditPokeList = ({
                             </InputAdornment>
                           )
                         }}
+                        error={!pokemon.pokemon}
                         fullWidth={true}
+                        helperText={
+                          !pokemon.pokemon ? 'Pokemon Name is required' : ''
+                        }
                         label="Pokemon Name"
                         placeholder="Pikachu"
+                        required={true}
                         onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -143,9 +148,12 @@ const EditPokeList = ({
                             </InputAdornment>
                           )
                         }}
+                        error={!pokemon.type}
                         fullWidth={true}
+                        helperText={!pokemon.type ? 'Type is required' : ''}
                         label="Type"
                         placeholder="Electric"
+                        required={true}
                         onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -157,9 +165,12 @@ const EditPokeList = ({
                             </InputAdornment>
                           )
                         }}
+                        error={!pokemon.location}
                         fullWidth={true}
+                        helperText={!pokemon.location ? 'Location is required' : ''}
                         label="Location"
                         placeholder="Madiun"
+                        required={true}
                         onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>

@@ -68,8 +68,6 @@ const AddPokeList = ({
       pokemons: [pokemon]
     };
 
-    console.log(data);
-
     pokeLISTDispatch(command.pokeList.addPokemon(data));
   };
 
@@ -135,7 +133,10 @@ const AddPokeList = ({
                         fullWidth={true}
                         label="Pokemon Name"
                         placeholder="Pikachu"
-                        onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
+                        onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })}
+                        required={true}
+                        error={!pokemon.pokemon}
+                        helperText={!pokemon.pokemon ? 'Pokemon Name is required' : ''} />
                     </Grid>
                     <Grid item={true} xs={12}>
                       <CustomTextField
@@ -149,7 +150,10 @@ const AddPokeList = ({
                         fullWidth={true}
                         label="Type"
                         placeholder="Electric"
-                        onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
+                        onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })}
+                        required={true}
+                        error={!pokemon.type}
+                        helperText={!pokemon.type ? 'Type is required' : ''} />
                     </Grid>
                     <Grid item={true} xs={12}>
                       <CustomTextField
@@ -163,7 +167,10 @@ const AddPokeList = ({
                         fullWidth={true}
                         label="Location"
                         placeholder="Madiun"
-                        onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
+                        onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })}
+                        required={true}
+                        error={!pokemon.location}
+                        helperText={!pokemon.location ? 'Location is required' : ''} />
                     </Grid>
                     <Grid item={true} xs={12}>
                       <CustomTextField
