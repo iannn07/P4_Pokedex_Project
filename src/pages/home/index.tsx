@@ -3,24 +3,26 @@ import { useEffect, useState } from 'react';
 import { Card, Grid } from '@mui/material';
 
 import getColorForType from '@components/custom/type-color/type-color';
-import { useCommand, useStore } from '@models/store.js';
+import type { Pokemons } from '@models/pokemon/types';
+import { useCommand, useStore } from '@models/store';
+import { trainerCommand } from '@models/trainer/commands';
 
 import DisplayCards from './DisplayCards';
+import FilterButton from './FilterButton';
 import SearchBar from './SearchBar';
-import FilterButton from './filterButton';
 
 const Home = () => {
   const [term, setTerm] = useState('');
   const [filteredTerm, setFilteredTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('');
-  const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
+  const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
 
   const filteredPokemons =
     state?.pokemons?.filter(
-      (pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
-        pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())
+      (pokemons) => pokemons.pokemon.toLowerCase().includes(term.toLowerCase()) &&
+        pokemons.type.toLowerCase().includes(filteredTerm.toLowerCase())
     ) ?? [];
 
   const submitHandler = (searchTerm: string) => {
@@ -32,9 +34,18 @@ const Home = () => {
     setActiveFilter(type);
   };
 
-  const handleObtainPokemon = (pokemonId: number) => {
-    if (!obtainedPokemons.includes(pokemonId)) {
-      setObtainedPokemons([...obtainedPokemons, pokemonId]);
+  const isObtained = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
+
+  const handleObtainPokemon = (pokemon: Pokemons) => {
+    if (!isObtained(pokemon.id)) {
+      const data = {
+        activity: 'Add',
+        dateTime: new Date().toLocaleString(),
+        pokemon
+      };
+
+      dispatch(trainerCommand(data));
+      setObtainedPokemons([...obtainedPokemons, pokemon.id]);
     }
   };
 
@@ -42,11 +53,7 @@ const Home = () => {
     dispatch(command.pokemons.load()).catch((err) => {
       console.error(err);
     });
-
-    return () => {
-      dispatch(command.pokemons.clear());
-    };
-  }, []);
+  }, [command.pokemons, dispatch]);
 
   return (
     <>
