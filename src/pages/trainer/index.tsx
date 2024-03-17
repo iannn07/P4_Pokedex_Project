@@ -1,12 +1,13 @@
 /* eslint-disable react/display-name */
+import React from 'react';
+
 import { useStore } from '@models/store';
-import type { TrainerActivity } from '@models/trainer/types';
 
 import TrainerTable from './TrainerTable';
 
 const TrainerPage = () => {
   const [state] = useStore((store) => store);
-  const activities: TrainerActivity[] = state?.trainer?.activities || [];
+  const activities = state?.trainer?.activities || [];
 
   return (
     <>

@@ -1,4 +1,4 @@
-import type { TrainerAction, TrainerModel } from './types';
+import type { TrainerAction, TrainerActivity, TrainerModel } from './types';
 
 const initialTrainerState: TrainerModel = {
   activities: []
@@ -9,7 +9,7 @@ const trainerReducer = (state = initialTrainerState, action: TrainerAction): Tra
     case 'ADD_TRAINER_ACTIVITY':
       return {
         ...state,
-        activities: [...state.activities, action.payload]
+        activities: [...state.activities, action.payload as TrainerActivity]
       };
 
     default:

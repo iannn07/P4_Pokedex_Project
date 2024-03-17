@@ -1,10 +1,10 @@
 /* eslint-disable sort-keys */
 /* eslint-disable @stylistic/js/linebreak-style */
 /* eslint-disable react/display-name */
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Box, Button, CardContent, CardMedia, Typography } from '@mui/material';
+import { Box, Button, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 
 import { Card, Grid } from '@components/material';
 import type { Pokemons } from '@models/pokemon/types';
@@ -17,18 +17,38 @@ interface DisplayCardsProps {
 }
 
 const DisplayCards: React.FC<DisplayCardsProps> = ({
-  filteredPokemons, getColorForType,
-  obtainedPokemons, handleObtainPokemon
+  filteredPokemons,
+  getColorForType,
+  obtainedPokemons,
+  handleObtainPokemon
 }) => {
+  const [selectedPokemon, setSelectedPokemon] = useState<Pokemons | null>(null);
+
   const isObtained = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
+
+  const handleAddToInventoryClick = (pokemon: Pokemons) => {
+    setSelectedPokemon(pokemon);
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedPokemon(null);
+  };
+
+  const handleConfirmAddToInventory = () => {
+    if (selectedPokemon) {
+      handleObtainPokemon(selectedPokemon);
+      setSelectedPokemon(null);
+    }
+  };
 
   return (
     <>
       {filteredPokemons.map((pokemon) => (
         <Grid item={true} key={pokemon.id} md={3} sm={6} xs={12}>
-          <Link style={{ textDecoration: 'none' }} to={`../pokemondetails/${pokemon.id}`}>
             <Card sx={{ p: 4 }}>
-              <CardMedia image={pokemon.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+              <Link style={{ textDecoration: 'none' }} to={`../pokemondetails/${pokemon.id}`}>
+                <CardMedia image={pokemon.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+              </Link>
               <CardContent
                 sx={{
                   alignItems: 'center',
@@ -60,17 +80,28 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
                 </Box>
                 <Button
                   disabled={isObtained(pokemon.id)}
-                  sx={{ mt: 6, backgroundColor: isObtained(pokemon.id) ? '#ccc' : '' }}
+                  sx={{ mt: 6 }}
                   variant="contained"
-                  onClick={() => handleObtainPokemon(pokemon)}
+                  onClick={() => handleAddToInventoryClick(pokemon)}
                 >
                   {isObtained(pokemon.id) ? 'Obtained' : 'Add to Inventory'}
                 </Button>
               </CardContent>
             </Card>
-          </Link>
         </Grid>
       ))}
+      <Dialog open={!!selectedPokemon} onClose={handleCloseDialog}>
+        <DialogTitle>
+          Adding <Typography component="span" fontWeight="bold">{selectedPokemon?.pokemon}</Typography> to Inventory
+        </DialogTitle>
+        <DialogContent>
+          Are you sure you want to add <Typography component="span" fontWeight="bold">{selectedPokemon?.pokemon}</Typography> to your inventory?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleConfirmAddToInventory}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

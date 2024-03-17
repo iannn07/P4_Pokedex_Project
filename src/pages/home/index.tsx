@@ -15,14 +15,14 @@ const Home = () => {
   const [term, setTerm] = useState('');
   const [filteredTerm, setFilteredTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('');
-  const [state, dispatch] = useStore((store) => store.pokemons);
+  const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
   const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
 
   const filteredPokemons =
-    state?.pokemons?.filter(
-      (pokemons) => pokemons.pokemon.toLowerCase().includes(term.toLowerCase()) &&
-        pokemons.type.toLowerCase().includes(filteredTerm.toLowerCase())
+    state?.pokemons?.pokemons?.filter(
+      (pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
+        pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())
     ) ?? [];
 
   const submitHandler = (searchTerm: string) => {
@@ -50,10 +50,26 @@ const Home = () => {
   };
 
   useEffect(() => {
-    dispatch(command.pokemons.load()).catch((err) => {
-      console.error(err);
-    });
-  }, [command.pokemons, dispatch]);
+    const fetchPokemons = async () => {
+      try {
+        // Load Pokemon data
+        await dispatch(command.pokemons.load());
+
+        // Get obtained Pokémon IDs from trainer activities
+        const obtainedPokemonIds = state?.trainer?.activities
+          ?.filter((activity) => activity.activity === 'Add')
+          .map((activity) => activity.pokemon.id) ?? [];
+
+        // Set obtainedPokemons state
+        setObtainedPokemons(obtainedPokemonIds);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    // Fetch Pokémon data and update obtainedPokemons when trainer state changes
+    fetchPokemons();
+  }, [command.pokemons, dispatch, state.trainer, setObtainedPokemons]);
 
   return (
     <>
