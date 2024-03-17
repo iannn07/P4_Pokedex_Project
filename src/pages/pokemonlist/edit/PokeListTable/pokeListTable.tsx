@@ -15,10 +15,7 @@ import {
   TableRow
 } from '@mui/material';
 
-import {
-  Edit,
-  Trash
-} from '@nxweb/icons/tabler';
+import { Edit, Trash } from '@nxweb/icons/tabler';
 
 import getColorForType from '@components/custom/type-color/type-color';
 import { Typography } from '@components/material.js';
@@ -27,7 +24,10 @@ import type {
   PokeListAction,
   PokeListModel
 } from '@models/pokeListCRUD/types';
+import type { Pokemons } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store.js';
+
+import EditPokemonsAPI from '../form/editPokemonsAPI';
 
 import type PokemonProps from '../pokemonProps';
 
@@ -57,6 +57,22 @@ const PokeListTable = ({
 
   const handleEditToggleCard = () => {
     setShowEditCard(!showEditCard);
+  };
+
+  const handleEditIDAPI = (data: number) => {
+    handleEditToggleCard();
+
+    setPokemon((prevPokemon) => ({
+      ...prevPokemon,
+      id: data
+    }));
+
+    const updatedData: Pokemons = {
+      ...pokemon,
+      id: data
+    };
+
+    pokeAPIDispatch(command.pokemons.edit(updatedData));
   };
 
   const handleEditID = (data: number) => {
@@ -167,7 +183,7 @@ const PokeListTable = ({
                 <TableCell sx={{ textAlign: 'center' }}>
                   <Box sx={{ display: 'flex', gap: 5 }}>
                     <Button color="warning" variant="contained">
-                      <Edit size={20} onClick={handleEditToggleCard} />
+                      <Edit size={20} onClick={() => handleEditIDAPI(row.id)} />
                     </Button>
                     <Button color="error" variant="contained">
                       <Trash
@@ -249,6 +265,14 @@ const PokeListTable = ({
           </TableBody>
         </Table>
       </Card>
+
+      {/* Edit Card (API State) */}
+      <EditPokemonsAPI
+        pokeAPIDispatch={pokeAPIDispatch}
+        pokemon={pokemon}
+        setPokemon={setPokemon}
+        setShowEditCard={setShowEditCard}
+        showEditCard={showEditCard} />
     </>
   );
 };

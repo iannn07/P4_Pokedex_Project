@@ -19,6 +19,17 @@ const pokemonsReducer = (
         )
       };
     }
+    case PokemonsActionType.Edit: {
+      const editedPokemon = action.value;
+      if (editedPokemon) {
+        return {
+          ...state,
+          pokemons: state.pokemons?.map((pokemon) => (pokemon.id === editedPokemon.id ? editedPokemon : pokemon))
+        };
+      }
+
+      return state;
+    }
 
     default:
       return state;

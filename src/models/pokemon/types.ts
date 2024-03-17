@@ -3,7 +3,7 @@ interface Pokemons {
   evolutions: string[]
   hitpoints: number
   id: number
-  image_url: string
+  image_url?: string
   location: string
   pokemon: string
   type: string
@@ -26,6 +26,9 @@ type PokemonsAction = {
 } | {
   type: PokemonsActionType.Delete
   value?: number
+} | {
+  type: PokemonsActionType.Edit
+  value?: Pokemons
 } | {
   type: PokemonsActionType.Load
   value?: PokemonsModel
