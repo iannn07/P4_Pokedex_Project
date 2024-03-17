@@ -35,26 +35,26 @@ interface props {
    * Readonly pokeAPIState: PokemonsModel | undefined
    */
   readonly pokeAPIDispatch: React.Dispatch<PokemonsAction>
-  readonly setShowEditCard: React.Dispatch<React.SetStateAction<boolean>>
-  readonly showEditCard: boolean
+  readonly setShowEditAPICard: React.Dispatch<React.SetStateAction<boolean>>
+  readonly showEditAPICard: boolean
   readonly pokemon: PokemonProps
   readonly setPokemon: React.Dispatch<React.SetStateAction<PokemonProps>>
 }
 
 const EditPokemonsAPI = ({
   pokeAPIDispatch,
-  setShowEditCard,
-  showEditCard,
+  setShowEditAPICard,
+  showEditAPICard,
   pokemon,
   setPokemon
 }: props) => {
   const command = useCommand((cmd) => cmd);
 
   const handleEditToggleCard = () => {
-    setShowEditCard(!showEditCard);
+    setShowEditAPICard(!showEditAPICard);
   };
 
-  const handleEditPokemon: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleEditAPIPokemon: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     setPokemon({
@@ -77,7 +77,7 @@ const EditPokemonsAPI = ({
   return (
     <>
       {/* Edit Card */}
-      <Dialog open={showEditCard} onClose={handleEditToggleCard}>
+      <Dialog open={showEditAPICard} onClose={handleEditToggleCard}>
         <Card sx={{ mb: 5 }}>
           <DialogTitle
             component="div"
@@ -94,7 +94,7 @@ const EditPokemonsAPI = ({
             }}
           >
             <Typography sx={{ mb: 2 }} variant="h3">
-              Edit Pokemon
+              Edit Pokemon API
             </Typography>
           </DialogTitle>
           <DialogContent
@@ -118,7 +118,7 @@ const EditPokemonsAPI = ({
               }}
             >
               <Box>
-                <form onSubmit={handleEditPokemon}>
+                <form onSubmit={handleEditAPIPokemon}>
                   <Grid container={true} spacing={5}>
                     <Grid item={true} xs={12}>
                       <CustomTextField

@@ -94,7 +94,7 @@ const EditPokeList = ({
             }}
           >
             <Typography sx={{ mb: 2 }} variant="h3">
-              Edit Pokemon
+              Edit Pokemon List (State)
             </Typography>
           </DialogTitle>
           <DialogContent

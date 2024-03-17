@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -27,6 +27,7 @@ import type {
 import type { Pokemons } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store.js';
 
+import EditPokeList from '../form/editPokeList';
 import EditPokemonsAPI from '../form/editPokemonsAPI';
 
 import type PokemonProps from '../pokemonProps';
@@ -38,8 +39,6 @@ interface props {
    */
   readonly pokeLISTDispatch: React.Dispatch<PokeListAction>
   readonly pokeLISTState: PokeListModel | undefined
-  readonly setShowEditCard: React.Dispatch<React.SetStateAction<boolean>>
-  readonly showEditCard: boolean
   readonly pokemon: PokemonProps
   readonly setPokemon: React.Dispatch<React.SetStateAction<PokemonProps>>
 }
@@ -47,20 +46,24 @@ interface props {
 const PokeListTable = ({
   pokeLISTDispatch,
   pokeLISTState,
-  setShowEditCard,
-  showEditCard,
   pokemon,
   setPokemon
 }: props) => {
   const [pokeAPIState, pokeAPIDispatch] = useStore((store) => store.pokemons);
+  const [showEditAPICard, setShowEditAPICard] = useState<boolean>(false);
+  const [showEditCard, setShowEditCard] = useState<boolean>(false);
   const command = useCommand((cmd) => cmd);
+
+  const handleEditAPIToggleCard = () => {
+    setShowEditAPICard(!showEditAPICard);
+  };
 
   const handleEditToggleCard = () => {
     setShowEditCard(!showEditCard);
   };
 
   const handleEditIDAPI = (data: number) => {
-    handleEditToggleCard();
+    handleEditAPIToggleCard();
 
     setPokemon((prevPokemon) => ({
       ...prevPokemon,
@@ -269,6 +272,14 @@ const PokeListTable = ({
       {/* Edit Card (API State) */}
       <EditPokemonsAPI
         pokeAPIDispatch={pokeAPIDispatch}
+        pokemon={pokemon}
+        setPokemon={setPokemon}
+        setShowEditAPICard={setShowEditAPICard}
+        showEditAPICard={showEditAPICard} />
+
+      {/* Edit Card (New State) */}
+      <EditPokeList
+        pokeLISTDispatch={pokeLISTDispatch}
         pokemon={pokemon}
         setPokemon={setPokemon}
         setShowEditCard={setShowEditCard}
