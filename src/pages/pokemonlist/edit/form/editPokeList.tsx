@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
 import type { FormEventHandler } from 'react';
-import { useState } from 'react';
 
 import {
   Box,
@@ -24,63 +24,60 @@ import {
 
 import CustomTextField from '@components/custom/text-field/text-field';
 import { Typography } from '@components/material.js';
-import type { PokeListAction, PokeListModel } from '@models/pokeListCRUD/types';
+import type { PokeList, PokeListAction } from '@models/pokeListCRUD/types';
 import { useCommand } from '@models/store.js';
 
 import type PokemonProps from '../pokemonProps';
 
 interface props {
+  /*
+   * Readonly pokeAPIDispatch: React.Dispatch<PokemonsAction>
+   * readonly pokeAPIState: PokemonsModel | undefined
+   */
   readonly pokeLISTDispatch: React.Dispatch<PokeListAction>
-  readonly pokeLISTState: PokeListModel | undefined
-  readonly setShowCard: React.Dispatch<React.SetStateAction<boolean>>
-  readonly showCard: boolean
+  readonly setShowEditCard: React.Dispatch<React.SetStateAction<boolean>>
+  readonly showEditCard: boolean
+  readonly pokemon: PokemonProps
+  readonly setPokemon: React.Dispatch<React.SetStateAction<PokemonProps>>
 }
 
-const AddPokeList = ({
+const EditPokeList = ({
   pokeLISTDispatch,
-  pokeLISTState,
-  setShowCard,
-  showCard
+  setShowEditCard,
+  showEditCard,
+  pokemon,
+  setPokemon
 }: props) => {
   const command = useCommand((cmd) => cmd);
 
-  const [pokemon, setPokemon] = useState<PokemonProps>({
-    abilities: [] as string[],
-    evolutions: [] as string[],
-    hitpoints: 0,
-    id: 0,
-    location: '',
-    pokemon: '',
-    type: ''
-  });
-
-  const handleNewPokemon: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-
-    const pokeListID = pokeLISTState?.pokemons?.length;
-
-    setPokemon({
-      ...pokemon,
-      id: pokeListID ? pokeListID + 1 : 1
-    });
-
-    const data: PokeListModel = {
-      pokemons: [pokemon]
-    };
-
-    console.log(data);
-
-    pokeLISTDispatch(command.pokeList.addPokemon(data));
+  const handleEditToggleCard = () => {
+    setShowEditCard(!showEditCard);
   };
 
-  const handleToggleCard = () => {
-    setShowCard(!showCard);
+  const handleEditPokemon: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
+    setPokemon({
+      abilities: [] as string[],
+      evolutions: [] as string[],
+      hitpoints: 0,
+      id: 0,
+      location: '',
+      pokemon: '',
+      type: ''
+    });
+
+    const data: PokeList = {
+      ...pokemon
+    };
+
+    pokeLISTDispatch(command.pokeList.editPokemon(data));
   };
 
   return (
     <>
-      {/* ADD */}
-      <Dialog open={showCard} onClose={handleToggleCard}>
+      {/* Edit Card */}
+      <Dialog open={showEditCard} onClose={handleEditToggleCard}>
         <Card sx={{ mb: 5 }}>
           <DialogTitle
             component="div"
@@ -97,7 +94,7 @@ const AddPokeList = ({
             }}
           >
             <Typography sx={{ mb: 2 }} variant="h3">
-              Add New Pokemon
+              Edit Pokemon
             </Typography>
           </DialogTitle>
           <DialogContent
@@ -121,7 +118,7 @@ const AddPokeList = ({
               }}
             >
               <Box>
-                <form onSubmit={handleNewPokemon}>
+                <form onSubmit={handleEditPokemon}>
                   <Grid container={true} spacing={5}>
                     <Grid item={true} xs={12}>
                       <CustomTextField
@@ -214,9 +211,9 @@ const AddPokeList = ({
                         <Button
                           type="submit"
                           variant="contained"
-                          onClick={handleToggleCard}
+                          onClick={handleEditToggleCard}
                         >
-                          Add Pokemon
+                          Edit Pokemon
                         </Button>
                       </Box>
                     </Box>
@@ -231,6 +228,6 @@ const AddPokeList = ({
   );
 };
 
-AddPokeList.displayName = 'AddPokeList';
+EditPokeList.displayName = 'EditPokeList';
 
-export default AddPokeList;
+export default EditPokeList;

@@ -3,15 +3,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  Box,
-  Button
-} from '@mui/material';
+import { Box, Button } from '@mui/material';
 
-import {
-  ArrowBackUP,
-  Plus
-} from '@nxweb/icons/tabler';
+import { ArrowBackUP, Plus } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
 import { Typography } from '@components/material.js';
@@ -19,11 +13,23 @@ import { useStore } from '@models/store.js';
 
 import PokeListTable from './PokeListTable/pokeListTable';
 import AddPokeList from './form/addPokeList';
+import EditPokeList from './form/editPokeList';
+
+import type PokemonProps from './pokemonProps';
 
 const EditPokemonList: PageComponent = () => {
   const [pokeLISTState, pokeLISTDispatch] = useStore((store) => store.pokeList);
   const [showCard, setShowCard] = useState<boolean>(false);
   const [showEditCard, setShowEditCard] = useState<boolean>(false);
+  const [pokemon, setPokemon] = useState<PokemonProps>({
+    abilities: [] as string[],
+    evolutions: [] as string[],
+    hitpoints: 0,
+    id: 0,
+    location: '',
+    pokemon: '',
+    type: ''
+  });
 
   const handleToggleCard = () => {
     setShowCard(!showCard);
@@ -77,13 +83,24 @@ const EditPokemonList: PageComponent = () => {
       {/* Add Card */}
       <AddPokeList
         pokeLISTDispatch={pokeLISTDispatch}
+        pokeLISTState={pokeLISTState}
         setShowCard={setShowCard}
         showCard={showCard} />
+
+      {/* Edit Card */}
+      <EditPokeList
+        pokeLISTDispatch={pokeLISTDispatch}
+        pokemon={pokemon}
+        setPokemon={setPokemon}
+        setShowEditCard={setShowEditCard}
+        showEditCard={showEditCard} />
 
       {/* PokeListTable */}
       <PokeListTable
         pokeLISTDispatch={pokeLISTDispatch}
         pokeLISTState={pokeLISTState}
+        pokemon={pokemon}
+        setPokemon={setPokemon}
         setShowEditCard={setShowEditCard}
         showEditCard={showEditCard} />
     </>
