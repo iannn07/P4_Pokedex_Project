@@ -1,4 +1,5 @@
 /* eslint-disable @stylistic/js/linebreak-style */
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/display-name */
 import React from 'react';
 
@@ -63,9 +64,9 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
                 <TableCell>
                   <Typography
                     sx={{
+                      color: colors,
                       fontWeight: 'bold',
-                      mb: 3,
-                      color: colors
+                      mb: 3
                     }}
                   >
                     {activity.activity ? activity.activity.toUpperCase() : ''}

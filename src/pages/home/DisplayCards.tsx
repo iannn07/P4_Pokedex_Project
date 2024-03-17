@@ -12,17 +12,20 @@ import type { Pokemons } from '@models/pokemon/types';
 interface DisplayCardsProps {
   readonly filteredPokemons: Pokemons[]
   readonly getColorForType: (type: string) => string
-  readonly obtainedPokemons: number[]
   readonly handleObtainPokemon: (pokemon: Pokemons) => void
+  readonly obtainedPokemons: number[]
 }
 
-const DisplayCards: React.FC<DisplayCardsProps> = ({ filteredPokemons, getColorForType, obtainedPokemons, handleObtainPokemon }) => {
+const DisplayCards: React.FC<DisplayCardsProps> = ({
+  filteredPokemons, getColorForType,
+  obtainedPokemons, handleObtainPokemon
+}) => {
   const isObtained = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
 
   return (
     <>
       {filteredPokemons.map((pokemon) => (
-        <Grid item key={pokemon.id} md={3} sm={6} xs={12}>
+        <Grid item={true} key={pokemon.id} md={3} sm={6} xs={12}>
           <Link style={{ textDecoration: 'none' }} to={`../pokemondetails/${pokemon.id}`}>
             <Card sx={{ p: 4 }}>
               <CardMedia image={pokemon.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
