@@ -4,6 +4,7 @@
 import React from 'react';
 
 import {
+  Box,
   Card,
   Table,
   TableBody,
@@ -21,7 +22,18 @@ interface TrainerTableProps {
 
 const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
   if (!activities || activities.length === 0) {
-    return <div>No activities to display</div>;
+    return (
+        <Box
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            height: '50vh',
+            justifyContent: 'center'
+          }}
+        >
+          <Typography sx={{ textAlign: 'center' }}>No Activities</Typography>
+        </Box>
+    );
   }
 
   return (
@@ -36,27 +48,27 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {activities.map((activity, index) => {
+          {activities.map((trainer, index) => {
             // Determine color based on activity type
             let colors = '';
-            if (activity.activity) {
-              if (activity.activity.includes('Add')) {
+            if (trainer.activity) {
+              if (trainer.activity.includes('Add')) {
                 colors = 'green';
-              } else if (activity.activity.includes('Evolve')) {
+              } else if (trainer.activity.includes('Evolve')) {
                 colors = 'orange';
-              } else if (activity.activity.includes('Remove')) {
+              } else if (trainer.activity.includes('Remove')) {
                 colors = 'red';
               }
             }
 
             // Split dateTime string into separate date and time components
-            const [date, time] = activity.dateTime.split(', ');
+            const [date, time] = trainer.dateTime.split(', ');
 
             return (
               <TableRow key={index}>
                 <TableCell>
                   <Typography sx={{ fontWeight: 'bold', mb: 3 }}>
-                    {activity.pokemon.pokemon.toUpperCase()}
+                    {trainer.pokemon.pokemon.toUpperCase()}
                   </Typography>
                 </TableCell>
                 <TableCell>{date}</TableCell>
@@ -69,7 +81,7 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
                       mb: 3
                     }}
                   >
-                    {activity.activity ? activity.activity.toUpperCase() : ''}
+                    {trainer.activity.toUpperCase()}
                   </Typography>
                 </TableCell>
               </TableRow>
