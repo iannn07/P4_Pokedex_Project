@@ -7,8 +7,8 @@ import type { Pokemons } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store';
 import { trainerCommand } from '@models/trainer/commands';
 
+import ButtonFilter from './ButtonFilter';
 import DisplayCards from './DisplayCards';
-import FilterButton from './FilterButton';
 import SearchBar from './SearchBar';
 
 const Home = () => {
@@ -73,7 +73,7 @@ const Home = () => {
         </Grid>
         <Grid item={true} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end' }} xs={6}>
           <Card sx={{ width: '100%' }}>
-            <FilterButton activeFilter={activeFilter} handleFilter={handleFilter} />
+            <ButtonFilter activeFilter={activeFilter} handleFilter={handleFilter} />
           </Card>
         </Grid>
       </Grid>
