@@ -13,7 +13,6 @@ import {
   DialogTitle,
   Grid,
   InputAdornment
-
 } from '@mui/material';
 
 import {
@@ -21,20 +20,29 @@ import {
   ArrowBackUP,
   Category,
   ChevronsUP,
-
   MapPin,
   Plus,
   Pokeball
-
 } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
 import CustomTextField from '@components/custom/text-field/text-field';
 import { Typography } from '@components/material.js';
-import type { PokeListModel } from '@models/pokeListCRUD/types';
+import type { PokeList, PokeListModel } from '@models/pokeListCRUD/types';
 import { useCommand, useStore } from '@models/store.js';
 
 import PokeListTable from './PokeListTable/pokeListTable';
+
+interface PokemonProps {
+  abilities: string[]
+  evolutions: string[]
+  hitpoints: number
+  id: number
+  image_url?: string
+  location: string
+  pokemon: string
+  type: string
+}
 
 const EditPokemonList: PageComponent = () => {
   const [pokeLISTState, pokeLISTDispatch] = useStore((store) => store.pokeList);
@@ -42,7 +50,9 @@ const EditPokemonList: PageComponent = () => {
   const [showEditCard, setShowEditCard] = useState<boolean>(false);
   const command = useCommand((cmd) => cmd);
 
-  const [pokemon, setPokemon] = useState({
+  const pokeListID = 60;
+
+  const [pokemon, setPokemon] = useState<PokemonProps>({
     abilities: [] as string[],
     evolutions: [] as string[],
     hitpoints: 0,
@@ -55,52 +65,51 @@ const EditPokemonList: PageComponent = () => {
   const handleNewPokemon: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
+    setPokemon({
+      abilities: [] as string[],
+      evolutions: [] as string[],
+      hitpoints: Math.round(Math.random() * 1000),
+      id: pokeListID + 1,
+      location: '',
+      pokemon: '',
+      type: ''
+    });
     const data: PokeListModel = {
       pokemons: [pokemon]
     };
+
+    console.log(data);
+
+    pokeLISTDispatch(command.pokeList.addPokemon(data));
+  };
+
+  const handleEditPokemon: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
 
     setPokemon({
       abilities: [] as string[],
       evolutions: [] as string[],
       hitpoints: Math.round(Math.random() * 1000),
-      id: Math.round(Math.random() * 1000),
+      id: pokemon.id,
       location: '',
       pokemon: '',
       type: ''
     });
 
-    pokeLISTDispatch(command.pokeList.addPokemon(data));
+    const data: PokeList = {
+      abilities: pokemon.abilities,
+      evolutions: pokemon.evolutions,
+      hitpoints: pokemon.hitpoints,
+      id: pokemon.id,
+      location: pokemon.location,
+      pokemon: pokemon.pokemon,
+      type: pokemon.type
+    };
+
+    console.log(data);
+
+    pokeLISTDispatch(command.pokeList.editPokemon(data));
   };
-
-  /*
-   * UNDER MAINTENANCE
-   * const handleEditPokemon: FormEventHandler<HTMLFormElement> = (e) => {
-   *   e.preventDefault();
-   */
-
-  /*
-   *   const data: PokeListModel = {
-   *     id: Math.round(Math.random() * 1000),
-   *     pokemons: [pokemon]
-   *   };
-   */
-
-  /*
-   *   setPokemon({
-   *     abilities: [] as string[],
-   *     evolutions: [] as string[],
-   *     hitpoints: Math.round(Math.random() * 1000),
-   *     id: Math.round(Math.random() * 1000),
-   *     location: '',
-   *     pokemon: '',
-   *     type: ''
-   *   });
-   */
-
-  /*
-   *   // pokeLISTDispatch(command.pokeList.editPokemon(data));
-   * };
-   */
 
   const handleToggleCard = () => {
     setShowCard(!showCard);
@@ -211,7 +220,6 @@ const EditPokemonList: PageComponent = () => {
                         fullWidth={true}
                         label="Pokemon Name"
                         placeholder="Pikachu"
-                        required={true}
                         onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -226,7 +234,6 @@ const EditPokemonList: PageComponent = () => {
                         fullWidth={true}
                         label="Type"
                         placeholder="Electric"
-                        required={true}
                         onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -241,7 +248,6 @@ const EditPokemonList: PageComponent = () => {
                         fullWidth={true}
                         label="Location"
                         placeholder="Madiun"
-                        required={true}
                         onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -256,7 +262,6 @@ const EditPokemonList: PageComponent = () => {
                         fullWidth={true}
                         label="Abilities"
                         placeholder="Abilities"
-                        required={true}
                         onChange={(e) => setPokemon({
                           ...pokemon,
                           abilities: e.target.value.split(',')
@@ -274,7 +279,6 @@ const EditPokemonList: PageComponent = () => {
                         fullWidth={true}
                         label="Evolution"
                         placeholder="Evolution"
-                        required={true}
                         onChange={(e) => setPokemon({
                           ...pokemon,
                           evolutions: e.target.value.split(',')
@@ -291,10 +295,7 @@ const EditPokemonList: PageComponent = () => {
                         flexDirection: 'column'
                       }}
                     >
-                      <Box
-                        className="demo-space-x"
-                        sx={{ '& > :last-child': { mr: '0 !important' } }}
-                      >
+                      <Box>
                         <Button
                           type="submit"
                           variant="contained"
@@ -352,7 +353,7 @@ const EditPokemonList: PageComponent = () => {
               }}
             >
               <Box>
-                <form onSubmit={handleEditToggleCard}>
+                <form onSubmit={handleEditPokemon}>
                   <Grid container={true} spacing={5}>
                     <Grid item={true} xs={12}>
                       <CustomTextField
@@ -366,7 +367,6 @@ const EditPokemonList: PageComponent = () => {
                         fullWidth={true}
                         label="Pokemon Name"
                         placeholder="Pikachu"
-                        required={true}
                         onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -381,7 +381,6 @@ const EditPokemonList: PageComponent = () => {
                         fullWidth={true}
                         label="Type"
                         placeholder="Electric"
-                        required={true}
                         onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -396,7 +395,6 @@ const EditPokemonList: PageComponent = () => {
                         fullWidth={true}
                         label="Location"
                         placeholder="Madiun"
-                        required={true}
                         onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -411,7 +409,6 @@ const EditPokemonList: PageComponent = () => {
                         fullWidth={true}
                         label="Abilities"
                         placeholder="Abilities"
-                        required={true}
                         onChange={(e) => setPokemon({
                           ...pokemon,
                           abilities: e.target.value.split(',')
@@ -429,7 +426,6 @@ const EditPokemonList: PageComponent = () => {
                         fullWidth={true}
                         label="Evolution"
                         placeholder="Evolution"
-                        required={true}
                         onChange={(e) => setPokemon({
                           ...pokemon,
                           evolutions: e.target.value.split(',')
@@ -446,10 +442,7 @@ const EditPokemonList: PageComponent = () => {
                         flexDirection: 'column'
                       }}
                     >
-                      <Box
-                        className="demo-space-x"
-                        sx={{ '& > :last-child': { mr: '0 !important' } }}
-                      >
+                      <Box>
                         <Button
                           type="submit"
                           variant="contained"

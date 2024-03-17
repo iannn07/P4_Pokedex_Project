@@ -81,7 +81,7 @@ const UserDropdown: FC<Props> = ({ settings }) => {
     });
   };
 
-  const profilePicture = './Ash.png';
+  // Const profilePicture = './Ash.png';
 
   return (
     <>
@@ -97,7 +97,6 @@ const UserDropdown: FC<Props> = ({ settings }) => {
       >
         <Avatar
           alt="Ash"
-          src={profilePicture}
           sx={{ height: 38, width: 38 }}
           onClick={handleDropdownOpen} />
       </Badge>
@@ -127,7 +126,6 @@ const UserDropdown: FC<Props> = ({ settings }) => {
             >
               <Avatar
                 alt="Ash"
-                src={profilePicture}
                 sx={{ height: '2.5rem', width: '2.5rem' }} />
             </Badge>
             <Box

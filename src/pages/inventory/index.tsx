@@ -30,7 +30,7 @@ const Inventory: PageComponent = () => {
       <Box sx={{ overflowX: 'scroll' }}>
         <Grid container={true} spacing={6} sx={{ display: 'flex', flexWrap: 'nowrap' }}>
           {state?.pokemons?.map((data) => (
-            <Grid item={true} md={3}>
+            <Grid item={true} md={3} key={data.id}>
               <Box>
                 <Card sx={{ p: 10, width: '16rem' }}>
                   <CardMedia image={data.image_url} sx={{ height: '12rem', objectFit: 'contain', width: '100%' }} />

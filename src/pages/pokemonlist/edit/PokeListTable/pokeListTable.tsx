@@ -74,14 +74,7 @@ const PokeListTable = ({
         </TableHead>
         <TableBody>
           {pokeAPIState?.pokemons?.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{
-                '&:last-child td, &:last-child th': {
-                  border: 0
-                }
-              }}
-            >
+            <TableRow key={row.id}>
               <TableCell component="th" scope="row">
                 {row.pokemon}
               </TableCell>
@@ -149,14 +142,7 @@ const PokeListTable = ({
             </TableRow>
           ))}
           {pokeLISTState?.pokemons?.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{
-                '&:last-child td, &:last-child th': {
-                  border: 0
-                }
-              }}
-            >
+            <TableRow key={row.id}>
               <TableCell component="th" scope="row">
                 {row.pokemon}
               </TableCell>
