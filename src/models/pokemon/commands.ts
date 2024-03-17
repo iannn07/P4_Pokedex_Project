@@ -6,7 +6,7 @@ import type { RootModel } from '@models/types.js';
 
 import { PokemonsActionType } from './types.js';
 
-import type { PokemonsAction, PokemonsModel } from './types.js';
+import type { Pokemons, PokemonsAction, PokemonsModel } from './types.js';
 
 const pokemonsCommand = {
   clear: (): PokemonsAction => {
@@ -42,6 +42,12 @@ const pokemonsCommand = {
     return {
       type: PokemonsActionType.Delete,
       value: id
+    };
+  },
+  edit: (pokemon: Pokemons): PokemonsAction => {
+    return {
+      type: PokemonsActionType.Edit,
+      value: pokemon
     };
   }
 } satisfies Command<RootModel, PokemonsAction>;
