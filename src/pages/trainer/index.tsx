@@ -1,14 +1,19 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-/* eslint-disable sort-keys */
-/* eslint-disable logical-assignment-operators */
-/* eslint-disable react/jsx-key */
+/* eslint-disable react/display-name */
+import { useStore } from '@models/store';
+import type { TrainerActivity } from '@models/trainer/types';
 
-import type { PageComponent } from '@nxweb/react';
+import TrainerTable from './TrainerTable';
 
-const TrainerLog: PageComponent = () => {
-  return <h1>Trainer Log</h1>;
+const TrainerPage = () => {
+  const [state] = useStore((store) => store);
+  const activities: TrainerActivity[] = state?.trainer?.activities || [];
+
+  return (
+    <>
+      <h1>Trainer Log</h1>
+      <TrainerTable activities={activities} />
+    </>
+  );
 };
 
-TrainerLog.displayName = 'TrainerLog';
-
-export default TrainerLog;
+export default TrainerPage;
