@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 /* eslint-disable @stylistic/js/linebreak-style */
 /* eslint-disable react/display-name */
 import React from 'react';
@@ -5,33 +6,29 @@ import { Link } from 'react-router-dom';
 
 import { Box, Button, CardContent, CardMedia, Typography } from '@mui/material';
 
-import { Card, Grid } from '@components/material.js';
-
-interface Pokemon {
-  id: number
-  image_url: string
-  pokemon: string
-  type: string
-}
+import { Card, Grid } from '@components/material';
+import type { Pokemons } from '@models/pokemon/types';
 
 interface DisplayCardsProps {
-  readonly filteredPokemons: Pokemon[]
+  readonly filteredPokemons: Pokemons[]
   readonly getColorForType: (type: string) => string
+  readonly handleObtainPokemon: (pokemon: Pokemons) => void
+  readonly obtainedPokemons: number[]
 }
 
-const DisplayCards: React.FC<DisplayCardsProps> = ({ filteredPokemons, getColorForType }) => {
+const DisplayCards: React.FC<DisplayCardsProps> = ({
+  filteredPokemons, getColorForType,
+  obtainedPokemons, handleObtainPokemon
+}) => {
+  const isObtained = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
+
   return (
     <>
-      {filteredPokemons.map((pokemon, index) => (
-        <Grid item={true} key={index} md={3} sm={6} xs={12}>
-          <Link
-            style={{ textDecoration: 'none' }}
-            to={`../pokemondetails/${pokemon.id}`}
-          >
+      {filteredPokemons.map((pokemon) => (
+        <Grid item={true} key={pokemon.id} md={3} sm={6} xs={12}>
+          <Link style={{ textDecoration: 'none' }} to={`../pokemondetails/${pokemon.id}`}>
             <Card sx={{ p: 4 }}>
-              <CardMedia
-                image={pokemon.image_url}
-                sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+              <CardMedia image={pokemon.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
               <CardContent
                 sx={{
                   alignItems: 'center',
@@ -44,14 +41,7 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({ filteredPokemons, getColorF
                 <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
                   {pokemon.pokemon}
                 </Typography>
-                <Box
-                  sx={{
-                    borderRadius: 8,
-                    display: 'flex',
-                    gap: 2,
-                    height: 'auto'
-                  }}
-                >
+                <Box sx={{ display: 'flex', gap: 2, height: 'auto' }}>
                   {pokemon.type.split('/').map((type: string) => (
                     <Box
                       key={type}
@@ -64,20 +54,17 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({ filteredPokemons, getColorF
                         gap: 8
                       }}
                     >
-                      <Typography
-                        sx={{
-                          color: 'white',
-                          fontSize: 10,
-                          letterSpacing: 1.5
-                        }}
-                      >
-                        {type.trim()}
-                      </Typography>
+                      <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>{type.trim()}</Typography>
                     </Box>
                   ))}
                 </Box>
-                <Button sx={{ mt: 6 }} variant="contained">
-                  Add to Inventory
+                <Button
+                  disabled={isObtained(pokemon.id)}
+                  sx={{ mt: 6, backgroundColor: isObtained(pokemon.id) ? '#ccc' : '' }}
+                  variant="contained"
+                  onClick={() => handleObtainPokemon(pokemon)}
+                >
+                  {isObtained(pokemon.id) ? 'Obtained' : 'Add to Inventory'}
                 </Button>
               </CardContent>
             </Card>

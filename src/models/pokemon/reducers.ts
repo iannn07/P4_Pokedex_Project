@@ -11,6 +11,25 @@ const pokemonsReducer = (
       return { ...state, ...action.value };
     case PokemonsActionType.Clear:
       return {};
+    case PokemonsActionType.Delete: {
+      return {
+        ...state,
+        pokemons: state.pokemons?.filter(
+          (pokemon) => pokemon.id !== action.value
+        )
+      };
+    }
+    case PokemonsActionType.Edit: {
+      const editedPokemon = action.value;
+      if (editedPokemon) {
+        return {
+          ...state,
+          pokemons: state.pokemons?.map((pokemon) => (pokemon.id === editedPokemon.id ? editedPokemon : pokemon))
+        };
+      }
+
+      return state;
+    }
 
     default:
       return state;

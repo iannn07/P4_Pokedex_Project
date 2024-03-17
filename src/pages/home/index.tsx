@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Card, FormControl, Grid, MenuItem, Select } from '@mui/material';
+import { Card, Grid } from '@mui/material';
 
-import { useCommand, useStore } from '@models/store.js';
+import getColorForType from '@components/custom/type-color/type-color';
+import type { Pokemons } from '@models/pokemon/types';
+import { useCommand, useStore } from '@models/store';
+import { trainerCommand } from '@models/trainer/commands';
 
+import ButtonFilter from './ButtonFilter';
 import DisplayCards from './DisplayCards';
 import SearchBar from './SearchBar';
 
@@ -13,11 +17,12 @@ const Home = () => {
   const [activeFilter, setActiveFilter] = useState('');
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
+  const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
 
   const filteredPokemons =
     state?.pokemons?.filter(
-      (pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
-        pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())
+      (pokemons) => pokemons.pokemon.toLowerCase().includes(term.toLowerCase()) &&
+        pokemons.type.toLowerCase().includes(filteredTerm.toLowerCase())
     ) ?? [];
 
   const submitHandler = (searchTerm: string) => {
@@ -29,24 +34,26 @@ const Home = () => {
     setActiveFilter(type);
   };
 
+  const isObtained = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
+
+  const handleObtainPokemon = (pokemon: Pokemons) => {
+    if (!isObtained(pokemon.id)) {
+      const data = {
+        activity: 'Add',
+        dateTime: new Date().toLocaleString(),
+        pokemon
+      };
+
+      dispatch(trainerCommand(data));
+      setObtainedPokemons([...obtainedPokemons, pokemon.id]);
+    }
+  };
+
   useEffect(() => {
     dispatch(command.pokemons.load()).catch((err) => {
       console.error(err);
     });
-
-    return () => {
-      dispatch(command.pokemons.clear());
-    };
-  }, []);
-
-  const getColorForType = (type: string) => {
-    const hash = type
-      .split('')
-      .reduce((acc, char) => char.charCodeAt(0) + acc, 0);
-    const hue = hash % 400;
-
-    return `hsl(${hue}, 70%, 30%)`;
-  };
+  }, [command.pokemons, dispatch]);
 
   return (
     <>
@@ -64,47 +71,18 @@ const Home = () => {
             <SearchBar onSubmit={submitHandler} />
           </Card>
         </Grid>
-        <Grid
-          item={true}
-          sm={2}
-          sx={{ display: 'flex', justifyContent: 'flex-end' }}
-          xs={6}
-        >
-          <Card>
-            <FormControl>
-              <Select
-                displayEmpty={true}
-                sx={{ minWidth: '120px' }}
-                value={activeFilter}
-                onChange={(e) => handleFilter(e.target.value as string)}
-              >
-                <MenuItem value="">All Types</MenuItem>
-                {[
-                  'Dragon',
-                  'Electric',
-                  'Fighting',
-                  'Fire',
-                  'Flying',
-                  'Ghost',
-                  'Grass',
-                  'Ground',
-                  'Ice',
-                  'Normal',
-                  'Psychic',
-                  'Rock',
-                  'Water'
-                ].map((type) => (
-                  <MenuItem key={type} value={type}>
-                    {type}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+        <Grid item={true} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end' }} xs={6}>
+          <Card sx={{ width: '100%' }}>
+            <ButtonFilter activeFilter={activeFilter} handleFilter={handleFilter} />
           </Card>
         </Grid>
       </Grid>
       <Grid container={true} spacing={6}>
-        <DisplayCards filteredPokemons={filteredPokemons} getColorForType={getColorForType} />
+        <DisplayCards
+          filteredPokemons={filteredPokemons}
+          getColorForType={getColorForType}
+          handleObtainPokemon={handleObtainPokemon}
+          obtainedPokemons={obtainedPokemons} />
       </Grid>
     </>
   );

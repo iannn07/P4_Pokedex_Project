@@ -3,7 +3,7 @@ interface Pokemons {
   evolutions: string[]
   hitpoints: number
   id: number
-  image_url: string
+  image_url?: string
   location: string
   pokemon: string
   type: string
@@ -16,11 +16,19 @@ interface PokemonsModel {
 
 enum PokemonsActionType {
   Load = 'pokemons-load',
-  Clear = 'pokemons-clear'
+  Clear = 'pokemons-clear',
+  Delete = 'pokemons-delete',
+  Edit = 'pokemons-edit'
 }
 
 type PokemonsAction = {
   type: PokemonsActionType.Clear
+} | {
+  type: PokemonsActionType.Delete
+  value?: number
+} | {
+  type: PokemonsActionType.Edit
+  value?: Pokemons
 } | {
   type: PokemonsActionType.Load
   value?: PokemonsModel

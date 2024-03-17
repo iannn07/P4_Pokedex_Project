@@ -13,13 +13,32 @@ const pokeListReducer = (
 ): PokeListModel => {
   switch (action.type) {
     case PokeListActionType.ADD_POKEMON: {
-      const updatedPokemons = action.payload?.pokemons || [];
+      const newPokemons = action.payload?.pokemons || [];
       const pokemons = state.pokemons || [];
 
       return {
         ...state,
-        pokemons: [...pokemons, ...updatedPokemons]
+        pokemons: [...pokemons, ...newPokemons]
       };
+    }
+    case PokeListActionType.DELETE_POKEMON: {
+      return {
+        ...state,
+        pokemons: state.pokemons?.filter(
+          (pokemon) => pokemon.id !== action.payload
+        )
+      };
+    }
+    case PokeListActionType.EDIT_POKEMON: {
+      const editedPokemon = action.payload;
+      if (editedPokemon) {
+        return {
+          ...state,
+          pokemons: state.pokemons?.map((pokemon) => (pokemon.id === editedPokemon.id ? editedPokemon : pokemon))
+        };
+      }
+
+      return state;
     }
 
     default:

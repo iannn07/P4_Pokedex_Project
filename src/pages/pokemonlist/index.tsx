@@ -1,56 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
-import type { FormEvent } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Box, Button, Card, Dialog, Stack } from '@mui/material';
+import { Box, Button, Card, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
+import { Edit } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
 import CustomToolbar from '@components/custom/table/data-grid/custom-toolbar';
+import getColorForType from '@components/custom/type-color/type-color';
 import { Typography } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
-
-import AddPokemonDialog from './addDialog';
-import DeletePokemonDialog from './deleteDialog';
 
 import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
 const PokemonList: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
-
-  const [openAddDialog, setOpenAddDialog] = useState<boolean>(false);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
-
-  const handleAddDialog = () => {
-    setOpenAddDialog(!openAddDialog);
-  };
-
-  const handleDeleteDialog = () => {
-    setOpenDeleteDialog(!openDeleteDialog);
-  };
-
-  const onAddSubmit = (e: FormEvent<HTMLFormElement>) => {
-    setOpenAddDialog(true);
-    e.preventDefault();
-  };
-
-  const onDeleteSubmit = (e: FormEvent<HTMLFormElement>) => {
-    setOpenDeleteDialog(false);
-    e.preventDefault();
-  };
-
-  const getColorForType = (type: string) => {
-    // Generate a consistent color based on the type
-    const hash = type
-      .split('')
-      .reduce((acc, char) => char.charCodeAt(0) + acc, 0);
-    const hue = hash % 400;
-
-    return `hsl(${hue}, 70%, 30%)`; // Adjust saturation and lightness as needed
-  };
 
   useEffect(() => {
     dispatch(command.pokemons.load()).catch((err: unknown) => {
@@ -144,22 +112,24 @@ const PokemonList: PageComponent = () => {
   return (
     <>
       <h1>Pokemon List</h1>
-      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+      <Box
+        sx={{
+          mb: 2,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
         <Box sx={{ width: '50%' }}>
-          <h3>Pokemon Add, Edit, Delete</h3>
+          <Typography variant="subtitle1">Find your Pokemon!</Typography>
         </Box>
         <Box sx={{ display: 'flex' }}>
-          <Button sx={{ m: 2 }} variant="contained" onClick={handleAddDialog}>
-            Add New Pokemon
-          </Button>
-          <Button
-            color="error"
-            sx={{ m: 2 }}
-            variant="contained"
-            onClick={handleDeleteDialog}
-          >
-            Delete All Pokemon
-          </Button>
+          <Link to="./edit/editPokemonList">
+            <Button color="warning" sx={{ m: 2, height: '50px' }} variant="contained">
+              <Edit height="32px" width="32px" />
+              Edit Pokemon List
+            </Button>
+          </Link>
         </Box>
       </Box>
       <Card>
@@ -184,26 +154,6 @@ const PokemonList: PageComponent = () => {
           }}
           slots={{ toolbar: CustomToolbar }} />
       </Card>
-      <Dialog
-        fullWidth={true}
-        maxWidth="sm"
-        open={openAddDialog}
-        onClose={handleAddDialog}
-      >
-        <AddPokemonDialog
-          handleAddDialog={handleAddDialog}
-          onAddSubmit={onAddSubmit} />
-      </Dialog>
-      <Dialog
-        fullWidth={true}
-        maxWidth="sm"
-        open={openDeleteDialog}
-        onClose={handleDeleteDialog}
-      >
-        <DeletePokemonDialog
-          handleDeleteDialog={handleDeleteDialog}
-          onDeleteSubmit={onDeleteSubmit} />
-      </Dialog>
     </>
   );
 };

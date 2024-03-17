@@ -6,6 +6,7 @@ import { Box, CardContent, CardMedia, Typography } from '@mui/material';
 
 import type { PageComponent } from '@nxweb/react';
 
+import getColorForType from '@components/custom/type-color/type-color';
 import { Card, Grid } from '@components/material.js';
 import { useCommand, useStore } from '@models/store.js';
 
@@ -23,21 +24,13 @@ const Inventory: PageComponent = () => {
     };
   }, []);
 
-  const getColorForType = (type: string) => {
-    // Generate a consistent color based on the type
-    const hash = type.split('').reduce((acc, char) => char.charCodeAt(0) + acc, 0);
-    const hue = hash % 400;
-
-    return `hsl(${hue}, 70%, 30%)`; // Adjust saturation and lightness as needed
-  };
-
   return (
     <>
       <h1>Inventory</h1>
       <Box sx={{ overflowX: 'scroll' }}>
         <Grid container={true} spacing={6} sx={{ display: 'flex', flexWrap: 'nowrap' }}>
           {state?.pokemons?.map((data) => (
-            <Grid item={true} md={3}>
+            <Grid item={true} md={3} key={data.id}>
               <Box>
                 <Card sx={{ p: 10, width: '16rem' }}>
                   <CardMedia image={data.image_url} sx={{ height: '12rem', objectFit: 'contain', width: '100%' }} />

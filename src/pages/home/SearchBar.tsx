@@ -26,12 +26,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
   };
 
   return (
-      <FormControl sx={{ width: '100%', m: 0, p: 0 }}>
+      <FormControl sx={{ width: '100%' }}>
         <Form onSubmit={submitHandler}>
           <Input
             endAdornment={<Button type="submit"><Search /></Button>}
             placeholder="Search Pokemon..."
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', pl: 2 }}
             type="text"
             value={term}
             onChange={handleChange} />
