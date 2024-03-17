@@ -1,10 +1,10 @@
 import type { TrainerAction, TrainerModel } from './types';
 
-export const initialTrainerState: TrainerModel = {
+const initialTrainerState: TrainerModel = {
   activities: []
 };
 
-export const trainerReducer = (state = initialTrainerState, action: TrainerAction): TrainerModel => {
+const trainerReducer = (state = initialTrainerState, action: TrainerAction): TrainerModel => {
   switch (action.type) {
     case 'ADD_TRAINER_ACTIVITY':
       return {
@@ -16,3 +16,5 @@ export const trainerReducer = (state = initialTrainerState, action: TrainerActio
       return state;
   }
 };
+
+export { trainerReducer, initialTrainerState };

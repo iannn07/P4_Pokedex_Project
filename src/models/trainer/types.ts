@@ -1,16 +1,18 @@
 import type { Pokemons } from '@models/pokemon/types';
 
-export interface TrainerActivity {
+interface TrainerActivity {
   activity: string
   dateTime: string
   pokemon: Pokemons
 }
 
-export interface TrainerModel {
+interface TrainerModel {
   activities: TrainerActivity[]
 }
 
-export interface TrainerAction {
+interface TrainerAction {
   payload: TrainerActivity
   type: 'ADD_TRAINER_ACTIVITY'
 }
+
+export type { TrainerActivity, TrainerModel, TrainerAction };
