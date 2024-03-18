@@ -2,16 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Card, Grid } from '@mui/material';
 
-import {
-  Box,
-  Button,
-  CardContent,
-  CardMedia,
-  FormControl,
-  Input,
-  Typography
-} from '@mui/material';
-
 import getColorForType from '@components/custom/type-color/type-color';
 import { pokemonsCommand } from '@models/pokemon/commands';
 import type { Pokemons } from '@models/pokemon/types';
@@ -96,15 +86,30 @@ const Home = () => {
 
   return (
     <>
-      <Grid container={true} spacing={6} sx={{ alignItems: 'flex-start', flexDirection: { sm: 'row', xs: 'column' }, mb: 6 }}>
+      <Grid
+        container={true}
+        spacing={6}
+        sx={{
+          alignItems: 'flex-start',
+          flexDirection: { sm: 'row', xs: 'column' },
+          mb: 6
+        }}
+      >
         <Grid item={true} sm={10} xs={6}>
           <Card sx={{ p: 2.5 }}>
             <SearchBar onSubmit={submitHandler} />
           </Card>
         </Grid>
-        <Grid item={true} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end' }} xs={6}>
+        <Grid
+          item={true}
+          sm={2}
+          sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          xs={6}
+        >
           <Card sx={{ width: '100%' }}>
-            <ButtonFilter activeFilter={activeFilter} handleFilter={handleFilter} />
+            <ButtonFilter
+              activeFilter={activeFilter}
+              handleFilter={handleFilter} />
           </Card>
         </Grid>
       </Grid>

@@ -9,9 +9,26 @@ interface FilterButtonProps {
   readonly handleFilter: (type: string) => void
 }
 
-const types: string[] = ['Dragon', 'Electric', 'Fighting', 'Fire', 'Flying', 'Ghost', 'Grass', 'Ground', 'Ice', 'Normal', 'Psychic', 'Rock', 'Water'];
+const types: string[] = [
+  'Dragon',
+  'Electric',
+  'Fighting',
+  'Fire',
+  'Flying',
+  'Ghost',
+  'Grass',
+  'Ground',
+  'Ice',
+  'Normal',
+  'Psychic',
+  'Rock',
+  'Water'
+];
 
-const FilterButton: React.FC<FilterButtonProps> = ({ activeFilter, handleFilter }) => {
+const FilterButton: React.FC<FilterButtonProps> = ({
+  activeFilter,
+  handleFilter
+}) => {
   return (
     <FormControl sx={{ width: '100%' }}>
       <Select
@@ -21,7 +38,11 @@ const FilterButton: React.FC<FilterButtonProps> = ({ activeFilter, handleFilter 
         onChange={(e) => handleFilter(e.target.value as string)}
       >
         <MenuItem value="">All Types</MenuItem>
-        {types.map((type) => <MenuItem key={type} value={type}>{type}</MenuItem>)}
+        {types.map((type) => (
+          <MenuItem key={type} value={type}>
+            {type}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );

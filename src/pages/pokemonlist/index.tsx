@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Box, Button, Card, Stack } from '@mui/material';
@@ -12,27 +11,16 @@ import type { PageComponent } from '@nxweb/react';
 import CustomToolbar from '@components/custom/table/data-grid/custom-toolbar';
 import getColorForType from '@components/custom/type-color/type-color';
 import { Typography } from '@components/material.js';
-import { useCommand, useStore } from '@models/store.js';
+import { store } from '@models/store.js';
 
 import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
 const PokemonList: PageComponent = () => {
-  const [state, dispatch] = useStore((store) => store.pokemons);
-  const command = useCommand((cmd) => cmd);
+  const state = store.getState();
 
-  useEffect(() => {
-    dispatch(command.pokemons.load()).catch((err: unknown) => {
-      console.error(err);
-    });
-
-    return () => {
-      dispatch(command.pokemons.clear());
-    };
-  }, []);
-
-  const rows: GridRowsProp = [
-    ...state?.pokemons?.map((row, index) => ({
-      id: index + 1, // Use the array index as the ID
+  const rowsAPI: GridRowsProp = [
+    ...state?.pokemons?.pokemons?.map((row) => ({
+      id: row.id,
       Pokemon: row.image_url,
       Name: row.pokemon,
       Type: row.type,
@@ -41,6 +29,20 @@ const PokemonList: PageComponent = () => {
       Evolution: row.evolutions
     })) || []
   ];
+
+  const rowsState: GridRowsProp = [
+    ...state?.pokeList?.pokemons?.map((row) => ({
+      id: row.id,
+      Pokemon: row.image_url,
+      Name: row.pokemon,
+      Type: row.type,
+      Location: row.location,
+      Abilities: row.abilities,
+      Evolution: row.evolutions
+    })) || []
+  ];
+
+  const rows: GridRowsProp = [...rowsAPI, ...rowsState];
 
   const columns: GridColDef[] = [
     {
@@ -125,7 +127,11 @@ const PokemonList: PageComponent = () => {
         </Box>
         <Box sx={{ display: 'flex' }}>
           <Link to="./edit/editPokemonList">
-            <Button color="warning" sx={{ m: 2, height: '50px' }} variant="contained">
+            <Button
+              color="warning"
+              sx={{ m: 2, height: '50px' }}
+              variant="contained"
+            >
               <Edit height="32px" width="32px" />
               Edit Pokemon List
             </Button>

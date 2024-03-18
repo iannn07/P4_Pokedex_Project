@@ -40,6 +40,11 @@ const pokeListReducer = (
 
       return state;
     }
+    case PokeListActionType.CLEAR_POKEMON: {
+      return {};
+    }
+    case PokeListActionType.LOAD_POKEMON:
+      return { ...state, ...action.payload };
 
     default:
       return state;

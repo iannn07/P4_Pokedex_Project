@@ -13,7 +13,8 @@ import {
   DialogTitle,
   Grid,
   InputAdornment,
-  Slide
+  Slide,
+  Stack
 } from '@mui/material';
 
 import {
@@ -84,7 +85,11 @@ const EditPokemonsAPI = ({
   return (
     <>
       {/* Edit Card */}
-      <Dialog open={showEditAPICard} sx={{ overflow: 'hidden' }} onClose={handleEditToggleCard}>
+      <Dialog
+        open={showEditAPICard}
+        sx={{ overflow: 'hidden' }}
+        onClose={handleEditToggleCard}
+      >
         <Slide
           direction="up"
           in={showEditAPICard}
@@ -135,28 +140,43 @@ const EditPokemonsAPI = ({
                   <form onSubmit={handleEditAPIPokemon}>
                     <Grid container={true} spacing={5}>
                       <Grid item={true} xs={12}>
-                        <CustomTextField
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <World />
-                              </InputAdornment>
+                        <Stack
+                          gap={5}
+                          sx={{ display: 'flex', alignItems: 'center' }}
+                        >
+                          <CustomTextField
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <World />
+                                </InputAdornment>
+                              )
+                            }}
+                            error={!pokemon.image_url}
+                            fullWidth={true}
+                            helperText={
+                              !pokemon.image_url
+                                ? 'Pokemon Image URL is required'
+                                : ''
+                            }
+                            label="Pokemon Image URL"
+                            required={true}
+                            value={pokemon.image_url}
+                            onChange={(e) => setPokemon({
+                              ...pokemon,
+                              image_url: e.target.value
+                            })} />
+                          {pokemon.image_url
+                            ? (
+                            <img
+                              alt={pokemon.pokemon}
+                              height={150}
+                              src={pokemon.image_url}
+                              style={{ borderRadius: '5px' }}
+                              width={150} />
                             )
-                          }}
-                          error={!pokemon.image_url}
-                          fullWidth={true}
-                          helperText={
-                            !pokemon.image_url
-                              ? 'Pokemon Image URL is required'
-                              : ''
-                          }
-                          label="Pokemon Image URL"
-                          required={true}
-                          value={pokemon.image_url}
-                          onChange={(e) => setPokemon({
-                            ...pokemon,
-                            image_url: e.target.value
-                          })} />
+                            : null}
+                        </Stack>
                       </Grid>
                       <Grid item={true} xs={12}>
                         <CustomTextField

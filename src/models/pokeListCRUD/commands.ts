@@ -15,6 +15,11 @@ const pokeListCommand = {
       payload: value
     };
   },
+  clearPokemon: (): PokeListAction => {
+    return {
+      type: PokeListActionType.CLEAR_POKEMON
+    };
+  },
   deletePokemon: (value: number): PokeListAction => {
     return {
       type: PokeListActionType.DELETE_POKEMON,
