@@ -3,7 +3,7 @@ interface Pokemons {
   evolutions: string[]
   hitpoints: number
   id: number
-  image_url?: string
+  image_url: string
   inInventory: boolean
   isObtained: boolean
   location: string
