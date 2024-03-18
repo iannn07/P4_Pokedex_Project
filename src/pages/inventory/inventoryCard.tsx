@@ -18,7 +18,10 @@ import { ArrowRight, Trash } from '@nxweb/icons/tabler';
 
 import getColorForType from '@components/custom/type-color/type-color';
 import { Card, Grid } from '@components/material.js';
-import type { inventoryPokemonsModel } from '@models/inventory/types';
+import type {
+  inventoryPokemons,
+  inventoryPokemonsModel
+} from '@models/inventory/types';
 import type { Pokemons } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store';
 import { trainerCommand } from '@models/trainer/commands';
@@ -38,7 +41,11 @@ const TrainerTable: React.FC<inventoryPokemonsModel> = ({ inventory }) => {
 
     setChecked(newChecked);
   };
-  const handleEvolve = (pokemon: Pokemons, evolution: Pokemons, index: number) => {
+  const handleEvolve = (
+    pokemon: inventoryPokemons,
+    evolution: inventoryPokemons,
+    index: number
+  ) => {
     const data = {
       activity: 'Evolve',
       dateTime: new Date().toLocaleString(),
@@ -49,7 +56,7 @@ const TrainerTable: React.FC<inventoryPokemonsModel> = ({ inventory }) => {
     dispatch(trainerCommand(data));
     dispatch(command.inventory.evolve(pokemon, evolution));
   };
-  const handleRemove = (pokemon: Pokemons) => {
+  const handleRemove = (pokemon: inventoryPokemons) => {
     const data = {
       activity: 'Remove',
       dateTime: new Date().toLocaleString(),
