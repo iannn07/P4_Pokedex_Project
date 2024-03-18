@@ -14,20 +14,9 @@ import { useStore } from '@models/store.js';
 import PokeListTable from './PokeListTable/pokeListTable';
 import AddPokeList from './form/addPokeList';
 
-import type PokemonProps from './pokemonProps';
-
 const EditPokemonList: PageComponent = () => {
   const [pokeLISTState, pokeLISTDispatch] = useStore((store) => store.pokeList);
   const [showCard, setShowCard] = useState<boolean>(false);
-  const [pokemon, setPokemon] = useState<PokemonProps>({
-    abilities: [] as string[],
-    evolutions: [] as string[],
-    hitpoints: 0,
-    id: 0,
-    location: '',
-    pokemon: '',
-    type: ''
-  });
 
   const handleToggleCard = () => {
     setShowCard(!showCard);
@@ -88,9 +77,7 @@ const EditPokemonList: PageComponent = () => {
       {/* PokeListTable */}
       <PokeListTable
         pokeLISTDispatch={pokeLISTDispatch}
-        pokeLISTState={pokeLISTState}
-        pokemon={pokemon}
-        setPokemon={setPokemon} />
+        pokeLISTState={pokeLISTState} />
     </>
   );
 };

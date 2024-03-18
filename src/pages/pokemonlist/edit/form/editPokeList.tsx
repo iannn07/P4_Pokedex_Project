@@ -19,7 +19,8 @@ import {
   Category,
   ChevronsUP,
   MapPin,
-  Pokeball
+  Pokeball,
+  World
 } from '@nxweb/icons/tabler';
 
 import CustomTextField from '@components/custom/text-field/text-field';
@@ -58,6 +59,9 @@ const EditPokeList = ({
     e.preventDefault();
 
     setPokemon({
+      image_url: '',
+      inInventory: false,
+      isObtained: false,
       abilities: [] as string[],
       evolutions: [] as string[],
       hitpoints: 0,
@@ -77,7 +81,7 @@ const EditPokeList = ({
   return (
     <>
       {/* Edit Card */}
-      <Dialog open={showEditCard}>
+      <Dialog open={showEditCard} onClose={handleEditToggleCard}>
         <Card sx={{ mb: 5 }}>
           <DialogTitle
             component="div"
@@ -125,6 +129,27 @@ const EditPokeList = ({
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
+                              <World />
+                            </InputAdornment>
+                          )
+                        }}
+                        error={!pokemon.image_url}
+                        fullWidth={true}
+                        helperText={
+                          !pokemon.image_url
+                            ? 'Pokemon Image URL is required'
+                            : ''
+                        }
+                        label="Pokemon Image URL"
+                        required={true}
+                        value={pokemon.image_url}
+                        onChange={(e) => setPokemon({ ...pokemon, image_url: e.target.value })} />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                      <CustomTextField
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
                               <Pokeball />
                             </InputAdornment>
                           )
@@ -135,8 +160,8 @@ const EditPokeList = ({
                           !pokemon.pokemon ? 'Pokemon Name is required' : ''
                         }
                         label="Pokemon Name"
-                        placeholder="Pikachu"
                         required={true}
+                        value={pokemon.pokemon}
                         onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -152,8 +177,8 @@ const EditPokeList = ({
                         fullWidth={true}
                         helperText={!pokemon.type ? 'Type is required' : ''}
                         label="Type"
-                        placeholder="Electric"
                         required={true}
+                        value={pokemon.type}
                         onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -167,10 +192,12 @@ const EditPokeList = ({
                         }}
                         error={!pokemon.location}
                         fullWidth={true}
-                        helperText={!pokemon.location ? 'Location is required' : ''}
+                        helperText={
+                          !pokemon.location ? 'Location is required' : ''
+                        }
                         label="Location"
-                        placeholder="Madiun"
                         required={true}
+                        value={pokemon.location}
                         onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
@@ -184,7 +211,7 @@ const EditPokeList = ({
                         }}
                         fullWidth={true}
                         label="Abilities"
-                        placeholder="Abilities"
+                        value={pokemon.abilities.join(',')}
                         onChange={(e) => setPokemon({
                           ...pokemon,
                           abilities: e.target.value.split(',')
@@ -201,7 +228,7 @@ const EditPokeList = ({
                         }}
                         fullWidth={true}
                         label="Evolution"
-                        placeholder="Evolution"
+                        value={pokemon.evolutions.join(',')}
                         onChange={(e) => setPokemon({
                           ...pokemon,
                           evolutions: e.target.value.split(',')
@@ -220,11 +247,26 @@ const EditPokeList = ({
                     >
                       <Box>
                         <Button
+                          disabled={
+                            !pokemon.image_url ||
+                            !pokemon.pokemon ||
+                            !pokemon.type ||
+                            !pokemon.location
+                          }
+                          sx={{ mr: 2 }}
                           type="submit"
                           variant="contained"
                           onClick={handleEditToggleCard}
                         >
                           Edit Pokemon
+                        </Button>
+                        <Button
+                          color="secondary"
+                          type="reset"
+                          variant="tonal"
+                          onClick={handleEditToggleCard}
+                        >
+                          Cancel
                         </Button>
                       </Box>
                     </Box>
