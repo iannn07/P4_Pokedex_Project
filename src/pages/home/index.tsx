@@ -21,31 +21,13 @@ const Home = () => {
   const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
 
   useEffect(() => {
-    const fetchPokemons = async () => {
-      try {
-        // Get obtained Pokémon IDs from trainer activities
-
-        const obtainedPokemonIds = state?.trainer?.activities
-          ?.filter((activity) => activity.activity === 'Add')
-          .map((activity) => activity.pokemon.id) ?? [];
-
-        // Set obtainedPokemons state
-        setObtainedPokemons(obtainedPokemonIds);
-        // Load Pokemon data
-        await dispatch(command.pokemons.load());
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    // Fetch Pokémon data and update obtainedPokemons when trainer state changes
-    fetchPokemons();
-  }, [command.pokemons, dispatch, state.trainer, setObtainedPokemons]);
-
-  const combinedPokemons = [...state?.pokemons?.pokemons || [], ...state?.pokeList?.pokemons || []];
+    dispatch(command.pokemons.load()).catch((err: unknown) => {
+      console.error(err);
+    });
+  }, []);
 
   const filteredPokemons =
-    combinedPokemons.filter(
+    state?.pokemons?.pokemons?.filter(
       (pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
         pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())
     ) ?? [];
@@ -88,15 +70,30 @@ const Home = () => {
 
   return (
     <>
-      <Grid container={true} spacing={6} sx={{ alignItems: 'flex-start', flexDirection: { sm: 'row', xs: 'column' }, mb: 6 }}>
+      <Grid
+        container={true}
+        spacing={6}
+        sx={{
+          alignItems: 'flex-start',
+          flexDirection: { sm: 'row', xs: 'column' },
+          mb: 6
+        }}
+      >
         <Grid item={true} sm={10} xs={6}>
           <Card sx={{ p: 2.5 }}>
             <SearchBar onSubmit={submitHandler} />
           </Card>
         </Grid>
-        <Grid item={true} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end' }} xs={6}>
+        <Grid
+          item={true}
+          sm={2}
+          sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          xs={6}
+        >
           <Card sx={{ width: '100%' }}>
-            <ButtonFilter activeFilter={activeFilter} handleFilter={handleFilter} />
+            <ButtonFilter
+              activeFilter={activeFilter}
+              handleFilter={handleFilter} />
           </Card>
         </Grid>
       </Grid>
@@ -105,7 +102,8 @@ const Home = () => {
           filteredPokemons={filteredPokemons}
           getColorForType={getColorForType}
           handleObtainPokemon={handleObtainPokemon}
-          obtainedPokemons={obtainedPokemons} />
+          obtainedPokemons={obtainedPokemons}
+          setObtainedPokemons={setObtainedPokemons} />
       </Grid>
     </>
   );
