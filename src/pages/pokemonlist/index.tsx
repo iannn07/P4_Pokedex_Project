@@ -139,26 +139,26 @@ const PokemonList: PageComponent = () => {
         </Box>
       </Box>
       <Card>
-        <DataGrid
-          autoHeight={true}
-          columns={columns}
-          disableColumnSelector={true}
-          disableDensitySelector={true}
-          getRowHeight={() => 'auto'}
-          initialState={{
-            pagination: {
-              paginationModel: { pageSize: 10, page: 0 }
-            }
-          }}
-          pageSizeOptions={[5, 10, 25]}
-          rows={rows}
-          slotProps={{
-            baseButton: {
-              size: 'medium',
-              variant: 'outlined'
-            }
-          }}
-          slots={{ toolbar: CustomToolbar }} />
+          <DataGrid
+            autoHeight={true}
+            columns={columns}
+            disableColumnSelector={true}
+            disableDensitySelector={true}
+            getRowHeight={() => 'auto'}
+            initialState={{
+              pagination: {
+                paginationModel: { pageSize: 10, page: 0 }
+              }
+            }}
+            pageSizeOptions={[5, 10, 25]}
+            rows={rows}
+            slotProps={{
+              baseButton: {
+                size: 'medium',
+                variant: 'outlined'
+              }
+            }}
+            slots={{ toolbar: CustomToolbar }} />
       </Card>
     </>
   );

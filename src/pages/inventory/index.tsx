@@ -1,26 +1,16 @@
 /* eslint-disable logical-assignment-operators */
 /* eslint-disable react/jsx-key */
-import { useEffect } from 'react';
 
-import {
-  Box,
-  CardContent,
-  CardMedia,
-  Container,
-  Typography
-} from '@mui/material';
+import { Box } from '@mui/material';
 
 import type { PageComponent } from '@nxweb/react';
 
-import getColorForType from '@components/custom/type-color/type-color';
-import { Card, Grid } from '@components/material.js';
-import { useCommand, useStore } from '@models/store.js';
+import { store } from '@models/store.js';
 
 import InventoryCard from './inventoryCard';
 
 const Inventory: PageComponent = () => {
-  const [state, dispatch] = useStore((store) => store.inventory);
-  const command = useCommand((cmd) => cmd);
+  const state = store.getState();
 
   /*
    * UseEffect(() => {
@@ -40,7 +30,7 @@ const Inventory: PageComponent = () => {
     <>
       <h1>Inventory</h1>
 
-      {!state?.inventory || state?.inventory.length === 0
+      {!state?.inventory.inventory || state?.inventory.inventory.length === 0
         ? (
         <Box
           sx={{
@@ -53,7 +43,7 @@ const Inventory: PageComponent = () => {
           <h3>No Pokemon Obtained</h3>
         </Box>
         )
-        : <InventoryCard inventory={state.inventory} />}
+        : <InventoryCard inventory={state.inventory.inventory} />}
     </>
   );
 };
