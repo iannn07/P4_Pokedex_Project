@@ -72,7 +72,9 @@ const PokeListTable = ({
 
     const updatedData: Pokemons = {
       ...pokemon,
-      id: data
+      id: data,
+      inInventory: false,
+      isObtained: false
     };
 
     pokeAPIDispatch(command.pokemons.edit(updatedData));

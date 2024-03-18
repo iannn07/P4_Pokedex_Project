@@ -68,7 +68,9 @@ const EditPokemonsAPI = ({
     });
 
     const data: Pokemons = {
-      ...pokemon
+      ...pokemon,
+      inInventory: false,
+      isObtained: false
     };
 
     pokeAPIDispatch(command.pokemons.edit(data));

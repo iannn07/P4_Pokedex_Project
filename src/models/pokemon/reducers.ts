@@ -8,19 +8,19 @@ const pokemonsReducer = (
 ): PokemonsModel => {
   switch (action.type) {
     case PokemonsActionType.Load:
-      return { ...state, ...action.value };
+      return { ...state, ...action.payload };
     case PokemonsActionType.Clear:
       return {};
     case PokemonsActionType.Delete: {
       return {
         ...state,
         pokemons: state.pokemons?.filter(
-          (pokemon) => pokemon.id !== action.value
+          (pokemon) => pokemon.id !== action.payload
         )
       };
     }
     case PokemonsActionType.Edit: {
-      const editedPokemon = action.value;
+      const editedPokemon = action.payload;
       if (editedPokemon) {
         return {
           ...state,

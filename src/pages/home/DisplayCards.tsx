@@ -1,6 +1,5 @@
-/* eslint-disable sort-keys */
-/* eslint-disable @stylistic/js/linebreak-style */
 /* eslint-disable react/display-name */
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -14,20 +13,24 @@ interface DisplayCardsProps {
   readonly getColorForType: (type: string) => string
   readonly handleObtainPokemon: (pokemon: Pokemons) => void
   readonly obtainedPokemons: number[]
+  readonly setObtainedPokemons: React.Dispatch<React.SetStateAction<number[]>>
 }
 
 const DisplayCards: React.FC<DisplayCardsProps> = ({
   filteredPokemons,
   getColorForType,
   obtainedPokemons,
-  handleObtainPokemon
+  handleObtainPokemon,
+  setObtainedPokemons
 }) => {
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemons | null>(null);
 
-  const isObtained = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
+  const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
 
   const handleAddToInventoryClick = (pokemon: Pokemons) => {
-    setSelectedPokemon(pokemon);
+    if (!pokemon.isObtained && !obtainedId(pokemon.id)) {
+      setSelectedPokemon(pokemon);
+    }
   };
 
   const handleCloseDialog = () => {
@@ -38,6 +41,7 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
     if (selectedPokemon) {
       handleObtainPokemon(selectedPokemon);
       setSelectedPokemon(null);
+      setObtainedPokemons([...obtainedPokemons, selectedPokemon.id]);
     }
   };
 
@@ -45,49 +49,49 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
     <>
       {filteredPokemons.map((pokemon) => (
         <Grid item={true} key={pokemon.id} md={3} sm={6} xs={12}>
-            <Card sx={{ p: 4 }}>
-              <Link style={{ textDecoration: 'none' }} to={`../pokemondetails/${pokemon.id}`}>
-                <CardMedia image={pokemon.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
-              </Link>
-              <CardContent
-                sx={{
-                  alignItems: 'center',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: '100%',
-                  justifyContent: 'center'
-                }}
+          <Card sx={{ p: 4 }}>
+            <Link style={{ textDecoration: 'none' }} to={`../pokemondetails/${pokemon.id}`}>
+              <CardMedia image={pokemon.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+            </Link>
+            <CardContent
+              sx={{
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                justifyContent: 'center'
+              }}
+            >
+              <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
+                {pokemon.pokemon}
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 2, height: 'auto' }}>
+                {pokemon.type.split('/').map((type: string) => (
+                  <Box
+                    key={type}
+                    px={4}
+                    py={1.5}
+                    sx={{
+                      backgroundColor: getColorForType(type),
+                      borderRadius: 8,
+                      display: 'flex',
+                      gap: 8
+                    }}
+                  >
+                    <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>{type.trim()}</Typography>
+                  </Box>
+                ))}
+              </Box>
+              <Button
+                disabled={pokemon.isObtained === true}
+                sx={{ mt: 6 }}
+                variant="contained"
+                onClick={() => handleAddToInventoryClick(pokemon)}
               >
-                <Typography sx={{ fontWeight: 'bold', mb: 3 }} variant="h4">
-                  {pokemon.pokemon}
-                </Typography>
-                <Box sx={{ display: 'flex', gap: 2, height: 'auto' }}>
-                  {pokemon.type.split('/').map((type: string) => (
-                    <Box
-                      key={type}
-                      px={4}
-                      py={1.5}
-                      sx={{
-                        backgroundColor: getColorForType(type),
-                        borderRadius: 8,
-                        display: 'flex',
-                        gap: 8
-                      }}
-                    >
-                      <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>{type.trim()}</Typography>
-                    </Box>
-                  ))}
-                </Box>
-                <Button
-                  disabled={isObtained(pokemon.id)}
-                  sx={{ mt: 6 }}
-                  variant="contained"
-                  onClick={() => handleAddToInventoryClick(pokemon)}
-                >
-                  {isObtained(pokemon.id) ? 'Obtained' : 'Add to Inventory'}
-                </Button>
-              </CardContent>
-            </Card>
+                {pokemon.isObtained === true ? 'Obtained' : 'Add to Inventory'}
+              </Button>
+            </CardContent>
+          </Card>
         </Grid>
       ))}
       <Dialog open={!!selectedPokemon} onClose={handleCloseDialog}>
