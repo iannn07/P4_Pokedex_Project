@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Card, Grid } from '@mui/material';
 
@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 
 import getColorForType from '@components/custom/type-color/type-color';
+import { pokemonsCommand } from '@models/pokemon/commands';
 import type { Pokemons } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store';
 import { trainerCommand } from '@models/trainer/commands';
@@ -29,6 +30,28 @@ const Home = () => {
   const command = useCommand((cmd) => cmd);
   const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
 
+  useEffect(() => {
+    const fetchPokemons = async () => {
+      try {
+        // Get obtained Pokémon IDs from trainer activities
+
+        const obtainedPokemonIds = state?.trainer?.activities
+          ?.filter((activity) => activity.activity === 'Add')
+          .map((activity) => activity.pokemon.id) ?? [];
+
+        // Set obtainedPokemons state
+        setObtainedPokemons(obtainedPokemonIds);
+        // Load Pokemon data
+        await dispatch(command.pokemons.load());
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    // Fetch Pokémon data and update obtainedPokemons when trainer state changes
+    fetchPokemons();
+  }, [command.pokemons, dispatch, state.trainer, setObtainedPokemons]);
+
   const filteredPokemons =
     state?.pokemons?.pokemons?.filter(
       (pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
@@ -44,55 +67,36 @@ const Home = () => {
     setActiveFilter(type);
   };
 
-  const isObtained = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
+  const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
 
   const handleObtainPokemon = (pokemon: Pokemons) => {
-    if (!isObtained(pokemon.id)) {
+    if (!obtainedId(pokemon.id)) {
       const data = {
         activity: 'Add',
         dateTime: new Date().toLocaleString(),
-        pokemon
+        pokemon: {
+          ...pokemon,
+          inInventory: true,
+          isObtained: true
+        }
+      };
+
+      const dataSync = {
+        ...pokemon,
+        inInventory: true,
+        isObtained: true
       };
 
       dispatch(trainerCommand(data));
+      dispatch(pokemonsCommand.edit(dataSync));
       dispatch(command.inventory.add(pokemon));
       setObtainedPokemons([...obtainedPokemons, pokemon.id]);
     }
   };
 
-  useEffect(() => {
-    const fetchPokemons = async () => {
-      try {
-        // Load Pokemon data
-        await dispatch(command.pokemons.load());
-
-        // Get obtained Pokémon IDs from trainer activities
-        const obtainedPokemonIds = state?.trainer?.activities
-          ?.filter((activity) => activity.activity === 'Add')
-          .map((activity) => activity.pokemon.id) ?? [];
-
-        // Set obtainedPokemons state
-        setObtainedPokemons(obtainedPokemonIds);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    // Fetch Pokémon data and update obtainedPokemons when trainer state changes
-    fetchPokemons();
-  }, [command.pokemons, dispatch, state.trainer, setObtainedPokemons]);
-
   return (
     <>
-      <Grid
-        container={true}
-        spacing={6}
-        sx={{
-          alignItems: 'flex-start',
-          flexDirection: { sm: 'row', xs: 'column' },
-          mb: 6
-        }}
-      >
+      <Grid container={true} spacing={6} sx={{ alignItems: 'flex-start', flexDirection: { sm: 'row', xs: 'column' }, mb: 6 }}>
         <Grid item={true} sm={10} xs={6}>
           <Card sx={{ p: 2.5 }}>
             <SearchBar onSubmit={submitHandler} />

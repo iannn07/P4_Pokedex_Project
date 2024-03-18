@@ -11,7 +11,8 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  InputAdornment
+  InputAdornment,
+  Slide
 } from '@mui/material';
 
 import {
@@ -19,7 +20,8 @@ import {
   Category,
   ChevronsUP,
   MapPin,
-  Pokeball
+  Pokeball,
+  World
 } from '@nxweb/icons/tabler';
 
 import CustomTextField from '@components/custom/text-field/text-field';
@@ -45,6 +47,9 @@ const AddPokeList = ({
   const command = useCommand((cmd) => cmd);
 
   const [pokemon, setPokemon] = useState<PokemonProps>({
+    image_url: '',
+    inInventory: false,
+    isObtained: false,
     abilities: [] as string[],
     evolutions: [] as string[],
     hitpoints: 0,
@@ -78,7 +83,8 @@ const AddPokeList = ({
   return (
     <>
       {/* ADD */}
-      <Dialog open={showCard} onClose={handleToggleCard}>
+      <Dialog open={showCard} sx={{ overflow: 'hidden' }} onClose={handleToggleCard}>
+        <Slide direction="up" in={showCard} mountOnEnter={true} style={{ overflow: 'hidden' }} unmountOnExit={true}>
         <Card sx={{ mb: 5 }}>
           <DialogTitle
             component="div"
@@ -126,17 +132,40 @@ const AddPokeList = ({
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
+                              <World />
+                            </InputAdornment>
+                          )
+                        }}
+                        error={!pokemon.image_url}
+                        fullWidth={true}
+                        helperText={
+                          !pokemon.image_url
+                            ? 'Pokemon Image URL is required'
+                            : ''
+                        }
+                        label="Pokemon Image URL"
+                        placeholder="www.pikachu.com"
+                        required={true}
+                        onChange={(e) => setPokemon({ ...pokemon, image_url: e.target.value })} />
+                    </Grid>
+                    <Grid item={true} xs={12}>
+                      <CustomTextField
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
                               <Pokeball />
                             </InputAdornment>
                           )
                         }}
+                        error={!pokemon.pokemon}
                         fullWidth={true}
+                        helperText={
+                          !pokemon.pokemon ? 'Pokemon Name is required' : ''
+                        }
                         label="Pokemon Name"
                         placeholder="Pikachu"
-                        onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })}
                         required={true}
-                        error={!pokemon.pokemon}
-                        helperText={!pokemon.pokemon ? 'Pokemon Name is required' : ''} />
+                        onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
                       <CustomTextField
@@ -147,13 +176,13 @@ const AddPokeList = ({
                             </InputAdornment>
                           )
                         }}
+                        error={!pokemon.type}
                         fullWidth={true}
+                        helperText={!pokemon.type ? 'Type is required' : ''}
                         label="Type"
                         placeholder="Electric"
-                        onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })}
                         required={true}
-                        error={!pokemon.type}
-                        helperText={!pokemon.type ? 'Type is required' : ''} />
+                        onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
                       <CustomTextField
@@ -164,13 +193,15 @@ const AddPokeList = ({
                             </InputAdornment>
                           )
                         }}
+                        error={!pokemon.location}
                         fullWidth={true}
+                        helperText={
+                          !pokemon.location ? 'Location is required' : ''
+                        }
                         label="Location"
                         placeholder="Madiun"
-                        onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })}
                         required={true}
-                        error={!pokemon.location}
-                        helperText={!pokemon.location ? 'Location is required' : ''} />
+                        onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
                     </Grid>
                     <Grid item={true} xs={12}>
                       <CustomTextField
@@ -219,11 +250,26 @@ const AddPokeList = ({
                     >
                       <Box>
                         <Button
+                          disabled={
+                            !pokemon.image_url ||
+                            !pokemon.pokemon ||
+                            !pokemon.type ||
+                            !pokemon.location
+                          }
+                          sx={{ mr: 2 }}
                           type="submit"
                           variant="contained"
                           onClick={handleToggleCard}
                         >
                           Add Pokemon
+                        </Button>
+                        <Button
+                          color="secondary"
+                          type="reset"
+                          variant="tonal"
+                          onClick={handleToggleCard}
+                        >
+                          Cancel
                         </Button>
                       </Box>
                     </Box>
@@ -233,6 +279,7 @@ const AddPokeList = ({
             </Box>
           </DialogContent>
         </Card>
+        </Slide>
       </Dialog>
     </>
   );

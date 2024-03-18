@@ -24,13 +24,13 @@ const pokemonsCommand = {
         const res = await fetch(apiUrl).then((res) => res.json());
 
         if (res) {
-          const value: PokemonsModel = {
+          const payload: PokemonsModel = {
             pokemons: res
           };
 
           dispatch({
             type: PokemonsActionType.Load,
-            value
+            payload
           });
         }
       } catch (err) {
@@ -41,13 +41,13 @@ const pokemonsCommand = {
   delete: (id: number): PokemonsAction => {
     return {
       type: PokemonsActionType.Delete,
-      value: id
+      payload: id
     };
   },
   edit: (pokemon: Pokemons): PokemonsAction => {
     return {
-      type: PokemonsActionType.Edit,
-      value: pokemon
+      payload: pokemon,
+      type: PokemonsActionType.Edit
     };
   }
 } satisfies Command<RootModel, PokemonsAction>;
