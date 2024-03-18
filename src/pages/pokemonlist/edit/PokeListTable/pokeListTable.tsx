@@ -46,6 +46,7 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
   const [showEditAPICard, setShowEditAPICard] = useState<boolean>(false);
   const [showEditCard, setShowEditCard] = useState<boolean>(false);
   const [pokemon, setPokemon] = useState<PokemonProps>({
+    image_url: '',
     abilities: [] as string[],
     evolutions: [] as string[],
     hitpoints: 0,
@@ -116,7 +117,8 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Pokemon Name</TableCell>
+              <TableCell>Pokemon</TableCell>
+              <TableCell>Name</TableCell>
               <TableCell>Type</TableCell>
               <TableCell>Location</TableCell>
               <TableCell>Abilities</TableCell>
@@ -128,8 +130,13 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
             {pokeAPIState?.pokemons?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  {row.pokemon}
+                  <img
+                    alt="Pokemon"
+                    src={row.image_url}
+                    style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
+                    width="100%" />
                 </TableCell>
+                <TableCell>{row.pokemon}</TableCell>
                 <TableCell>
                   <Box
                     sx={{
@@ -196,8 +203,13 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
             {pokeLISTState?.pokemons?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  {row.pokemon}
+                  <img
+                    alt="Pokemon"
+                    src={row.image_url}
+                    style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
+                    width="100%" />
                 </TableCell>
+                <TableCell>{row.pokemon}</TableCell>
                 <TableCell>
                   <Box
                     sx={{
