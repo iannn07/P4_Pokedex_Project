@@ -135,7 +135,7 @@ const EditPokeList = ({
                           !pokemon.pokemon ? 'Pokemon Name is required' : ''
                         }
                         label="Pokemon Name"
-                        placeholder="Pikachu"
+                        value={pokemon.pokemon}
                         required={true}
                         onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
                     </Grid>
@@ -152,7 +152,7 @@ const EditPokeList = ({
                         fullWidth={true}
                         helperText={!pokemon.type ? 'Type is required' : ''}
                         label="Type"
-                        placeholder="Electric"
+                        value={pokemon.type}
                         required={true}
                         onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
                     </Grid>
@@ -169,7 +169,7 @@ const EditPokeList = ({
                         fullWidth={true}
                         helperText={!pokemon.location ? 'Location is required' : ''}
                         label="Location"
-                        placeholder="Madiun"
+                        value={pokemon.location}
                         required={true}
                         onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
                     </Grid>
@@ -184,7 +184,7 @@ const EditPokeList = ({
                         }}
                         fullWidth={true}
                         label="Abilities"
-                        placeholder="Abilities"
+                        value={pokemon.abilities.join(',')}
                         onChange={(e) => setPokemon({
                           ...pokemon,
                           abilities: e.target.value.split(',')
@@ -201,7 +201,7 @@ const EditPokeList = ({
                         }}
                         fullWidth={true}
                         label="Evolution"
-                        placeholder="Evolution"
+                        value={pokemon.evolutions.join(',')}
                         onChange={(e) => setPokemon({
                           ...pokemon,
                           evolutions: e.target.value.split(',')
