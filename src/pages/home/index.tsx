@@ -2,6 +2,16 @@ import { useEffect, useState } from 'react';
 
 import { Card, Grid } from '@mui/material';
 
+import {
+  Box,
+  Button,
+  CardContent,
+  CardMedia,
+  FormControl,
+  Input,
+  Typography
+} from '@mui/material';
+
 import getColorForType from '@components/custom/type-color/type-color';
 import type { Pokemons } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store';
@@ -45,6 +55,7 @@ const Home = () => {
       };
 
       dispatch(trainerCommand(data));
+      dispatch(command.inventory.add(pokemon));
       setObtainedPokemons([...obtainedPokemons, pokemon.id]);
     }
   };
