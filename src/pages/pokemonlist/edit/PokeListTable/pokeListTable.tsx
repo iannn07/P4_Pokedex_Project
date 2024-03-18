@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import {
   Box,
@@ -101,17 +101,6 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
     pokeLISTDispatch(command.pokeList.deletePokemon(data));
   };
 
-  // Render Table
-  useEffect(() => {
-    pokeAPIDispatch(command.pokemons.load()).catch((err: unknown) => {
-      console.error(err);
-    });
-
-    return () => {
-      pokeAPIDispatch(command.pokemons.clear());
-    };
-  }, []);
-
   return (
     <>
       {/* Main Card Table */}
@@ -132,11 +121,17 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
             {pokeAPIState?.pokemons?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  <img
-                    alt="Pokemon"
-                    src={row.image_url}
-                    style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
-                    width="100%" />
+                  {row.isObtained
+                    ? <img
+                        alt="Pokemon"
+                        src={row.image_url}
+                        style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
+                        width="100%" />
+                    : <img
+                        alt="Pokemon"
+                        src={row.image_url}
+                        style={{ maxWidth: '151.406px', maxHeight: '151.406px', filter: 'grayscale(100%)' }}
+                        width="100%" />}
                 </TableCell>
                 <TableCell>{row.pokemon}</TableCell>
                 <TableCell>

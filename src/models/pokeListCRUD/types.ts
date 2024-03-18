@@ -20,18 +20,25 @@ interface PokeListModel {
 enum PokeListActionType {
   ADD_POKEMON = 'ADD_POKEMON',
   EDIT_POKEMON = 'EDIT_POKEMON',
-  DELETE_POKEMON = 'DELETE_POKEMON'
+  DELETE_POKEMON = 'DELETE_POKEMON',
+  LOAD_POKEMON = 'LOAD_POKEMON',
+  CLEAR_POKEMON = 'CLEAR_POKEMON'
 }
 
 type PokeListAction = {
   type: PokeListActionType.ADD_POKEMON
   payload?: PokeListModel
 } | {
+  type: PokeListActionType.CLEAR_POKEMON
+} | {
   type: PokeListActionType.DELETE_POKEMON
   payload?: number
 } | {
   type: PokeListActionType.EDIT_POKEMON
   payload?: PokeList
+} | {
+  type: PokeListActionType.LOAD_POKEMON
+  payload?: PokeListModel
 };
 
 export { PokeListActionType };

@@ -1,9 +1,20 @@
+/* eslint-disable sort-keys */
 /* eslint-disable react/display-name */
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Box, Button, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CardContent,
+  CardMedia,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography
+} from '@mui/material';
 
 import { Card, Grid } from '@components/material';
 import type { Pokemons } from '@models/pokemon/types';
@@ -50,8 +61,26 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
       {filteredPokemons.map((pokemon) => (
         <Grid item={true} key={pokemon.id} md={3} sm={6} xs={12}>
           <Card sx={{ p: 4 }}>
-            <Link style={{ textDecoration: 'none' }} to={`../pokemondetails/${pokemon.id}`}>
-              <CardMedia image={pokemon.image_url} sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+            <Link
+              style={{ textDecoration: 'none' }}
+              to={`../pokemondetails/${pokemon.id}`}
+            >
+              {pokemon.isObtained
+                ? (
+                <CardMedia
+                  image={pokemon.image_url}
+                  sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+                )
+                : (
+                <CardMedia
+                  image={pokemon.image_url}
+                  sx={{
+                    height: '14rem',
+                    objectFit: 'contain',
+                    width: '100%',
+                    filter: 'grayscale(100%)'
+                  }} />
+                )}
             </Link>
             <CardContent
               sx={{
@@ -78,7 +107,11 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
                       gap: 8
                     }}
                   >
-                    <Typography sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}>{type.trim()}</Typography>
+                    <Typography
+                      sx={{ color: 'white', fontSize: 10, letterSpacing: 1.5 }}
+                    >
+                      {type.trim()}
+                    </Typography>
                   </Box>
                 ))}
               </Box>
@@ -96,10 +129,18 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
       ))}
       <Dialog open={!!selectedPokemon} onClose={handleCloseDialog}>
         <DialogTitle>
-          Adding <Typography component="span" fontWeight="bold">{selectedPokemon?.pokemon}</Typography> to Inventory
+          Adding{' '}
+          <Typography component="span" fontWeight="bold">
+            {selectedPokemon?.pokemon}
+          </Typography>{' '}
+          to Inventory
         </DialogTitle>
         <DialogContent>
-          Are you sure you want to add <Typography component="span" fontWeight="bold">{selectedPokemon?.pokemon}</Typography> to your inventory?
+          Are you sure you want to add{' '}
+          <Typography component="span" fontWeight="bold">
+            {selectedPokemon?.pokemon}
+          </Typography>{' '}
+          to your inventory?
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
