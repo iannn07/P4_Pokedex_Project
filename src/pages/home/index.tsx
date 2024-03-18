@@ -2,6 +2,16 @@ import React, { useEffect, useState } from 'react';
 
 import { Card, Grid } from '@mui/material';
 
+import {
+  Box,
+  Button,
+  CardContent,
+  CardMedia,
+  FormControl,
+  Input,
+  Typography
+} from '@mui/material';
+
 import getColorForType from '@components/custom/type-color/type-color';
 import { pokemonsCommand } from '@models/pokemon/commands';
 import type { Pokemons } from '@models/pokemon/types';
@@ -21,10 +31,26 @@ const Home = () => {
   const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
 
   useEffect(() => {
-    dispatch(command.pokemons.load()).catch((err: unknown) => {
-      console.error(err);
-    });
-  }, []);
+    const fetchPokemons = async () => {
+      try {
+        // Get obtained Pokémon IDs from trainer activities
+
+        const obtainedPokemonIds = state?.trainer?.activities
+          ?.filter((activity) => activity.activity === 'Add')
+          .map((activity) => activity.pokemon.id) ?? [];
+
+        // Set obtainedPokemons state
+        setObtainedPokemons(obtainedPokemonIds);
+        // Load Pokemon data
+        await dispatch(command.pokemons.load());
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    // Fetch Pokémon data and update obtainedPokemons when trainer state changes
+    fetchPokemons();
+  }, [command.pokemons, dispatch, state.trainer, setObtainedPokemons]);
 
   const filteredPokemons =
     state?.pokemons?.pokemons?.filter(
@@ -62,8 +88,8 @@ const Home = () => {
       };
 
       dispatch(trainerCommand(data));
-
       dispatch(pokemonsCommand.edit(dataSync));
+      dispatch(command.inventory.add(pokemon));
       setObtainedPokemons([...obtainedPokemons, pokemon.id]);
     }
   };
@@ -102,8 +128,7 @@ const Home = () => {
           filteredPokemons={filteredPokemons}
           getColorForType={getColorForType}
           handleObtainPokemon={handleObtainPokemon}
-          obtainedPokemons={obtainedPokemons}
-          setObtainedPokemons={setObtainedPokemons} />
+          obtainedPokemons={obtainedPokemons} />
       </Grid>
     </>
   );

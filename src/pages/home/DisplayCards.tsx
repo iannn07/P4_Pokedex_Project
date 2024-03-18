@@ -24,22 +24,20 @@ interface DisplayCardsProps {
   readonly getColorForType: (type: string) => string
   readonly handleObtainPokemon: (pokemon: Pokemons) => void
   readonly obtainedPokemons: number[]
-  readonly setObtainedPokemons: React.Dispatch<React.SetStateAction<number[]>>
 }
 
 const DisplayCards: React.FC<DisplayCardsProps> = ({
   filteredPokemons,
   getColorForType,
   obtainedPokemons,
-  handleObtainPokemon,
-  setObtainedPokemons
+  handleObtainPokemon
 }) => {
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemons | null>(null);
 
   const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
 
   const handleAddToInventoryClick = (pokemon: Pokemons) => {
-    if (!pokemon.isObtained && !obtainedId(pokemon.id)) {
+    if (!obtainedId(pokemon.id)) {
       setSelectedPokemon(pokemon);
     }
   };
@@ -52,7 +50,6 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
     if (selectedPokemon) {
       handleObtainPokemon(selectedPokemon);
       setSelectedPokemon(null);
-      setObtainedPokemons([...obtainedPokemons, selectedPokemon.id]);
     }
   };
 
@@ -116,12 +113,12 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
                 ))}
               </Box>
               <Button
-                disabled={pokemon.isObtained === true}
+                disabled={obtainedId(pokemon.id)}
                 sx={{ mt: 6 }}
                 variant="contained"
                 onClick={() => handleAddToInventoryClick(pokemon)}
               >
-                {pokemon.isObtained === true ? 'Obtained' : 'Add to Inventory'}
+                {obtainedId(pokemon.id) ? 'Obtained' : 'Add to Inventory'}
               </Button>
             </CardContent>
           </Card>
