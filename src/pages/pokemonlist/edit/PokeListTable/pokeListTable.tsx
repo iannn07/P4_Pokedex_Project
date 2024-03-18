@@ -122,16 +122,24 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
                   {row.isObtained
-                    ? <img
-                        alt="Pokemon"
-                        src={row.image_url}
-                        style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
-                        width="100%" />
-                    : <img
-                        alt="Pokemon"
-                        src={row.image_url}
-                        style={{ maxWidth: '151.406px', maxHeight: '151.406px', filter: 'grayscale(100%)' }}
-                        width="100%" />}
+                    ? (
+                    <img
+                      alt="Pokemon"
+                      src={row.image_url}
+                      style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
+                      width="100%" />
+                    )
+                    : (
+                    <img
+                      alt="Pokemon"
+                      src={row.image_url}
+                      style={{
+                        maxWidth: '151.406px',
+                        maxHeight: '151.406px',
+                        filter: 'grayscale(100%)'
+                      }}
+                      width="100%" />
+                    )}
                 </TableCell>
                 <TableCell>{row.pokemon}</TableCell>
                 <TableCell>
@@ -200,11 +208,25 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
             {pokeLISTState?.pokemons?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  <img
-                    alt="Pokemon"
-                    src={row.image_url}
-                    style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
-                    width="100%" />
+                  {row.isObtained
+                    ? (
+                    <img
+                      alt="Pokemon"
+                      src={row.image_url}
+                      style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
+                      width="100%" />
+                    )
+                    : (
+                    <img
+                      alt="Pokemon"
+                      src={row.image_url}
+                      style={{
+                        maxWidth: '151.406px',
+                        maxHeight: '151.406px',
+                        filter: 'grayscale(100%)'
+                      }}
+                      width="100%" />
+                    )}
                 </TableCell>
                 <TableCell>{row.pokemon}</TableCell>
                 <TableCell>

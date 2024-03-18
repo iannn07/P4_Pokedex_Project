@@ -21,10 +21,26 @@ const Home = () => {
   const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
 
   useEffect(() => {
-    dispatch(command.pokemons.load()).catch((err: unknown) => {
-      console.error(err);
-    });
-  }, []);
+    const fetchPokemons = async () => {
+      try {
+        // Get obtained Pokémon IDs from trainer activities
+
+        const obtainedPokemonIds = state?.trainer?.activities
+          ?.filter((activity) => activity.activity === 'Add')
+          .map((activity) => activity.pokemon.id) ?? [];
+
+        // Set obtainedPokemons state
+        setObtainedPokemons(obtainedPokemonIds);
+        // Load Pokemon data
+        await dispatch(command.pokemons.load());
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    // Fetch Pokémon data and update obtainedPokemons when trainer state changes
+    fetchPokemons();
+  }, [command.pokemons, dispatch, state.trainer, setObtainedPokemons]);
 
   const combinedPokemons = [...state?.pokemons?.pokemons || [], ...state?.pokeList?.pokemons || []];
 
@@ -89,8 +105,7 @@ const Home = () => {
           filteredPokemons={filteredPokemons}
           getColorForType={getColorForType}
           handleObtainPokemon={handleObtainPokemon}
-          obtainedPokemons={obtainedPokemons}
-          setObtainedPokemons={setObtainedPokemons} />
+          obtainedPokemons={obtainedPokemons} />
       </Grid>
     </>
   );
