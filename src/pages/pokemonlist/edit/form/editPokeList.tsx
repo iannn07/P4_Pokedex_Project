@@ -62,8 +62,8 @@ const EditPokeList = ({
 
     setPokemon({
       image_url: '',
-      inInventory: false,
-      isObtained: false,
+      inInventory: pokemon.inInventory,
+      isObtained: pokemon.isObtained,
       abilities: [] as string[],
       evolutions: [] as string[],
       hitpoints: 0,
