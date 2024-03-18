@@ -2,16 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Card, Grid } from '@mui/material';
 
-import {
-  Box,
-  Button,
-  CardContent,
-  CardMedia,
-  FormControl,
-  Input,
-  Typography
-} from '@mui/material';
-
 import getColorForType from '@components/custom/type-color/type-color';
 import { pokemonsCommand } from '@models/pokemon/commands';
 import type { Pokemons } from '@models/pokemon/types';
