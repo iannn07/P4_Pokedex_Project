@@ -11,7 +11,8 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  InputAdornment
+  InputAdornment,
+  Slide
 } from '@mui/material';
 
 import {
@@ -80,7 +81,8 @@ const AddPokeList = ({
   return (
     <>
       {/* ADD */}
-      <Dialog open={showCard} onClose={handleToggleCard}>
+      <Dialog open={showCard} sx={{ overflow: 'hidden' }} onClose={handleToggleCard}>
+        <Slide direction="up" in={showCard} mountOnEnter={true} style={{ overflow: 'hidden' }} unmountOnExit={true}>
         <Card sx={{ mb: 5 }}>
           <DialogTitle
             component="div"
@@ -275,6 +277,7 @@ const AddPokeList = ({
             </Box>
           </DialogContent>
         </Card>
+        </Slide>
       </Dialog>
     </>
   );

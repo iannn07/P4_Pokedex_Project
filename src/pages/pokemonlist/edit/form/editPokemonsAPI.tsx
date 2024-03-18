@@ -12,7 +12,8 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  InputAdornment
+  InputAdornment,
+  Slide
 } from '@mui/material';
 
 import {
@@ -79,201 +80,212 @@ const EditPokemonsAPI = ({
   return (
     <>
       {/* Edit Card */}
-      <Dialog open={showEditAPICard} onClose={handleEditToggleCard}>
-        <Card sx={{ mb: 5 }}>
-          <DialogTitle
-            component="div"
-            sx={{
-              textAlign: 'center',
-              px: (theme) => [
-                `${theme.spacing(5)} !important`,
-                `${theme.spacing(15)} !important`
-              ],
-              pt: (theme) => [
-                `${theme.spacing(8)} !important`,
-                `${theme.spacing(12.5)} !important`
-              ]
-            }}
-          >
-            <Typography sx={{ mb: 2 }} variant="h3">
-              Edit Pokemon API
-            </Typography>
-          </DialogTitle>
-          <DialogContent
-            sx={{
-              px: (theme) => [
-                `${theme.spacing(5)} !important`,
-                `${theme.spacing(15)} !important`
-              ],
-              pb: (theme) => [
-                `${theme.spacing(8)} !important`,
-                `${theme.spacing(12.5)} !important`
-              ]
-            }}
-          >
-            <Box
+      <Dialog open={showEditAPICard} sx={{ overflow: 'hidden' }} onClose={handleEditToggleCard}>
+        <Slide
+          direction="up"
+          in={showEditAPICard}
+          mountOnEnter={true}
+          style={{ overflow: 'hidden' }}
+          unmountOnExit={true}
+        >
+          <Card sx={{ mb: 5 }}>
+            <DialogTitle
+              component="div"
               sx={{
-                display: 'flex',
                 textAlign: 'center',
-                alignItems: 'center',
-                flexDirection: 'column'
+                px: (theme) => [
+                  `${theme.spacing(5)} !important`,
+                  `${theme.spacing(15)} !important`
+                ],
+                pt: (theme) => [
+                  `${theme.spacing(8)} !important`,
+                  `${theme.spacing(12.5)} !important`
+                ]
               }}
             >
-              <Box>
-                <form onSubmit={handleEditAPIPokemon}>
-                  <Grid container={true} spacing={5}>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <World />
-                            </InputAdornment>
-                          )
-                        }}
-                        error={!pokemon.image_url}
-                        fullWidth={true}
-                        helperText={
-                          !pokemon.image_url
-                            ? 'Pokemon Image URL is required'
-                            : ''
-                        }
-                        label="Pokemon Image URL"
-                        required={true}
-                        value={pokemon.image_url}
-                        onChange={(e) => setPokemon({ ...pokemon, image_url: e.target.value })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Pokeball />
-                            </InputAdornment>
-                          )
-                        }}
-                        error={!pokemon.pokemon}
-                        fullWidth={true}
-                        helperText={
-                          !pokemon.pokemon ? 'Pokemon name is required' : ''
-                        }
-                        label="Pokemon Name"
-                        required={true}
-                        value={pokemon.pokemon}
-                        onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Category />
-                            </InputAdornment>
-                          )
-                        }}
-                        error={!pokemon.type}
-                        fullWidth={true}
-                        helperText={!pokemon.type ? 'Type is required' : ''}
-                        label="Type"
-                        required={true}
-                        value={pokemon.type}
-                        onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <MapPin />
-                            </InputAdornment>
-                          )
-                        }}
-                        error={!pokemon.location}
-                        fullWidth={true}
-                        helperText={
-                          !pokemon.location ? 'Location is required' : ''
-                        }
-                        label="Location"
-                        required={true}
-                        value={pokemon.location}
-                        onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <Accessible />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Abilities"
-                        value={pokemon.abilities.join(',')}
-                        onChange={(e) => setPokemon({
-                          ...pokemon,
-                          abilities: e.target.value.split(',')
-                        })} />
-                    </Grid>
-                    <Grid item={true} xs={12}>
-                      <CustomTextField
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <ChevronsUP />
-                            </InputAdornment>
-                          )
-                        }}
-                        fullWidth={true}
-                        label="Evolution"
-                        value={pokemon.evolutions.join(',')}
-                        onChange={(e) => setPokemon({
-                          ...pokemon,
-                          evolutions: e.target.value.split(',')
-                        })} />
-                    </Grid>
-                    <Box
-                      sx={{
-                        mt: 4,
-                        mx: 'auto',
-                        width: '100%',
-                        maxWidth: 360,
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column'
-                      }}
-                    >
-                      <Box>
-                        <Button
-                          disabled={
-                            !pokemon.image_url ||
-                            !pokemon.pokemon ||
-                            !pokemon.type ||
-                            !pokemon.location
+              <Typography sx={{ mb: 2 }} variant="h3">
+                Edit Pokemon API
+              </Typography>
+            </DialogTitle>
+            <DialogContent
+              sx={{
+                px: (theme) => [
+                  `${theme.spacing(5)} !important`,
+                  `${theme.spacing(15)} !important`
+                ],
+                pb: (theme) => [
+                  `${theme.spacing(8)} !important`,
+                  `${theme.spacing(12.5)} !important`
+                ]
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  textAlign: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column'
+                }}
+              >
+                <Box>
+                  <form onSubmit={handleEditAPIPokemon}>
+                    <Grid container={true} spacing={5}>
+                      <Grid item={true} xs={12}>
+                        <CustomTextField
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <World />
+                              </InputAdornment>
+                            )
+                          }}
+                          error={!pokemon.image_url}
+                          fullWidth={true}
+                          helperText={
+                            !pokemon.image_url
+                              ? 'Pokemon Image URL is required'
+                              : ''
                           }
-                          sx={{ mr: 2 }}
-                          type="submit"
-                          variant="contained"
-                          onClick={handleEditToggleCard}
-                        >
-                          Edit Pokemon
-                        </Button>
-                        <Button
-                          color="secondary"
-                          type="reset"
-                          variant="tonal"
-                          onClick={handleEditToggleCard}
-                        >
-                          Cancel
-                        </Button>
+                          label="Pokemon Image URL"
+                          required={true}
+                          value={pokemon.image_url}
+                          onChange={(e) => setPokemon({
+                            ...pokemon,
+                            image_url: e.target.value
+                          })} />
+                      </Grid>
+                      <Grid item={true} xs={12}>
+                        <CustomTextField
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <Pokeball />
+                              </InputAdornment>
+                            )
+                          }}
+                          error={!pokemon.pokemon}
+                          fullWidth={true}
+                          helperText={
+                            !pokemon.pokemon ? 'Pokemon name is required' : ''
+                          }
+                          label="Pokemon Name"
+                          required={true}
+                          value={pokemon.pokemon}
+                          onChange={(e) => setPokemon({ ...pokemon, pokemon: e.target.value })} />
+                      </Grid>
+                      <Grid item={true} xs={12}>
+                        <CustomTextField
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <Category />
+                              </InputAdornment>
+                            )
+                          }}
+                          error={!pokemon.type}
+                          fullWidth={true}
+                          helperText={!pokemon.type ? 'Type is required' : ''}
+                          label="Type"
+                          required={true}
+                          value={pokemon.type}
+                          onChange={(e) => setPokemon({ ...pokemon, type: e.target.value })} />
+                      </Grid>
+                      <Grid item={true} xs={12}>
+                        <CustomTextField
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <MapPin />
+                              </InputAdornment>
+                            )
+                          }}
+                          error={!pokemon.location}
+                          fullWidth={true}
+                          helperText={
+                            !pokemon.location ? 'Location is required' : ''
+                          }
+                          label="Location"
+                          required={true}
+                          value={pokemon.location}
+                          onChange={(e) => setPokemon({ ...pokemon, location: e.target.value })} />
+                      </Grid>
+                      <Grid item={true} xs={12}>
+                        <CustomTextField
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <Accessible />
+                              </InputAdornment>
+                            )
+                          }}
+                          fullWidth={true}
+                          label="Abilities"
+                          value={pokemon.abilities.join(',')}
+                          onChange={(e) => setPokemon({
+                            ...pokemon,
+                            abilities: e.target.value.split(',')
+                          })} />
+                      </Grid>
+                      <Grid item={true} xs={12}>
+                        <CustomTextField
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <ChevronsUP />
+                              </InputAdornment>
+                            )
+                          }}
+                          fullWidth={true}
+                          label="Evolution"
+                          value={pokemon.evolutions.join(',')}
+                          onChange={(e) => setPokemon({
+                            ...pokemon,
+                            evolutions: e.target.value.split(',')
+                          })} />
+                      </Grid>
+                      <Box
+                        sx={{
+                          mt: 4,
+                          mx: 'auto',
+                          width: '100%',
+                          maxWidth: 360,
+                          display: 'flex',
+                          alignItems: 'center',
+                          flexDirection: 'column'
+                        }}
+                      >
+                        <Box>
+                          <Button
+                            disabled={
+                              !pokemon.image_url ||
+                              !pokemon.pokemon ||
+                              !pokemon.type ||
+                              !pokemon.location
+                            }
+                            sx={{ mr: 2 }}
+                            type="submit"
+                            variant="contained"
+                            onClick={handleEditToggleCard}
+                          >
+                            Edit Pokemon
+                          </Button>
+                          <Button
+                            color="secondary"
+                            type="reset"
+                            variant="tonal"
+                            onClick={handleEditToggleCard}
+                          >
+                            Cancel
+                          </Button>
+                        </Box>
                       </Box>
-                    </Box>
-                  </Grid>
-                </form>
+                    </Grid>
+                  </form>
+                </Box>
               </Box>
-            </Box>
-          </DialogContent>
-        </Card>
+            </DialogContent>
+          </Card>
+        </Slide>
       </Dialog>
     </>
   );
