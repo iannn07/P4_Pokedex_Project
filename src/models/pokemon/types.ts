@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 interface Pokemons {
   abilities: string[]
+  date?: string
   evolutions: string[]
   hitpoints: number
   id: number

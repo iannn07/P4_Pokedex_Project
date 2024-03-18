@@ -1,9 +1,9 @@
-import type { Pokemons } from '@models/pokemon/types';
+import type { InventoryPokemons } from '@models/inventory/types';
 
 interface TrainerActivity {
   activity: string
   dateTime: string
-  pokemon: Pokemons
+  pokemon: InventoryPokemons
 }
 
 interface TrainerModel {

@@ -3,10 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Card, Grid } from '@mui/material';
 
 import getColorForType from '@components/custom/type-color/type-color';
-import { pokemonsCommand } from '@models/pokemon/commands';
 import type { Pokemons } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store';
-import { trainerCommand } from '@models/trainer/commands';
 
 import ButtonFilter from './ButtonFilter';
 import DisplayCards from './DisplayCards';
@@ -21,10 +19,12 @@ const Home = () => {
   const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
 
   useEffect(() => {
-    dispatch(command.pokemons.load()).catch((err: unknown) => {
-      console.error(err);
-    });
-  }, []);
+    if (!state?.pokemons?.pokemons) {
+      dispatch(command.pokemons.load()).catch((err: unknown) => {
+        console.error(err);
+      });
+    }
+  }, [command.pokemons, dispatch, state?.pokemons?.pokemons]);
 
   const combinedPokemons = [...state?.pokemons?.pokemons || [], ...state?.pokeList?.pokemons || []];
 
@@ -63,9 +63,9 @@ const Home = () => {
         isObtained: true
       };
 
-      dispatch(trainerCommand(data));
-
-      dispatch(pokemonsCommand.edit(dataSync));
+      dispatch(command.trainer(data));
+      dispatch(command.inventory.addInventory(dataSync));
+      dispatch(command.pokemons.edit(dataSync));
       setObtainedPokemons([...obtainedPokemons, pokemon.id]);
     }
   };

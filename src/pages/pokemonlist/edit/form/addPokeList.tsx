@@ -86,17 +86,15 @@ const AddPokeList = ({
       {/* ADD */}
       <Dialog
         open={showCard}
-        sx={{ overflow: 'hidden' }}
         onClose={handleToggleCard}
       >
         <Slide
           direction="up"
           in={showCard}
           mountOnEnter={true}
-          style={{ overflow: 'hidden' }}
           unmountOnExit={true}
         >
-          <Card sx={{ mb: 5 }}>
+          <Card sx={{ height: '100%' }}>
             <DialogTitle
               component="div"
               sx={{

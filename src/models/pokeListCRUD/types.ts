@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 interface PokeList {
   abilities: string[]
+  date?: string
   evolutions: string[]
   hitpoints: number
   id: number
