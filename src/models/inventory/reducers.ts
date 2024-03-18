@@ -52,7 +52,7 @@ const inventoryReducer = (
 
       return {
         ...state,
-        inventory: filteredPokemon ? [...filteredPokemon] : []
+        inventory: filteredPokemon ? [] : []
       };
     }
     case InventoryPokemonsActionType.EvolveInventory: {
@@ -66,6 +66,7 @@ const inventoryReducer = (
       const filteredPokemon: InventoryPokemons[] | undefined = state.inventory?.filter(
         (obtainedPokemon) => obtainedPokemon !== currentPokemon
       );
+
       if (filteredPokemon === undefined) {
         throw new Error('pokemon not in EVOLVE action');
       }

@@ -1,8 +1,12 @@
+/* eslint-disable sort-keys */
 /* eslint-disable logical-assignment-operators */
 /* eslint-disable react/jsx-key */
 
-import { Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 
+import { Box, Button, Card, CardContent, Typography } from '@mui/material';
+
+import { FishHook } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
 import { store } from '@models/store.js';
@@ -16,17 +20,30 @@ const Inventory: PageComponent = () => {
     <>
       <h1>Inventory</h1>
 
-      {!state?.inventory.inventory || state?.inventory.inventory.length === 0
+      {!state?.inventory.inventory ||
+      state?.inventory.inventory.length === 0
         ? (
-        <Box
-          sx={{
-            alignItems: 'center',
-            display: 'flex',
-            height: '85%',
-            justifyContent: 'center'
-          }}
-        >
-          <h3>No Pokemon Obtained</h3>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Card
+            sx={{
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              width: '50%'
+            }}
+          >
+            <CardContent>
+              <Typography sx={{ textAlign: 'center' }} variant="h5">
+                No Pokemon Obtained
+              </Typography>
+              <Link to="../home">
+                <Button sx={{ m: 10, height: '50px' }} variant="contained">
+                  <FishHook height="32px" width="32px" />
+                  Catch Pokemon Here :D
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
         </Box>
         )
         : <InventoryCard inventory={state.inventory.inventory} />}

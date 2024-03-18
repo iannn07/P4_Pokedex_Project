@@ -60,19 +60,6 @@ const EditPokemonsAPI = ({
   const handleEditAPIPokemon: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    setPokemon({
-      image_url: '',
-      inInventory: pokemon.inInventory,
-      isObtained: pokemon.isObtained,
-      abilities: [] as string[],
-      evolutions: [] as string[],
-      hitpoints: 0,
-      id: 0,
-      location: '',
-      pokemon: '',
-      type: ''
-    });
-
     const data: Pokemons = {
       ...pokemon
     };
