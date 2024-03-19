@@ -5,7 +5,7 @@ interface inventoryPokemons {
   evolutions: string[]
   hitpoints: number
   id: number
-  image_url?: string
+  image_url: string
   location: string
   pokemon: string
   type: string

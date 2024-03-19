@@ -51,10 +51,22 @@ const TrainerTable: React.FC<inventoryPokemonsModel> = ({ inventory }) => {
       dateTime: new Date().toLocaleString(),
       pokemon
     };
+    const updatePokemonData = {
+      ...pokemon,
+      inInventory: false
+
+    };
+    const updatePokemonEvolutionData = {
+      ...evolution,
+      inInventory: true,
+      isObtained: true
+    };
 
     handleChange(index);
     dispatch(trainerCommand(data));
     dispatch(command.inventory.evolve(pokemon, evolution));
+    dispatch(command.pokemons.edit(updatePokemonData));
+    dispatch(command.pokemons.edit(updatePokemonEvolutionData));
   };
   const handleRemove = (pokemon: inventoryPokemons) => {
     const data = {
@@ -62,9 +74,14 @@ const TrainerTable: React.FC<inventoryPokemonsModel> = ({ inventory }) => {
       dateTime: new Date().toLocaleString(),
       pokemon
     };
+    const updatePokemonData = {
+      ...pokemon,
+      inInventory: false
+    };
 
     dispatch(trainerCommand(data));
     dispatch(command.inventory.remove(pokemon));
+    dispatch(command.pokemons.edit(updatePokemonData));
   };
 
   return (
