@@ -36,12 +36,8 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
 }) => {
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemons | null>(null);
 
-  const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
-
   const handleAddToInventoryClick = (pokemon: Pokemons) => {
-    if (!pokemon.isObtained && !obtainedId(pokemon.id)) {
-      setSelectedPokemon(pokemon);
-    }
+    setSelectedPokemon(pokemon);
   };
 
   const handleCloseDialog = () => {
@@ -116,12 +112,12 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
                 ))}
               </Box>
               <Button
-                disabled={pokemon.isObtained === true}
+                disabled={pokemon.inInventory === true}
                 sx={{ mt: 6 }}
                 variant="contained"
                 onClick={() => handleAddToInventoryClick(pokemon)}
               >
-                {pokemon.isObtained === true ? 'Obtained' : 'Add to Inventory'}
+                {pokemon.inInventory === true ? 'Obtained' : 'Add to Inventory'}
               </Button>
             </CardContent>
           </Card>
