@@ -28,7 +28,7 @@ import {
 import CustomTextField from '@components/custom/text-field/text-field';
 import { Typography } from '@components/material.js';
 import type { PokeListAction, PokeListModel } from '@models/pokeListCRUD/types';
-import { useCommand } from '@models/store.js';
+import { useCommand, useStore } from '@models/store.js';
 
 import type PokemonProps from '../pokemonProps';
 
@@ -45,6 +45,7 @@ const AddPokeList = ({
   setShowCard,
   showCard
 }: props) => {
+  const [pokeAPIState, pokeAPIDispatch] = useStore((store) => store.pokemons);
   const command = useCommand((cmd) => cmd);
 
   const [pokemon, setPokemon] = useState<PokemonProps>({
@@ -78,7 +79,8 @@ const AddPokeList = ({
       pokemons: [pokemon]
     };
 
-    dispatchNewPokemon(data);
+    pokeLISTDispatch(command.pokeList.addPokemon(data));
+    pokeAPIDispatch(command.pokemons.add(data));
   };
 
   const handleToggleCard = () => {
@@ -88,10 +90,7 @@ const AddPokeList = ({
   return (
     <>
       {/* ADD */}
-      <Dialog
-        open={showCard}
-        onClose={handleToggleCard}
-      >
+      <Dialog open={showCard} onClose={handleToggleCard}>
         <Slide
           direction="up"
           in={showCard}
@@ -141,7 +140,10 @@ const AddPokeList = ({
                   <form onSubmit={handleNewPokemon}>
                     <Grid container={true} spacing={5}>
                       <Grid item={true} xs={12}>
-                        <Stack gap={5} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Stack
+                          gap={5}
+                          sx={{ display: 'flex', alignItems: 'center' }}
+                        >
                           <CustomTextField
                             InputProps={{
                               startAdornment: (

@@ -12,7 +12,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
 } from '@mui/material';
 
 import { Edit, Trash } from '@nxweb/icons/tabler';
@@ -22,7 +22,7 @@ import { Typography } from '@components/material.js';
 import type {
   PokeList,
   PokeListAction,
-  PokeListModel
+  PokeListModel,
 } from '@models/pokeListCRUD/types';
 import type { Pokemons } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store.js';
@@ -37,11 +37,11 @@ interface props {
    * Readonly pokeAPIDispatch: React.Dispatch<PokemonsAction>
    * readonly pokeAPIState: PokemonsModel | undefined
    */
-  readonly pokeLISTDispatch: React.Dispatch<PokeListAction>
-  readonly pokeLISTState: PokeListModel | undefined
+  readonly pokeLISTDispatch: React.Dispatch<PokeListAction>;
+  // readonly pokeLISTState: PokeListModel | undefined
 }
 
-const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
+const PokeListTable = ({ pokeLISTDispatch }: props) => {
   const [pokeAPIState, pokeAPIDispatch] = useStore((store) => store.pokemons);
   const [showEditAPICard, setShowEditAPICard] = useState<boolean>(false);
   const [showEditCard, setShowEditCard] = useState<boolean>(false);
@@ -55,7 +55,7 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
     id: 0,
     location: '',
     pokemon: '',
-    type: ''
+    type: '',
   });
   const command = useCommand((cmd) => cmd);
 
@@ -72,7 +72,7 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
 
     const updatedData: Pokemons = {
       ...data,
-      id: data.id
+      id: data.id,
     };
 
     setPokemon(updatedData);
@@ -85,7 +85,7 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
 
     const updatedData: PokeList = {
       ...data,
-      id: data.id
+      id: data.id,
     };
 
     setPokemon(updatedData);
@@ -121,25 +121,25 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
             {pokeAPIState?.pokemons?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  {row.isObtained
-                    ? (
+                  {row.isObtained ? (
                     <img
                       alt="Pokemon"
                       src={row.image_url}
                       style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
-                      width="100%" />
-                    )
-                    : (
+                      width="100%"
+                    />
+                  ) : (
                     <img
                       alt="Pokemon"
                       src={row.image_url}
                       style={{
                         maxWidth: '151.406px',
                         maxHeight: '151.406px',
-                        filter: 'grayscale(100%)'
+                        filter: 'grayscale(100%)',
                       }}
-                      width="100%" />
-                    )}
+                      width="100%"
+                    />
+                  )}
                 </TableCell>
                 <TableCell>{row.pokemon}</TableCell>
                 <TableCell>
@@ -148,7 +148,7 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
                       borderRadius: 8,
                       display: 'flex',
                       gap: 2,
-                      height: 'auto'
+                      height: 'auto',
                     }}
                   >
                     <Stack gap={2}>
@@ -161,14 +161,14 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
                             backgroundColor: getColorForType(type),
                             borderRadius: 8,
                             display: 'flex',
-                            gap: 8
+                            gap: 8,
                           }}
                         >
                           <Typography
                             sx={{
                               color: 'white',
                               fontSize: 10,
-                              letterSpacing: 1.5
+                              letterSpacing: 1.5,
                             }}
                           >
                             {type.trim()}
@@ -183,12 +183,16 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
                 </TableCell>
                 <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
                   <ul>
-                    {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
+                    {row.abilities.map((ability, index) => (
+                      <li key={index}>{ability}</li>
+                    ))}
                   </ul>
                 </TableCell>
                 <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
                   <ul>
-                    {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
+                    {row.evolutions.map((evo, index) => (
+                      <li key={index}>{evo}</li>
+                    ))}
                   </ul>
                 </TableCell>
                 <TableCell sx={{ textAlign: 'center' }}>
@@ -199,13 +203,14 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
                     <Button color="error" variant="contained">
                       <Trash
                         size={20}
-                        onClick={() => handleDeleteAPIPokemon(row.id)} />
+                        onClick={() => handleDeleteAPIPokemon(row.id)}
+                      />
                     </Button>
                   </Box>
                 </TableCell>
               </TableRow>
             ))}
-            {pokeLISTState?.pokemons?.map((row) => (
+            {/* {pokeLISTState?.pokemons?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
                   {row.isObtained
@@ -291,7 +296,7 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
                   </Box>
                 </TableCell>
               </TableRow>
-            ))}
+            ))} */}
           </TableBody>
         </Table>
       </Card>
@@ -302,7 +307,8 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
         pokemon={pokemon}
         setPokemon={setPokemon}
         setShowEditAPICard={setShowEditAPICard}
-        showEditAPICard={showEditAPICard} />
+        showEditAPICard={showEditAPICard}
+      />
 
       {/* Edit Card (New State) */}
       <EditPokeList
@@ -310,7 +316,8 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
         pokemon={pokemon}
         setPokemon={setPokemon}
         setShowEditCard={setShowEditCard}
-        showEditCard={showEditCard} />
+        showEditCard={showEditCard}
+      />
     </>
   );
 };

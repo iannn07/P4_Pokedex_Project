@@ -67,7 +67,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
     const dataSyncInvent = {
       ...pokemon,
       inInventory: false,
-      isObtained: false
+      isObtained: true
     };
 
     const dataSyncEvolution = {
@@ -94,7 +94,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
     const dataSyncInvent = {
       ...pokemon,
       inInventory: false,
-      isObtained: false
+      isObtained: true
     };
 
     dispatch(trainerCommand(data));
@@ -188,31 +188,29 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
                         <Typography sx={{ fontWeight: 'bold' }} variant="h6">
                           {data.date}
                         </Typography>
-                        {data?.evolutions?.map((evolution, index) => {
-                          const pokemonEvolutionExists =
-                            state?.pokemons?.pokemons?.find(
-                              (pokemon) => pokemon.pokemon === evolution
-                            );
+                        {!data?.evolutions
+                          ?.map((evolution) => {
+                            const evolutionExists: Pokemons | undefined =
+                              state?.pokemons?.pokemons?.find(
+                                (pokemon) => evolution === pokemon.pokemon
+                              );
+                            if (evolutionExists != null) return true;
 
-                          const isDisabled = !pokemonEvolutionExists;
-                          if (!pokemonEvolutionExists) {
-                            return null;
-                          }
-
-                          return (
-                            <Button
-                              disabled={isDisabled}
-                              key={index}
-                              sx={{ mt: 6 }}
-                              variant="contained"
-                              {...(pokemonEvolutionExists && {
-                                onClick: () => handleChange(index)
-                              })}
-                            >
-                              Check Evolution <ArrowRight />
-                            </Button>
-                          );
-                        })}
+                            return false;
+                          })
+                          .some(Boolean)
+                          ? null
+                          : (
+                          <Button
+                            disabled={false}
+                            key={index}
+                            sx={{ mt: 6 }}
+                            variant="contained"
+                            onClick={() => handleChange(index)}
+                          >
+                            Check Evolution <ArrowRight />
+                          </Button>
+                          )}
                       </CardContent>
                     </Grid>
                     <Collapse

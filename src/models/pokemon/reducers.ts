@@ -11,7 +11,7 @@ const pokemonsReducer = (
       if (!state.pokemons) {
         return {
           ...state,
-          ...action.payload
+          ...action.payload,
         };
       }
 
@@ -25,7 +25,7 @@ const pokemonsReducer = (
             return {
               ...updatedPokemon,
               inInventory: pokemon.inInventory,
-              isObtained: pokemon.isObtained
+              isObtained: pokemon.isObtained,
             };
           }
 
@@ -35,8 +35,30 @@ const pokemonsReducer = (
 
       return {
         ...state,
-        ...filteredPokemon
+        ...filteredPokemon,
       };
+    }
+    case PokemonsActionType.Add: {
+      const newPokemons = action.payload?.pokemons || [];
+      const pokemons = state.pokemons || [];
+
+      return {
+        ...state,
+        pokemons: [...pokemons, ...newPokemons],
+      };
+    }
+    case PokemonsActionType.Edit: {
+      const editedPokemon = action.payload;
+      if (editedPokemon) {
+        return {
+          ...state,
+          pokemons: state.pokemons?.map((pokemon) =>
+            pokemon.id === editedPokemon.id ? editedPokemon : pokemon
+          ),
+        };
+      }
+
+      return state;
     }
     case PokemonsActionType.Clear:
       return {};
@@ -45,21 +67,8 @@ const pokemonsReducer = (
         ...state,
         pokemons: state.pokemons?.filter(
           (pokemon) => pokemon.id !== action.payload
-        )
+        ),
       };
-    }
-    case PokemonsActionType.Edit: {
-      const editedPokemon = action.payload;
-      if (editedPokemon) {
-        return {
-          ...state,
-          pokemons: state.pokemons?.map((pokemon) => (pokemon.id === editedPokemon.id
-            ? { ...pokemon, ...editedPokemon }
-            : pokemon))
-        };
-      }
-
-      return state;
     }
 
     default:

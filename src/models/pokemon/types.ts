@@ -21,22 +21,31 @@ interface PokemonsModel {
 enum PokemonsActionType {
   Load = 'pokemons-load',
   Clear = 'pokemons-clear',
+  Add = 'pokemons-add',
   Delete = 'pokemons-delete',
   Edit = 'pokemons-edit'
 }
 
-type PokemonsAction = {
-  type: PokemonsActionType.Clear
-} | {
-  type: PokemonsActionType.Delete
-  payload?: number
-} | {
-  type: PokemonsActionType.Edit
-  payload?: Pokemons
-} | {
-  type: PokemonsActionType.Load
-  payload?: PokemonsModel
-};
+type PokemonsAction =
+  | {
+    type: PokemonsActionType.Add
+    payload?: PokemonsModel
+  }
+  | {
+    type: PokemonsActionType.Clear
+  }
+  | {
+    type: PokemonsActionType.Delete
+    payload?: number
+  }
+  | {
+    type: PokemonsActionType.Edit
+    payload?: Pokemons
+  }
+  | {
+    type: PokemonsActionType.Load
+    payload?: PokemonsModel
+  };
 
 export { PokemonsActionType };
 export type { PokemonsModel, PokemonsAction, Pokemons };

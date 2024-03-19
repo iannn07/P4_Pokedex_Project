@@ -11,7 +11,7 @@ import type { Pokemons, PokemonsAction, PokemonsModel } from './types.js';
 const pokemonsCommand = {
   clear: (): PokemonsAction => {
     return {
-      type: PokemonsActionType.Clear
+      type: PokemonsActionType.Clear,
     };
   },
   load: () => {
@@ -25,12 +25,12 @@ const pokemonsCommand = {
 
         if (res) {
           const payload: PokemonsModel = {
-            pokemons: res
+            pokemons: res,
           };
 
           dispatch({
             type: PokemonsActionType.Load,
-            payload
+            payload,
           });
         }
       } catch (err) {
@@ -41,15 +41,21 @@ const pokemonsCommand = {
   delete: (id: number): PokemonsAction => {
     return {
       type: PokemonsActionType.Delete,
-      payload: id
+      payload: id,
     };
   },
   edit: (pokemon: Pokemons): PokemonsAction => {
     return {
       payload: pokemon,
-      type: PokemonsActionType.Edit
+      type: PokemonsActionType.Edit,
     };
-  }
+  },
+  add: (value: PokemonsModel): PokemonsAction => {
+    return {
+      type: PokemonsActionType.Add,
+      payload: value,
+    };
+  },
 } satisfies Command<RootModel, PokemonsAction>;
 
 export { pokemonsCommand };

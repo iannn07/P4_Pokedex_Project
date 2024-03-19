@@ -32,7 +32,7 @@ const EditPokemonList: PageComponent = () => {
           mb: 8,
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <Typography
@@ -41,7 +41,7 @@ const EditPokemonList: PageComponent = () => {
             p: 2,
             borderRadius: 1,
             border: '2px solid',
-            borderColor: 'error.main'
+            borderColor: 'error.main',
           }}
           variant="subtitle1"
         >
@@ -72,12 +72,14 @@ const EditPokemonList: PageComponent = () => {
         pokeLISTDispatch={pokeLISTDispatch}
         pokeLISTState={pokeLISTState}
         setShowCard={setShowCard}
-        showCard={showCard} />
+        showCard={showCard}
+      />
 
       {/* PokeListTable */}
       <PokeListTable
         pokeLISTDispatch={pokeLISTDispatch}
-        pokeLISTState={pokeLISTState} />
+        // pokeLISTState={pokeLISTState}
+      />
     </>
   );
 };
