@@ -19,15 +19,18 @@ import { Edit, Trash } from '@nxweb/icons/tabler';
 
 import getColorForType from '@components/custom/type-color/type-color';
 import { Typography } from '@components/material.js';
+import type { InventoryPokemons, InventoryPokemonsAction } from '@models/inventory/types';
 import type { Pokemons, PokemonsAction, PokemonsModel } from '@models/pokemon/types';
 import { useCommand } from '@models/store.js';
+import { trainerCommand } from '@models/trainer/commands';
+import type { TrainerAction } from '@models/trainer/types';
 
 import EditPokeList from '../form/editPokeList';
 
 import type PokemonProps from '../pokemonProps';
 
 interface props {
-  readonly dispatch: React.Dispatch<PokemonsAction>
+  readonly dispatch: React.Dispatch<InventoryPokemonsAction | PokemonsAction | TrainerAction>
   readonly state: PokemonsModel | undefined
 }
 
@@ -47,12 +50,12 @@ const PokeListTable = ({ state, dispatch }: props) => {
   });
   const command = useCommand((cmd) => cmd);
 
-  const handleEditAPIToggleCard = () => {
+  const handleEditToggleCard = () => {
     setShowEditCard(!showEditCard);
   };
 
-  const handleEditIDAPI = (data: Pokemons) => {
-    handleEditAPIToggleCard();
+  const handleEditID = (data: Pokemons) => {
+    handleEditToggleCard();
 
     const updatedData: Pokemons = {
       ...data,
@@ -64,8 +67,16 @@ const PokeListTable = ({ state, dispatch }: props) => {
     dispatch(command.pokemons.edit(updatedData));
   };
 
-  const handleDeleteAPIPokemon = (data: number) => {
+  const handleDeletePokemon = (data: number, pokemon: InventoryPokemons) => {
+    const updateTrainerLog = {
+      activity: 'Delete',
+      dateTime: new Date().toLocaleString(),
+      pokemon
+    };
+
+    dispatch(trainerCommand(updateTrainerLog));
     dispatch(command.pokemons.delete(data));
+    dispatch(command.inventory.removeInventory(pokemon));
   };
 
   return (
@@ -161,12 +172,12 @@ const PokeListTable = ({ state, dispatch }: props) => {
                 <TableCell sx={{ textAlign: 'center' }}>
                   <Box sx={{ display: 'flex', gap: 5 }}>
                     <Button color="warning" variant="contained">
-                      <Edit size={20} onClick={() => handleEditIDAPI(row)} />
+                      <Edit size={20} onClick={() => handleEditID(row)} />
                     </Button>
                     <Button color="error" variant="contained">
                       <Trash
                         size={20}
-                        onClick={() => handleDeleteAPIPokemon(row.id)} />
+                        onClick={() => handleDeletePokemon(row.id, row)} />
                     </Button>
                   </Box>
                 </TableCell>
@@ -176,7 +187,7 @@ const PokeListTable = ({ state, dispatch }: props) => {
         </Table>
       </Card>
 
-      {/* Edit Card (API State) */}
+      {/* Edit Card ( State) */}
       <EditPokeList
         dispatch={dispatch}
         pokemon={pokemon}
