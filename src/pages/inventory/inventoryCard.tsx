@@ -192,7 +192,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
                               state?.pokemons?.pokemons?.find(
                                 (pokemon) => evolution === pokemon.pokemon
                               );
-                            if (evolutionExists !== null) return true;
+                            if (evolutionExists != null) return true;
 
                             return false;
                           })
