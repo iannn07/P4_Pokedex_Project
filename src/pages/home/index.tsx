@@ -28,8 +28,7 @@ const Home = () => {
   }, [command.pokemons, dispatch, state?.pokemons?.pokemons]);
 
   const combinedPokemons = [
-    ...state?.pokemons?.pokemons || [],
-    ...state?.pokeList?.pokemons || []
+    ...state?.pokemons?.pokemons || []
   ].flat();
 
   const filteredPokemons =

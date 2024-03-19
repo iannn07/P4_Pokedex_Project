@@ -18,6 +18,7 @@ import {
 
 import { Card, Grid } from '@components/material';
 import type { Pokemons } from '@models/pokemon/types';
+import { PokeList } from '@models/pokeListCRUD/types';
 
 interface DisplayCardsProps {
   readonly filteredPokemons: Pokemons[]
