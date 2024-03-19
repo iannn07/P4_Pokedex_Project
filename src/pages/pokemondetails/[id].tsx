@@ -10,21 +10,20 @@ import PokemonDetails from './pokemonDetailsCard';
 
 const Details: PageComponent = () => {
   const { id } = useParams();
-  const [state, dispatch] = useStore((store) => store.pokemons);
+  const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
 
-  const pokemon = useMemo(() => state?.pokemons?.find((o) => o.id.toString() === id), [state, id]);
+  const pokemon = state?.pokemons?.pokemons?.find((o) => o.id.toString() === id);
+
+  useMemo(() => pokemon, [pokemon]);
 
   useEffect(() => {
-    dispatch(command.pokemons.load())
-      .catch((err: unknown) => {
+    if (!state?.pokemons?.pokemons) {
+      dispatch(command.pokemons.load()).catch((err: unknown) => {
         console.error(err);
       });
-
-    return () => {
-      dispatch(command.pokemons.clear());
-    };
-  }, [command.pokemons, dispatch]);
+    }
+  }, [command.pokemons, dispatch, state?.pokemons?.pokemons]);
 
   return <PokemonDetails pokemon={pokemon} />;
 };

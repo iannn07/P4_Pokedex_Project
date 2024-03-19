@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Box, Button } from '@mui/material';
@@ -9,31 +9,29 @@ import { ArrowBackUP, Plus } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
 import { Typography } from '@components/material.js';
-import { useStore } from '@models/store.js';
+import { useCommand, useStore } from '@models/store.js';
 
 import PokeListTable from './PokeListTable/pokeListTable';
 import AddPokeList from './form/addPokeList';
 
-import type PokemonProps from './pokemonProps';
-
 const EditPokemonList: PageComponent = () => {
-  const [pokeLISTState, pokeLISTDispatch] = useStore((store) => store.pokeList);
+  const [state, dispatch] = useStore((store) => store);
   const [showCard, setShowCard] = useState<boolean>(false);
-  const [pokemon, setPokemon] = useState<PokemonProps>({
-    abilities: [] as string[],
-    evolutions: [] as string[],
-    hitpoints: 0,
-    id: 0,
-    location: '',
-    pokemon: '',
-    type: ''
-  });
+  const command = useCommand((cmd) => cmd);
 
   const handleToggleCard = () => {
     setShowCard(!showCard);
   };
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!state?.pokemons?.pokemons) {
+      dispatch(command.pokemons.load()).catch((err: unknown) => {
+        console.error(err);
+      });
+    }
+  }, [command.pokemons, dispatch, state?.pokemons?.pokemons]);
 
   return (
     <>
@@ -80,17 +78,13 @@ const EditPokemonList: PageComponent = () => {
 
       {/* Add Card */}
       <AddPokeList
-        pokeLISTDispatch={pokeLISTDispatch}
-        pokeLISTState={pokeLISTState}
         setShowCard={setShowCard}
         showCard={showCard} />
 
       {/* PokeListTable */}
       <PokeListTable
-        pokeLISTDispatch={pokeLISTDispatch}
-        pokeLISTState={pokeLISTState}
-        pokemon={pokemon}
-        setPokemon={setPokemon} />
+        dispatch={dispatch}
+        state={state?.pokemons} />
     </>
   );
 };
