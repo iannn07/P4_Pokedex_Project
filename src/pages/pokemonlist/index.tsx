@@ -31,7 +31,10 @@ const PokemonList: PageComponent = () => {
   const rowsAPI: GridRowsProp = [
     ...state?.pokemons?.pokemons?.map((row) => ({
       id: row.id,
-      Pokemon: row.image_url,
+      Pokemon: {
+        image: row.image_url,
+        isObtained: row.isObtained
+      },
       Name: row.pokemon,
       Type: row.type,
       Location: row.location,
@@ -43,7 +46,10 @@ const PokemonList: PageComponent = () => {
   const rowsState: GridRowsProp = [
     ...state?.pokeList?.pokemons?.map((row) => ({
       id: row.id,
-      Pokemon: row.image_url,
+      Pokemon: {
+        image: row.image_url,
+        isObtained: row.isObtained
+      },
       Name: row.pokemon,
       Type: row.type,
       Location: row.location,
@@ -59,7 +65,13 @@ const PokemonList: PageComponent = () => {
       field: 'Pokemon',
       headerName: 'Pokemon',
       width: 200,
-      renderCell: (params) => <img alt="Pokemon" src={params.value} style={{ width: '100%' }} />,
+      renderCell: (params) => {
+        if (!params.value.isObtained) {
+          return <img alt="Pokemon" src={params.value.image} style={{ width: '100%', filter: 'grayscale(100%)' }} />;
+        }
+
+        return <img alt="Pokemon" src={params.value.image} style={{ width: '100%' }} />;
+      },
       sortable: false,
       filterable: false
     },
