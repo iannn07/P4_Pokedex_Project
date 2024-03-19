@@ -5,12 +5,12 @@ import { Box } from '@mui/material';
 
 import type { PageComponent } from '@nxweb/react';
 
-import { store } from '@models/store.js';
+import { useStore } from '@models/store.js';
 
 import InventoryCard from './inventoryCard';
 
 const Inventory: PageComponent = () => {
-  const state = store.getState();
+  const [state] = useStore((store) => store.inventory);
 
   /*
    * UseEffect(() => {
@@ -30,7 +30,7 @@ const Inventory: PageComponent = () => {
     <>
       <h1>Inventory</h1>
 
-      {!state?.inventory.inventory || state?.inventory.inventory.length === 0
+      {!state?.inventory || state?.inventory.length === 0
         ? (
         <Box
           sx={{
@@ -43,7 +43,7 @@ const Inventory: PageComponent = () => {
           <h3>No Pokemon Obtained</h3>
         </Box>
         )
-        : <InventoryCard inventory={state.inventory.inventory} />}
+        : <InventoryCard inventory={state.inventory} />}
     </>
   );
 };
