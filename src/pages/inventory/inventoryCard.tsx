@@ -30,22 +30,7 @@ import { trainerCommand } from '@models/trainer/commands';
 const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
   const [checked, setChecked] = useState<boolean[]>([]);
   const [state, dispatch] = useStore((store) => store);
-  const [isInInvent, setIsInInvent] = useState<boolean>(true);
   const command = useCommand((cmd) => cmd);
-
-  const handleIsInInvent = () => {
-    setIsInInvent(!isInInvent);
-  };
-
-  const handleIsEvolved = (
-    pokemon: InventoryPokemons,
-    evolution: InventoryPokemons,
-    dataSync: Pokemons
-  ) => {
-    setIsInInvent(isInInvent);
-    dispatch(command.inventory.evolveInventory(pokemon, evolution));
-    dispatch(command.pokemons.edit(dataSync));
-  };
 
   const handleChange = (index: number) => {
     const newChecked = [...checked];
@@ -57,6 +42,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
 
     setChecked(newChecked);
   };
+
   const handleEvolve = (
     pokemon: InventoryPokemons,
     evolution: InventoryPokemons,
@@ -68,14 +54,23 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
       pokemon
     };
 
-    const dataSync: Pokemons = {
-      ...evolution
+    const dataSyncInvent = {
+      ...pokemon,
+      inInventory: false,
+      isObtained: false
+    };
+
+    const dataSyncEvolution = {
+      ...evolution,
+      inInventory: true,
+      isObtained: true
     };
 
     dispatch(trainerCommand(data));
     handleChange(index);
-    handleIsInInvent();
-    handleIsEvolved(pokemon, evolution, dataSync);
+    dispatch(command.inventory.evolveInventory(pokemon, evolution));
+    dispatch(command.pokemons.edit(dataSyncInvent));
+    dispatch(command.pokemons.edit(dataSyncEvolution));
   };
 
   const handleRemove = (pokemon: InventoryPokemons) => {
@@ -85,20 +80,24 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
       pokemon
     };
 
-    const dataSync: Pokemons = {
+    const dataSyncInvent = {
       ...pokemon,
       inInventory: false,
       isObtained: false
     };
 
-    handleIsInInvent();
     dispatch(trainerCommand(data));
-    dispatch(command.pokemons.edit(dataSync));
-    dispatch(command.inventory.removeInventory(dataSync));
+    dispatch(command.inventory.removeInventory(pokemon));
+    dispatch(command.pokemons.edit(dataSyncInvent));
   };
 
   return (
-    <Slide direction="up" in={isInInvent} mountOnEnter={true} unmountOnExit={true}>
+    <Slide
+      direction="up"
+      in={true}
+      mountOnEnter={true}
+      unmountOnExit={true}
+    >
       <Box sx={{ overflowX: 'auto' }}>
         <Grid
           container={true}

@@ -9,19 +9,18 @@ import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import { FishHook } from '@nxweb/icons/tabler';
 import type { PageComponent } from '@nxweb/react';
 
-import { store } from '@models/store.js';
+import { useStore } from '@models/store';
 
 import InventoryCard from './inventoryCard';
 
 const Inventory: PageComponent = () => {
-  const state = store.getState();
+  const [state] = useStore((store) => store.inventory);
 
   return (
     <>
       <h1>Inventory</h1>
 
-      {!state?.inventory.inventory ||
-      state?.inventory.inventory.length === 0
+      {!state?.inventory || state?.inventory.length === 0
         ? (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Card
@@ -46,7 +45,7 @@ const Inventory: PageComponent = () => {
           </Card>
         </Box>
         )
-        : <InventoryCard inventory={state.inventory.inventory} />}
+        : <InventoryCard inventory={state.inventory} />}
     </>
   );
 };

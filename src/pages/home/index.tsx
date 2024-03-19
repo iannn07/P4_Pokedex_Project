@@ -27,10 +27,10 @@ const Home = () => {
     }
   }, [command.pokemons, dispatch, state?.pokemons?.pokemons]);
 
-  // const combinedPokemons = [...state?.pokemons?.pokemons || [], ...state?.pokeList?.pokemons || []];
+  const combinedPokemons = [...state?.pokemons?.pokemons || [], ...state?.pokeList?.pokemons || []];
 
   const filteredPokemons =
-    state.pokemons?.pokemons?.filter(
+    combinedPokemons.filter(
       (pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
         pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())
     ) ?? [];

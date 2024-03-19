@@ -52,7 +52,7 @@ const inventoryReducer = (
 
       return {
         ...state,
-        inventory: filteredPokemon ? [] : []
+        inventory: filteredPokemon ? [...filteredPokemon] : []
       };
     }
     case InventoryPokemonsActionType.EvolveInventory: {
