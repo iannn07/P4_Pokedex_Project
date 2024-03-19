@@ -27,24 +27,21 @@ import {
 
 import CustomTextField from '@components/custom/text-field/text-field';
 import { Typography } from '@components/material.js';
-import type { PokeListAction, PokeListModel } from '@models/pokeListCRUD/types';
-import { useCommand } from '@models/store.js';
+import type { PokeListModel } from '@models/pokeListCRUD/types';
+import { useCommand, useStore } from '@models/store.js';
 
 import type PokemonProps from '../pokemonProps';
 
 interface props {
-  readonly pokeLISTDispatch: React.Dispatch<PokeListAction>
-  readonly pokeLISTState: PokeListModel | undefined
   readonly setShowCard: React.Dispatch<React.SetStateAction<boolean>>
   readonly showCard: boolean
 }
 
 const AddPokeList = ({
-  pokeLISTDispatch,
-  pokeLISTState,
   setShowCard,
   showCard
 }: props) => {
+  const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
 
   const [pokemon, setPokemon] = useState<PokemonProps>({
@@ -61,16 +58,21 @@ const AddPokeList = ({
   });
 
   const dispatchNewPokemon = (data: PokeListModel) => {
-    pokeLISTDispatch(command.pokeList.addPokemon(data));
+    dispatch(command.pokeList.addPokemon(data));
   };
 
   const handleNewPokemon: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const pokeListID = pokeLISTState?.pokemons?.length;
+    const pokeListID = state?.pokeList?.pokemons?.length;
 
     setPokemon({
       ...pokemon,
+      image_url: '',
+      pokemon: '',
+      type: '',
+      location: '',
+      hitpoints: Math.round(Math.random() * 10000),
       id: pokeListID ? pokeListID + 1 : 1
     });
 

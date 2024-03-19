@@ -69,8 +69,6 @@ const EditPokemonList: PageComponent = () => {
 
       {/* Add Card */}
       <AddPokeList
-        pokeLISTDispatch={pokeLISTDispatch}
-        pokeLISTState={pokeLISTState}
         setShowCard={setShowCard}
         showCard={showCard} />
 
