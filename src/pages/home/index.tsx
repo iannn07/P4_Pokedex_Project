@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, Grid } from '@mui/material';
 
 import getColorForType from '@components/custom/type-color/type-color';
+import type { PokeList } from '@models/pokeListCRUD/types';
 import type { Pokemons } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store';
 
@@ -26,10 +27,10 @@ const Home = () => {
     }
   }, [command.pokemons, dispatch, state?.pokemons?.pokemons]);
 
-  const combinedPokemons = [...state?.pokemons?.pokemons || [], ...state?.pokeList?.pokemons || []];
+  // const combinedPokemons = [...state?.pokemons?.pokemons || [], ...state?.pokeList?.pokemons || []];
 
   const filteredPokemons =
-    combinedPokemons.filter(
+    state.pokemons?.pokemons?.filter(
       (pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
         pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())
     ) ?? [];
@@ -45,7 +46,7 @@ const Home = () => {
 
   const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
 
-  const handleObtainPokemon = (pokemon: Pokemons) => {
+  const handleObtainPokemon = (pokemon: PokeList | Pokemons) => {
     if (!obtainedId(pokemon.id)) {
       const data = {
         activity: 'Add',

@@ -17,10 +17,11 @@ import {
 } from '@mui/material';
 
 import { Card, Grid } from '@components/material';
+import type { PokeList } from '@models/pokeListCRUD/types';
 import type { Pokemons } from '@models/pokemon/types';
 
 interface DisplayCardsProps {
-  readonly filteredPokemons: Pokemons[]
+  readonly filteredPokemons: PokeList[] | Pokemons[]
   readonly getColorForType: (type: string) => string
   readonly handleObtainPokemon: (pokemon: Pokemons) => void
   readonly obtainedPokemons: number[]
@@ -34,11 +35,11 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
   handleObtainPokemon,
   setObtainedPokemons
 }) => {
-  const [selectedPokemon, setSelectedPokemon] = useState<Pokemons | null>(null);
+  const [selectedPokemon, setSelectedPokemon] = useState<PokeList | Pokemons | null>(null);
 
   const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
 
-  const handleAddToInventoryClick = (pokemon: Pokemons) => {
+  const handleAddToInventoryClick = (pokemon: PokeList | Pokemons) => {
     if (!pokemon.isObtained && !obtainedId(pokemon.id)) {
       setSelectedPokemon(pokemon);
     }
