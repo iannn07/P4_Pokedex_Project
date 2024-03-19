@@ -310,14 +310,6 @@ const PokeListTable = ({ pokeLISTDispatch }: props) => {
         showEditAPICard={showEditAPICard}
       />
 
-      {/* Edit Card (New State) */}
-      <EditPokeList
-        pokeLISTDispatch={pokeLISTDispatch}
-        pokemon={pokemon}
-        setPokemon={setPokemon}
-        setShowEditCard={setShowEditCard}
-        showEditCard={showEditCard}
-      />
     </>
   );
 };
