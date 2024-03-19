@@ -1,3 +1,5 @@
+/* eslint-disable sort-keys */
+/* eslint-disable no-alert */
 /* eslint-disable @stylistic/js/linebreak-style */
 /* eslint-disable react/display-name */
 import React, { useState } from 'react';

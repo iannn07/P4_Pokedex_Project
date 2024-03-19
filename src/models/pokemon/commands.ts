@@ -9,9 +9,27 @@ import { PokemonsActionType } from './types.js';
 import type { Pokemons, PokemonsAction, PokemonsModel } from './types.js';
 
 const pokemonsCommand = {
+  add: (pokemon: PokemonsModel): PokemonsAction => {
+    return {
+      type: PokemonsActionType.Add,
+      payload: pokemon
+    };
+  },
   clear: (): PokemonsAction => {
     return {
       type: PokemonsActionType.Clear
+    };
+  },
+  delete: (id: number): PokemonsAction => {
+    return {
+      type: PokemonsActionType.Delete,
+      payload: id
+    };
+  },
+  edit: (pokemon: Pokemons): PokemonsAction => {
+    return {
+      type: PokemonsActionType.Edit,
+      payload: pokemon
     };
   },
   load: () => {
@@ -24,30 +42,18 @@ const pokemonsCommand = {
         const res = await fetch(apiUrl).then((res) => res.json());
 
         if (res) {
-          const value: PokemonsModel = {
+          const payload: PokemonsModel = {
             pokemons: res
           };
 
           dispatch({
             type: PokemonsActionType.Load,
-            value
+            payload
           });
         }
       } catch (err) {
         console.error(err);
       }
-    };
-  },
-  delete: (id: number): PokemonsAction => {
-    return {
-      type: PokemonsActionType.Delete,
-      value: id
-    };
-  },
-  edit: (pokemon: Pokemons): PokemonsAction => {
-    return {
-      type: PokemonsActionType.Edit,
-      value: pokemon
     };
   }
 } satisfies Command<RootModel, PokemonsAction>;

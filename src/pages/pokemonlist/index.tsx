@@ -12,28 +12,29 @@ import type { PageComponent } from '@nxweb/react';
 import CustomToolbar from '@components/custom/table/data-grid/custom-toolbar';
 import getColorForType from '@components/custom/type-color/type-color';
 import { Typography } from '@components/material.js';
-import { useCommand, useStore } from '@models/store.js';
+import { useCommand, useStore } from '@models/store';
 
 import type { GridColDef, GridRowsProp } from '@mui/x-data-grid';
 
 const PokemonList: PageComponent = () => {
-  const [state, dispatch] = useStore((store) => store.pokemons);
+  const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
 
   useEffect(() => {
-    dispatch(command.pokemons.load()).catch((err: unknown) => {
-      console.error(err);
-    });
-
-    return () => {
-      dispatch(command.pokemons.clear());
-    };
-  }, []);
+    if (!state?.pokemons?.pokemons) {
+      dispatch(command.pokemons.load()).catch((err: unknown) => {
+        console.error(err);
+      });
+    }
+  }, [command.pokemons, dispatch, state?.pokemons?.pokemons]);
 
   const rows: GridRowsProp = [
-    ...state?.pokemons?.map((row, index) => ({
-      id: index + 1, // Use the array index as the ID
-      Pokemon: row.image_url,
+    ...state?.pokemons?.pokemons?.map((row) => ({
+      id: row.id,
+      Pokemon: {
+        image: row.image_url,
+        isObtained: row.isObtained
+      },
       Name: row.pokemon,
       Type: row.type,
       Location: row.location,
@@ -47,7 +48,13 @@ const PokemonList: PageComponent = () => {
       field: 'Pokemon',
       headerName: 'Pokemon',
       width: 200,
-      renderCell: (params) => <img alt="Pokemon" src={params.value} style={{ width: '100%' }} />,
+      renderCell: (params) => {
+        if (!params.value.isObtained) {
+          return <img alt="Pokemon" src={params.value.image} style={{ width: '100%', filter: 'grayscale(100%)' }} />;
+        }
+
+        return <img alt="Pokemon" src={params.value.image} style={{ width: '100%' }} />;
+      },
       sortable: false,
       filterable: false
     },
@@ -125,7 +132,11 @@ const PokemonList: PageComponent = () => {
         </Box>
         <Box sx={{ display: 'flex' }}>
           <Link to="./edit/editPokemonList">
-            <Button color="warning" sx={{ m: 2, height: '50px' }} variant="contained">
+            <Button
+              color="warning"
+              sx={{ m: 2, height: '50px' }}
+              variant="contained"
+            >
               <Edit height="32px" width="32px" />
               Edit Pokemon List
             </Button>

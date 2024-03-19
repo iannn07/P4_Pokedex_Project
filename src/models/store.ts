@@ -7,32 +7,32 @@ import {
   createStoreProvider
 } from '@nxweb/react';
 
-import { pokeListCommand } from './pokeListCRUD/commands';
-import { initialState as pokeListInitialState, pokeListReducer } from './pokeListCRUD/reducers';
-import { pokemonsCommand } from './pokemon/commands';
-import { pokemonsReducer } from './pokemon/reducers';
-import { trainerCommand } from './trainer/commands';
-import { initialTrainerState, trainerReducer } from './trainer/reducers';
+import { inventoryCommand } from './inventory/commands.js';
+import { inventoryReducer } from './inventory/reducers.js';
+import { pokemonsCommand } from './pokemon/commands.js';
+import { pokemonsReducer } from './pokemon/reducers.js';
+import { trainerCommand } from './trainer/commands.js';
+import { initialTrainerState, trainerReducer } from './trainer/reducers.js';
 
-import type { RootAction, RootModel } from './types';
+import type { RootAction, RootModel } from './types.js';
 
 // ** Init reducers
 const rootReducer = combineReducers({
+  inventory: inventoryReducer,
   pokemons: pokemonsReducer,
-  pokeList: pokeListReducer,
   trainer: trainerReducer
 });
 
 // ** Init models
 const rootModel: RootModel = {
-  pokeList: pokeListInitialState,
+  inventory: {},
   trainer: initialTrainerState,
   pokemons: {}
 };
 
 // ** Init commands
 const rootCommand = {
-  pokeList: pokeListCommand,
+  inventory: inventoryCommand,
   trainer: trainerCommand,
   pokemons: pokemonsCommand
 };
