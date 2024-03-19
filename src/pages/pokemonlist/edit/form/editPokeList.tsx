@@ -85,17 +85,15 @@ const EditPokeList = ({
       {/* Edit Card */}
       <Dialog
         open={showEditCard}
-        sx={{ overflow: 'hidden' }}
         onClose={handleEditToggleCard}
       >
         <Slide
           direction="up"
           in={showEditCard}
           mountOnEnter={true}
-          style={{ overflow: 'hidden' }}
           unmountOnExit={true}
         >
-          <Card sx={{ mb: 5 }}>
+          <Card sx={{ height: '100%' }}>
             <DialogTitle
               component="div"
               sx={{

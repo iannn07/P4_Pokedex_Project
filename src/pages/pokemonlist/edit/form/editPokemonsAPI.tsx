@@ -83,17 +83,15 @@ const EditPokemonsAPI = ({
       {/* Edit Card */}
       <Dialog
         open={showEditAPICard}
-        sx={{ overflow: 'hidden' }}
         onClose={handleEditToggleCard}
       >
         <Slide
           direction="up"
           in={showEditAPICard}
           mountOnEnter={true}
-          style={{ overflow: 'hidden' }}
           unmountOnExit={true}
         >
-          <Card sx={{ mb: 5 }}>
+          <Card sx={{ height: '100%' }}>
             <DialogTitle
               component="div"
               sx={{
