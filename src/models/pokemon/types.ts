@@ -19,13 +19,17 @@ interface PokemonsModel {
 }
 
 enum PokemonsActionType {
-  Load = 'pokemons-load',
+  Add = 'pokemons-add',
   Clear = 'pokemons-clear',
   Delete = 'pokemons-delete',
-  Edit = 'pokemons-edit'
+  Edit = 'pokemons-edit',
+  Load = 'pokemons-load'
 }
 
 type PokemonsAction = {
+  type: PokemonsActionType.Add
+  payload?: PokemonsModel
+} | {
   type: PokemonsActionType.Clear
 } | {
   type: PokemonsActionType.Delete

@@ -7,35 +7,13 @@ const pokemonsReducer = (
   action: Readonly<PokemonsAction>
 ): PokemonsModel => {
   switch (action.type) {
-    case PokemonsActionType.Load: {
-      if (!state.pokemons) {
-        return {
-          ...state,
-          ...action.payload
-        };
-      }
-
-      const filteredPokemon: Pokemons[] | undefined = state.pokemons?.map(
-        (pokemon) => {
-          const updatedPokemon = action.payload?.pokemons?.find(
-            (newPokemon) => newPokemon.id === pokemon.id
-          );
-
-          if (updatedPokemon) {
-            return {
-              ...updatedPokemon,
-              inInventory: pokemon.inInventory,
-              isObtained: pokemon.isObtained
-            };
-          }
-
-          return pokemon;
-        }
-      );
+    case PokemonsActionType.Add: {
+      const newPokemons = action.payload?.pokemons || [];
+      const pokemons = state.pokemons || [];
 
       return {
         ...state,
-        ...filteredPokemon
+        pokemons: [...pokemons, ...newPokemons]
       };
     }
     case PokemonsActionType.Clear:
@@ -60,6 +38,37 @@ const pokemonsReducer = (
       }
 
       return state;
+    }
+    case PokemonsActionType.Load: {
+      // if (!state.pokemons) {
+      //   return {
+      //     ...state,
+      //     ...action.payload
+      //   };
+      // }
+
+      // const filteredPokemon: Pokemons[] | undefined = state.pokemons?.map(
+      //   (pokemon) => {
+      //     const updatedPokemon = action.payload?.pokemons?.find(
+      //       (newPokemon) => newPokemon.id === pokemon.id
+      //     );
+
+      //     if (updatedPokemon) {
+      //       return {
+      //         ...updatedPokemon,
+      //         inInventory: pokemon.inInventory,
+      //         isObtained: pokemon.isObtained
+      //       };
+      //     }
+
+      //     return pokemon;
+      //   }
+      // );
+
+      return {
+        ...state,
+        ...action.payload
+      };
     }
 
     default:

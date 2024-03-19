@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint sort-keys: 0 */
@@ -27,25 +28,21 @@ import {
 
 import CustomTextField from '@components/custom/text-field/text-field';
 import { Typography } from '@components/material.js';
-import type { PokeList, PokeListAction } from '@models/pokeListCRUD/types';
+import type { Pokemons, PokemonsAction } from '@models/pokemon/types';
 import { useCommand } from '@models/store.js';
 
 import type PokemonProps from '../pokemonProps';
 
 interface props {
-  /*
-   * Readonly pokeAPIDispatch: React.Dispatch<PokemonsAction>
-   * readonly pokeAPIState: PokemonsModel | undefined
-   */
-  readonly pokeLISTDispatch: React.Dispatch<PokeListAction>
+  readonly dispatch: React.Dispatch<PokemonsAction>
   readonly setShowEditCard: React.Dispatch<React.SetStateAction<boolean>>
   readonly showEditCard: boolean
   readonly pokemon: PokemonProps
   readonly setPokemon: React.Dispatch<React.SetStateAction<PokemonProps>>
 }
 
-const EditPokeList = ({
-  pokeLISTDispatch,
+const EditPokemonsList = ({
+  dispatch,
   setShowEditCard,
   showEditCard,
   pokemon,
@@ -60,11 +57,11 @@ const EditPokeList = ({
   const handleEditPokemon: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const data: PokeList = {
+    const data: Pokemons = {
       ...pokemon
     };
 
-    pokeLISTDispatch(command.pokeList.editPokemon(data));
+    dispatch(command.pokemons.edit(data));
   };
 
   return (
@@ -96,7 +93,7 @@ const EditPokeList = ({
               }}
             >
               <Typography sx={{ mb: 2 }} variant="h3">
-                Edit Pokemon List (State)
+                Edit Pokemon API
               </Typography>
             </DialogTitle>
             <DialogContent
@@ -173,7 +170,7 @@ const EditPokeList = ({
                           error={!pokemon.pokemon}
                           fullWidth={true}
                           helperText={
-                            !pokemon.pokemon ? 'Pokemon Name is required' : ''
+                            !pokemon.pokemon ? 'Pokemon name is required' : ''
                           }
                           label="Pokemon Name"
                           required={true}
@@ -298,6 +295,6 @@ const EditPokeList = ({
   );
 };
 
-EditPokeList.displayName = 'EditPokeList';
+EditPokemonsList.displayName = 'EditPokemonsList';
 
-export default EditPokeList;
+export default EditPokemonsList;

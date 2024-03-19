@@ -19,11 +19,8 @@ const FilterButton: React.FC<FilterButtonProps> = ({
   const splitter = [
     ...state?.pokemons?.pokemons?.map((pokemon) => pokemon.type.split('/')) ?? []
   ];
-  const typeTemp = [
-    ...state?.pokeList?.pokemons?.map((pokemon) => pokemon.type.split(',')) ?? []
-  ];
 
-  const types: string[] = [...new Set([...splitter, ...typeTemp].flat())];
+  const types: string[] = [...new Set(splitter.flat())];
 
   return (
     <FormControl sx={{ width: '100%' }}>

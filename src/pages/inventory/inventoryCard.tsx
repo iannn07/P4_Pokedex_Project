@@ -45,12 +45,10 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
 
   const dispatchDataSyncInvent = (dataSync: InventoryPokemons) => {
     dispatch(command.pokemons.edit(dataSync));
-    dispatch(command.pokeList.editPokemon(dataSync));
   };
 
   const dispatchDataSyncEvolution = (dataSync: InventoryPokemons) => {
     dispatch(command.pokemons.edit(dataSync));
-    dispatch(command.pokeList.editPokemon(dataSync));
   };
 
   const handleEvolve = (

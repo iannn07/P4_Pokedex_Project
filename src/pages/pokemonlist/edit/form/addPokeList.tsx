@@ -27,7 +27,7 @@ import {
 
 import CustomTextField from '@components/custom/text-field/text-field';
 import { Typography } from '@components/material.js';
-import type { PokeListModel } from '@models/pokeListCRUD/types';
+import type { PokemonsModel } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store.js';
 
 import type PokemonProps from '../pokemonProps';
@@ -50,21 +50,21 @@ const AddPokeList = ({
     isObtained: false,
     abilities: [] as string[],
     evolutions: [] as string[],
-    hitpoints: 0,
-    id: 0,
+    hitpoints: Math.round(Math.random() * 10000),
+    id: 51,
     location: '',
     pokemon: '',
     type: ''
   });
 
-  const dispatchNewPokemon = (data: PokeListModel) => {
-    dispatch(command.pokeList.addPokemon(data));
+  const dispatchNewPokemon = (data: PokemonsModel) => {
+    dispatch(command.pokemons.add(data));
   };
 
   const handleNewPokemon: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const pokeListID = state?.pokeList?.pokemons?.length;
+    const pokemonsID = state?.pokemons?.pokemons?.length;
 
     setPokemon({
       ...pokemon,
@@ -73,10 +73,10 @@ const AddPokeList = ({
       type: '',
       location: '',
       hitpoints: Math.round(Math.random() * 10000),
-      id: pokeListID ? pokeListID + 1 : 1
+      id: pokemonsID ? pokemonsID + 2 : 51
     });
 
-    const data: PokeListModel = {
+    const data: PokemonsModel = {
       pokemons: [pokemon]
     };
 

@@ -9,8 +9,6 @@ import {
 
 import { inventoryCommand } from './inventory/commands.js';
 import { inventoryReducer } from './inventory/reducers.js';
-import { pokeListCommand } from './pokeListCRUD/commands.js';
-import { initialState, pokeListReducer } from './pokeListCRUD/reducers.js';
 import { pokemonsCommand } from './pokemon/commands.js';
 import { pokemonsReducer } from './pokemon/reducers.js';
 import { trainerCommand } from './trainer/commands.js';
@@ -22,14 +20,12 @@ import type { RootAction, RootModel } from './types.js';
 const rootReducer = combineReducers({
   inventory: inventoryReducer,
   pokemons: pokemonsReducer,
-  pokeList: pokeListReducer,
   trainer: trainerReducer
 });
 
 // ** Init models
 const rootModel: RootModel = {
   inventory: {},
-  pokeList: initialState,
   trainer: initialTrainerState,
   pokemons: {}
 };
@@ -37,7 +33,6 @@ const rootModel: RootModel = {
 // ** Init commands
 const rootCommand = {
   inventory: inventoryCommand,
-  pokeList: pokeListCommand,
   trainer: trainerCommand,
   pokemons: pokemonsCommand
 };

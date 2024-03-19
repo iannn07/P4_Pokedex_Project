@@ -13,9 +13,7 @@ const Details: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
 
-  let pokemon = state?.pokemons?.pokemons?.find((o) => o.id.toString() === id);
-
-  pokemon ||= state?.pokeList?.pokemons?.find((o) => o.id.toString() === id);
+  const pokemon = state?.pokemons?.pokemons?.find((o) => o.id.toString() === id);
 
   useMemo(() => pokemon, [pokemon]);
 

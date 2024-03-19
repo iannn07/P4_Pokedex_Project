@@ -28,7 +28,7 @@ const PokemonList: PageComponent = () => {
     }
   }, [command.pokemons, dispatch, state?.pokemons?.pokemons]);
 
-  const rowsAPI: GridRowsProp = [
+  const rows: GridRowsProp = [
     ...state?.pokemons?.pokemons?.map((row) => ({
       id: row.id,
       Pokemon: {
@@ -42,23 +42,6 @@ const PokemonList: PageComponent = () => {
       Evolution: row.evolutions
     })) || []
   ];
-
-  const rowsState: GridRowsProp = [
-    ...state?.pokeList?.pokemons?.map((row) => ({
-      id: row.id,
-      Pokemon: {
-        image: row.image_url,
-        isObtained: row.isObtained
-      },
-      Name: row.pokemon,
-      Type: row.type,
-      Location: row.location,
-      Abilities: row.abilities,
-      Evolution: row.evolutions
-    })) || []
-  ];
-
-  const rows: GridRowsProp = [...rowsAPI, ...rowsState];
 
   const columns: GridColDef[] = [
     {

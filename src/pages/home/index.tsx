@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Card, Grid } from '@mui/material';
 
 import getColorForType from '@components/custom/type-color/type-color';
-import type { PokeList } from '@models/pokeListCRUD/types';
 import type { Pokemons } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store';
 
@@ -27,13 +26,12 @@ const Home = () => {
     }
   }, [command.pokemons, dispatch, state?.pokemons?.pokemons]);
 
-  const combinedPokemons = [
-    ...state?.pokemons?.pokemons || [],
-    ...state?.pokeList?.pokemons || []
+  const pokemonState = [
+    ...state?.pokemons?.pokemons || []
   ].flat();
 
   const filteredPokemons =
-    combinedPokemons.filter(
+    pokemonState.filter(
       (pokemon) => pokemon.pokemon.toLowerCase().includes(term.toLowerCase()) &&
         pokemon.type.toLowerCase().includes(filteredTerm.toLowerCase())
     ) ?? [];
@@ -49,13 +47,12 @@ const Home = () => {
 
   const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
 
-  const dispatchDataSync = (dataSync: PokeList & Pokemons) => {
+  const dispatchDataSync = (dataSync: Pokemons) => {
     dispatch(command.inventory.addInventory(dataSync));
     dispatch(command.pokemons.edit(dataSync));
-    dispatch(command.pokeList.editPokemon(dataSync));
   };
 
-  const handleObtainPokemon = (pokemon: PokeList & Pokemons) => {
+  const handleObtainPokemon = (pokemon: Pokemons) => {
     if (!obtainedId(pokemon.id)) {
       const data = {
         activity: 'Add',

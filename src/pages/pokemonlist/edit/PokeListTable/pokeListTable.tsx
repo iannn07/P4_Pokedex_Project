@@ -19,31 +19,19 @@ import { Edit, Trash } from '@nxweb/icons/tabler';
 
 import getColorForType from '@components/custom/type-color/type-color';
 import { Typography } from '@components/material.js';
-import type {
-  PokeList,
-  PokeListAction,
-  PokeListModel
-} from '@models/pokeListCRUD/types';
-import type { Pokemons } from '@models/pokemon/types';
-import { useCommand, useStore } from '@models/store.js';
+import type { Pokemons, PokemonsAction, PokemonsModel } from '@models/pokemon/types';
+import { useCommand } from '@models/store.js';
 
 import EditPokeList from '../form/editPokeList';
-import EditPokemonsAPI from '../form/editPokemonsAPI';
 
 import type PokemonProps from '../pokemonProps';
 
 interface props {
-  /*
-   * Readonly pokeAPIDispatch: React.Dispatch<PokemonsAction>
-   * readonly pokeAPIState: PokemonsModel | undefined
-   */
-  readonly pokeLISTDispatch: React.Dispatch<PokeListAction>
-  readonly pokeLISTState: PokeListModel | undefined
+  readonly dispatch: React.Dispatch<PokemonsAction>
+  readonly state: PokemonsModel | undefined
 }
 
-const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
-  const [pokeAPIState, pokeAPIDispatch] = useStore((store) => store.pokemons);
-  const [showEditAPICard, setShowEditAPICard] = useState<boolean>(false);
+const PokeListTable = ({ state, dispatch }: props) => {
   const [showEditCard, setShowEditCard] = useState<boolean>(false);
   const [pokemon, setPokemon] = useState<PokemonProps>({
     image_url: '',
@@ -60,10 +48,6 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
   const command = useCommand((cmd) => cmd);
 
   const handleEditAPIToggleCard = () => {
-    setShowEditAPICard(!showEditAPICard);
-  };
-
-  const handleEditToggleCard = () => {
     setShowEditCard(!showEditCard);
   };
 
@@ -77,28 +61,11 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
 
     setPokemon(updatedData);
 
-    pokeAPIDispatch(command.pokemons.edit(updatedData));
-  };
-
-  const handleEditID = (data: PokeList) => {
-    handleEditToggleCard();
-
-    const updatedData: PokeList = {
-      ...data,
-      id: data.id
-    };
-
-    setPokemon(updatedData);
-
-    pokeLISTDispatch(command.pokeList.editPokemon(updatedData));
+    dispatch(command.pokemons.edit(updatedData));
   };
 
   const handleDeleteAPIPokemon = (data: number) => {
-    pokeAPIDispatch(command.pokemons.delete(data));
-  };
-
-  const handleDeletePokemon = (data: number) => {
-    pokeLISTDispatch(command.pokeList.deletePokemon(data));
+    dispatch(command.pokemons.delete(data));
   };
 
   return (
@@ -118,7 +85,7 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {pokeAPIState?.pokemons?.map((row) => (
+            {state?.pokemons?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
                   {row.isObtained
@@ -205,108 +172,13 @@ const PokeListTable = ({ pokeLISTDispatch, pokeLISTState }: props) => {
                 </TableCell>
               </TableRow>
             ))}
-            {pokeLISTState?.pokemons?.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  {row.isObtained
-                    ? (
-                    <img
-                      alt="Pokemon"
-                      src={row.image_url}
-                      style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
-                      width="100%" />
-                    )
-                    : (
-                    <img
-                      alt="Pokemon"
-                      src={row.image_url}
-                      style={{
-                        maxWidth: '151.406px',
-                        maxHeight: '151.406px',
-                        filter: 'grayscale(100%)'
-                      }}
-                      width="100%" />
-                    )}
-                </TableCell>
-                <TableCell>{row.pokemon}</TableCell>
-                <TableCell>
-                  <Box
-                    sx={{
-                      borderRadius: 8,
-                      display: 'flex',
-                      gap: 2,
-                      height: 'auto'
-                    }}
-                  >
-                    <Stack gap={2}>
-                      {(row.type.split('/') as string[]).map((type) => (
-                        <Box
-                          key={type}
-                          px={4}
-                          py={1.5}
-                          sx={{
-                            backgroundColor: getColorForType(type),
-                            borderRadius: 8,
-                            display: 'flex',
-                            gap: 8
-                          }}
-                        >
-                          <Typography
-                            sx={{
-                              color: 'white',
-                              fontSize: 10,
-                              letterSpacing: 1.5
-                            }}
-                          >
-                            {type.trim()}
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Stack>
-                  </Box>
-                </TableCell>
-                <TableCell sx={{ width: 200, textWrap: 'wrap' }}>
-                  {row.location}
-                </TableCell>
-                <TableCell>
-                  <ul>
-                    {row.abilities.map((ability, index) => <li key={index}>{ability}</li>)}
-                  </ul>
-                </TableCell>
-                <TableCell>
-                  <ul>
-                    {row.evolutions.map((evo, index) => <li key={index}>{evo}</li>)}
-                  </ul>
-                </TableCell>
-                <TableCell sx={{ textAlign: 'center' }}>
-                  <Box sx={{ display: 'flex', gap: 5 }}>
-                    <Button color="warning" variant="contained">
-                      <Edit size={20} onClick={() => handleEditID(row)} />
-                    </Button>
-                    <Button color="error" variant="contained">
-                      <Trash
-                        size={20}
-                        onClick={() => handleDeletePokemon(row.id)} />
-                    </Button>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ))}
           </TableBody>
         </Table>
       </Card>
 
       {/* Edit Card (API State) */}
-      <EditPokemonsAPI
-        pokeAPIDispatch={pokeAPIDispatch}
-        pokemon={pokemon}
-        setPokemon={setPokemon}
-        setShowEditAPICard={setShowEditAPICard}
-        showEditAPICard={showEditAPICard} />
-
-      {/* Edit Card (New State) */}
       <EditPokeList
-        pokeLISTDispatch={pokeLISTDispatch}
+        dispatch={dispatch}
         pokemon={pokemon}
         setPokemon={setPokemon}
         setShowEditCard={setShowEditCard}
