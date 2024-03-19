@@ -4,14 +4,27 @@ import React from 'react';
 
 import { FormControl, MenuItem, Select } from '@mui/material';
 
+import { store } from '@models/store';
+
 interface FilterButtonProps {
   readonly activeFilter: string
   readonly handleFilter: (type: string) => void
 }
 
-const types: string[] = ['Dragon', 'Electric', 'Fighting', 'Fire', 'Flying', 'Ghost', 'Grass', 'Ground', 'Ice', 'Normal', 'Psychic', 'Rock', 'Water'];
+const FilterButton: React.FC<FilterButtonProps> = ({
+  activeFilter,
+  handleFilter
+}) => {
+  const state = store.getState();
+  const splitter = [
+    ...state?.pokemons?.pokemons?.map((pokemon) => pokemon.type.split('/')) ?? []
+  ];
+  const typeTemp = [
+    ...state?.pokeList?.pokemons?.map((pokemon) => pokemon.type.split(',')) ?? []
+  ];
 
-const FilterButton: React.FC<FilterButtonProps> = ({ activeFilter, handleFilter }) => {
+  const types: string[] = [...new Set([...splitter, ...typeTemp].flat())];
+
   return (
     <FormControl sx={{ width: '100%' }}>
       <Select
@@ -21,7 +34,11 @@ const FilterButton: React.FC<FilterButtonProps> = ({ activeFilter, handleFilter 
         onChange={(e) => handleFilter(e.target.value as string)}
       >
         <MenuItem value="">All Types</MenuItem>
-        {types.map((type) => <MenuItem key={type} value={type}>{type}</MenuItem>)}
+        {types.map((type) => (
+          <MenuItem key={type} value={type}>
+            {type}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );

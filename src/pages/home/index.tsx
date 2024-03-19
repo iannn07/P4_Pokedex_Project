@@ -27,7 +27,10 @@ const Home = () => {
     }
   }, [command.pokemons, dispatch, state?.pokemons?.pokemons]);
 
-  const combinedPokemons = [...state?.pokemons?.pokemons || [], ...state?.pokeList?.pokemons || []];
+  const combinedPokemons = [
+    ...state?.pokemons?.pokemons || [],
+    ...state?.pokeList?.pokemons || []
+  ].flat();
 
   const filteredPokemons =
     combinedPokemons.filter(
@@ -46,7 +49,13 @@ const Home = () => {
 
   const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
 
-  const handleObtainPokemon = (pokemon: PokeList | Pokemons) => {
+  const dispatchDataSync = (dataSync: PokeList & Pokemons) => {
+    dispatch(command.inventory.addInventory(dataSync));
+    dispatch(command.pokemons.edit(dataSync));
+    dispatch(command.pokeList.editPokemon(dataSync));
+  };
+
+  const handleObtainPokemon = (pokemon: PokeList & Pokemons) => {
     if (!obtainedId(pokemon.id)) {
       const data = {
         activity: 'Add',
@@ -65,23 +74,38 @@ const Home = () => {
       };
 
       dispatch(command.trainer(data));
-      dispatch(command.inventory.addInventory(dataSync));
-      dispatch(command.pokemons.edit(dataSync));
       setObtainedPokemons([...obtainedPokemons, pokemon.id]);
+
+      dispatchDataSync(dataSync);
     }
   };
 
   return (
     <>
-      <Grid container={true} spacing={6} sx={{ alignItems: 'flex-start', flexDirection: { sm: 'row', xs: 'column' }, mb: 6 }}>
+      <Grid
+        container={true}
+        spacing={6}
+        sx={{
+          alignItems: 'flex-start',
+          flexDirection: { sm: 'row', xs: 'column' },
+          mb: 6
+        }}
+      >
         <Grid item={true} sm={10} xs={6}>
           <Card sx={{ p: 2.5 }}>
             <SearchBar onSubmit={submitHandler} />
           </Card>
         </Grid>
-        <Grid item={true} sm={2} sx={{ display: 'flex', justifyContent: 'flex-end' }} xs={6}>
+        <Grid
+          item={true}
+          sm={2}
+          sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          xs={6}
+        >
           <Card sx={{ width: '100%' }}>
-            <ButtonFilter activeFilter={activeFilter} handleFilter={handleFilter} />
+            <ButtonFilter
+              activeFilter={activeFilter}
+              handleFilter={handleFilter} />
           </Card>
         </Grid>
       </Grid>

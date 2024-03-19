@@ -54,11 +54,15 @@ const AddPokeList = ({
     abilities: [] as string[],
     evolutions: [] as string[],
     hitpoints: 0,
-    id: 60,
+    id: 0,
     location: '',
     pokemon: '',
     type: ''
   });
+
+  const dispatchNewPokemon = (data: PokeListModel) => {
+    pokeLISTDispatch(command.pokeList.addPokemon(data));
+  };
 
   const handleNewPokemon: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -74,7 +78,7 @@ const AddPokeList = ({
       pokemons: [pokemon]
     };
 
-    pokeLISTDispatch(command.pokeList.addPokemon(data));
+    dispatchNewPokemon(data);
   };
 
   const handleToggleCard = () => {

@@ -43,6 +43,16 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
     setChecked(newChecked);
   };
 
+  const dispatchDataSyncInvent = (dataSync: InventoryPokemons) => {
+    dispatch(command.pokemons.edit(dataSync));
+    dispatch(command.pokeList.editPokemon(dataSync));
+  };
+
+  const dispatchDataSyncEvolution = (dataSync: InventoryPokemons) => {
+    dispatch(command.pokemons.edit(dataSync));
+    dispatch(command.pokeList.editPokemon(dataSync));
+  };
+
   const handleEvolve = (
     pokemon: InventoryPokemons,
     evolution: InventoryPokemons,
@@ -69,8 +79,9 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
     dispatch(trainerCommand(data));
     handleChange(index);
     dispatch(command.inventory.evolveInventory(pokemon, evolution));
-    dispatch(command.pokemons.edit(dataSyncInvent));
-    dispatch(command.pokemons.edit(dataSyncEvolution));
+
+    dispatchDataSyncInvent(dataSyncInvent);
+    dispatchDataSyncEvolution(dataSyncEvolution);
   };
 
   const handleRemove = (pokemon: InventoryPokemons) => {
@@ -88,16 +99,12 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
 
     dispatch(trainerCommand(data));
     dispatch(command.inventory.removeInventory(pokemon));
-    dispatch(command.pokemons.edit(dataSyncInvent));
+
+    dispatchDataSyncInvent(dataSyncInvent);
   };
 
   return (
-    <Slide
-      direction="up"
-      in={true}
-      mountOnEnter={true}
-      unmountOnExit={true}
-    >
+    <Slide direction="up" in={true} mountOnEnter={true} unmountOnExit={true}>
       <Box sx={{ overflowX: 'auto' }}>
         <Grid
           container={true}
@@ -181,14 +188,16 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
                         <Typography sx={{ fontWeight: 'bold' }} variant="h6">
                           {data.date}
                         </Typography>
-                        {data?.evolutions?.map((evolution) => {
-                          const evolutionExists: Pokemons | undefined =
+                        {data?.evolutions?.map((evolution, index) => {
+                          const pokemonEvolutionExists =
                             state?.pokemons?.pokemons?.find(
                               (pokemon) => pokemon.pokemon === evolution
                             );
 
-                          const isDisabled = !evolutionExists;
-                          if (!evolutionExists) return null;
+                          const isDisabled = !pokemonEvolutionExists;
+                          if (!pokemonEvolutionExists) {
+                            return null;
+                          }
 
                           return (
                             <Button
@@ -196,7 +205,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
                               key={index}
                               sx={{ mt: 6 }}
                               variant="contained"
-                              {...(evolutionExists && {
+                              {...(pokemonEvolutionExists && {
                                 onClick: () => handleChange(index)
                               })}
                             >

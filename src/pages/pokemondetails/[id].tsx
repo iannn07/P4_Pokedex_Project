@@ -13,7 +13,11 @@ const Details: PageComponent = () => {
   const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
 
-  const pokemon = useMemo(() => state?.pokemons?.pokemons?.find((o) => o.id.toString() === id), [state, id]);
+  let pokemon = state?.pokemons?.pokemons?.find((o) => o.id.toString() === id);
+
+  pokemon ||= state?.pokeList?.pokemons?.find((o) => o.id.toString() === id);
+
+  useMemo(() => pokemon, [pokemon]);
 
   useEffect(() => {
     if (!state?.pokemons?.pokemons) {
