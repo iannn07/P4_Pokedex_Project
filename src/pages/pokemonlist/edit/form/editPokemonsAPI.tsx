@@ -62,8 +62,6 @@ const EditPokemonsAPI = ({
 
     setPokemon({
       image_url: '',
-      inInventory: false,
-      isObtained: false,
       abilities: [] as string[],
       evolutions: [] as string[],
       hitpoints: 0,
@@ -74,9 +72,7 @@ const EditPokemonsAPI = ({
     });
 
     const data: Pokemons = {
-      ...pokemon,
-      inInventory: false,
-      isObtained: false
+      ...pokemon
     };
 
     pokeAPIDispatch(command.pokemons.edit(data));

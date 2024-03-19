@@ -23,23 +23,21 @@ interface DisplayCardsProps {
   readonly filteredPokemons: Pokemons[]
   readonly getColorForType: (type: string) => string
   readonly handleObtainPokemon: (pokemon: Pokemons) => void
-  readonly obtainedPokemons: number[]
+  // Readonly obtainedPokemons: number[]
 }
 
 const DisplayCards: React.FC<DisplayCardsProps> = ({
   filteredPokemons,
   getColorForType,
-  obtainedPokemons,
+  // ObtainedPokemons,
   handleObtainPokemon
 }) => {
   const [selectedPokemon, setSelectedPokemon] = useState<Pokemons | null>(null);
 
-  const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
+  // Const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
 
   const handleAddToInventoryClick = (pokemon: Pokemons) => {
-    if (!obtainedId(pokemon.id)) {
-      setSelectedPokemon(pokemon);
-    }
+    setSelectedPokemon(pokemon);
   };
 
   const handleCloseDialog = () => {
@@ -113,12 +111,12 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
                 ))}
               </Box>
               <Button
-                disabled={obtainedId(pokemon.id)}
+                disabled={pokemon.inInventory}
                 sx={{ mt: 6 }}
                 variant="contained"
                 onClick={() => handleAddToInventoryClick(pokemon)}
               >
-                {obtainedId(pokemon.id) ? 'Obtained' : 'Add to Inventory'}
+                {pokemon.inInventory ? 'Obtained' : 'Add to Inventory'}
               </Button>
             </CardContent>
           </Card>

@@ -4,8 +4,8 @@ interface Pokemons {
   hitpoints: number
   id: number
   image_url: string
-  inInventory: boolean
-  isObtained: boolean
+  inInventory?: boolean
+  isObtained?: boolean
   location: string
   pokemon: string
   type: string
@@ -24,16 +24,16 @@ enum PokemonsActionType {
 }
 
 type PokemonsAction = {
-  type: PokemonsActionType.Clear
-} | {
-  type: PokemonsActionType.Delete
   payload?: number
+  type: PokemonsActionType.Delete
 } | {
-  type: PokemonsActionType.Edit
   payload?: Pokemons
+  type: PokemonsActionType.Edit
 } | {
-  type: PokemonsActionType.Load
   payload?: PokemonsModel
+  type: PokemonsActionType.Load
+} | {
+  type: PokemonsActionType.Clear
 };
 
 export { PokemonsActionType };

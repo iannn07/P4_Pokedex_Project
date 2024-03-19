@@ -18,19 +18,21 @@ const Home = () => {
   const [activeFilter, setActiveFilter] = useState('');
   const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
-  const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
+  // const [obtainedPokemons, setObtainedPokemons] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchPokemons = async () => {
       try {
-        // Get obtained Pokémon IDs from trainer activities
+        // // Get obtained Pokémon IDs from trainer activities
 
-        const obtainedPokemonIds = state?.trainer?.activities
-          ?.filter((activity) => activity.activity === 'Add')
-          .map((activity) => activity.pokemon.id) ?? [];
+        /*
+         * const obtainedPokemonIds = state?.trainer?.activities
+         *   ?.filter((activity) => activity.activity === 'Add')
+         *   .map((activity) => activity.pokemon.id) ?? [];
+         */
 
-        // Set obtainedPokemons state
-        setObtainedPokemons(obtainedPokemonIds);
+        // // Set obtainedPokemons state
+        // setObtainedPokemons(obtainedPokemonIds);
         // Load Pokemon data
         await dispatch(command.pokemons.load());
       } catch (err) {
@@ -40,7 +42,8 @@ const Home = () => {
 
     // Fetch Pokémon data and update obtainedPokemons when trainer state changes
     fetchPokemons();
-  }, [command.pokemons, dispatch, state.trainer, setObtainedPokemons]);
+  // }, [command.pokemons, dispatch, state.trainer, setObtainedPokemons]);
+  }, [command.pokemons, dispatch]);
 
   const filteredPokemons =
     state?.pokemons?.pokemons?.filter(
@@ -57,31 +60,25 @@ const Home = () => {
     setActiveFilter(type);
   };
 
-  const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
+  // Const obtainedId = (pokemonId: number) => obtainedPokemons.includes(pokemonId);
 
   const handleObtainPokemon = (pokemon: Pokemons) => {
-    if (!obtainedId(pokemon.id)) {
-      const data = {
-        activity: 'Add',
-        dateTime: new Date().toLocaleString(),
-        pokemon: {
-          ...pokemon,
-          inInventory: true,
-          isObtained: true
-        }
-      };
+    const data = {
+      activity: 'Add',
+      dateTime: new Date().toLocaleString(),
+      pokemon
+    };
 
-      const dataSync = {
-        ...pokemon,
-        inInventory: true,
-        isObtained: true
-      };
+    const dataSync = {
+      ...pokemon,
+      inInventory: true,
+      isObtained: true
+    };
 
-      dispatch(trainerCommand(data));
-      dispatch(pokemonsCommand.edit(dataSync));
-      dispatch(command.inventory.add(pokemon));
-      setObtainedPokemons([...obtainedPokemons, pokemon.id]);
-    }
+    dispatch(trainerCommand(data));
+    dispatch(pokemonsCommand.edit(dataSync));
+    dispatch(command.inventory.add(pokemon));
+    // setObtainedPokemons([...obtainedPokemons, pokemon.id]);
   };
 
   return (
@@ -118,7 +115,8 @@ const Home = () => {
           filteredPokemons={filteredPokemons}
           getColorForType={getColorForType}
           handleObtainPokemon={handleObtainPokemon}
-          obtainedPokemons={obtainedPokemons} />
+          // obtainedPokemons={obtainedPokemons}
+           />
       </Grid>
     </>
   );
