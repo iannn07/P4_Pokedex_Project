@@ -41,10 +41,10 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Pokemon</TableCell>
-            <TableCell>Date</TableCell>
-            <TableCell>Time</TableCell>
-            <TableCell>Activity</TableCell>
+            <TableCell sx={{ textAlign: 'center' }}>Pokemon</TableCell>
+            <TableCell sx={{ textAlign: 'center' }}>Date</TableCell>
+            <TableCell sx={{ textAlign: 'center' }}>Time</TableCell>
+            <TableCell sx={{ textAlign: 'center' }}>Activity</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -54,27 +54,27 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
             let text = '';
             switch (trainer.activity) {
               case 'Add':
-                text = 'Added to inventory';
+                text = 'Added to inventory ✅';
                 colors = '#00af7b';
                 break;
               case 'Evolve':
-                text = 'Pokemon has evolved';
+                text = 'Pokemon has evolved 😎';
                 colors = '#ff9f43';
                 break;
               case 'Remove':
-                text = 'Removed from inventory';
+                text = 'Removed from inventory ❌';
                 colors = '#ea5455';
                 break;
               case 'Create':
-                text = 'Added to pokemon list';
+                text = `New Pokemon Created! 👌`;
                 colors = '#00af7b';
                 break;
               case 'Update':
-                text = 'Updated to pokemon list';
+                text = `Pokemon has been updated 🤩`;
                 colors = '#ff9f43';
                 break;
               case 'Delete':
-                text = 'Deleted from pokemon list';
+                text = `Deleted from pokemon list ❌`;
                 colors = '#ea5455';
                 break;
 

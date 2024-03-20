@@ -29,6 +29,7 @@ import CustomTextField from '@components/custom/text-field/text-field';
 import { Typography } from '@components/material.js';
 import type { PokemonsModel } from '@models/pokemon/types';
 import { useCommand, useStore } from '@models/store.js';
+import { trainerCommand } from '@models/trainer/commands';
 
 import type PokemonProps from '../pokemonProps';
 
@@ -80,6 +81,13 @@ const AddPokeList = ({
       pokemons: [pokemon]
     };
 
+    const updateTrainerLog = {
+      activity: 'Create',
+      dateTime: new Date().toLocaleString(),
+      pokemon
+    };
+
+    dispatch(trainerCommand(updateTrainerLog));
     dispatchNewPokemon(data);
   };
 
@@ -100,7 +108,7 @@ const AddPokeList = ({
           mountOnEnter={true}
           unmountOnExit={true}
         >
-          <Card sx={{ height: '100%' }}>
+          <Card sx={{ height: '100%', overflow: 'auto' }}>
             <DialogTitle
               component="div"
               sx={{
