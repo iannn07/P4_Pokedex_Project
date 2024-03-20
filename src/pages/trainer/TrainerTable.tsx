@@ -103,7 +103,7 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
                 </TableCell>
                 <TableCell>{date}</TableCell>
                 <TableCell>{time}</TableCell>
-                <TableCell>
+                <TableCell sx={{ textWrap: 'wrap' }}>
                   <Typography
                     sx={{
                       color: colors,
