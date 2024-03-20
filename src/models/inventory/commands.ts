@@ -21,6 +21,12 @@ const inventoryCommand = {
       type: InventoryPokemonsActionType.ClearInventory
     };
   },
+  editInventory: (value: InventoryPokemons): InventoryPokemonsAction => {
+    return {
+      type: InventoryPokemonsActionType.EditInventory,
+      value
+    };
+  },
   evolveInventory: (
     pokemon: InventoryPokemons,
     evolve: InventoryPokemons
@@ -31,6 +37,7 @@ const inventoryCommand = {
       type: InventoryPokemonsActionType.EvolveInventory
     };
   },
+
   removeInventory: (value: InventoryPokemons): InventoryPokemonsAction => {
     return {
       type: InventoryPokemonsActionType.RemoveInventory,

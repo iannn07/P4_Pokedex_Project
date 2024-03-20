@@ -63,7 +63,7 @@ const PokeListTable = ({ state, dispatch }: props) => {
     };
 
     setPokemon(updatedData);
-
+    dispatch(command.inventory.editInventory(updatedData));
     dispatch(command.pokemons.edit(updatedData));
   };
 
@@ -75,8 +75,8 @@ const PokeListTable = ({ state, dispatch }: props) => {
     };
 
     dispatch(trainerCommand(updateTrainerLog));
-    dispatch(command.pokemons.delete(data));
     dispatch(command.inventory.removeInventory(pokemon));
+    dispatch(command.pokemons.delete(data));
   };
 
   return (
