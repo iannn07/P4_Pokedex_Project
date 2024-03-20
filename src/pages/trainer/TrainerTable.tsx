@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 /* eslint-disable @stylistic/js/linebreak-style */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/display-name */
@@ -23,16 +24,16 @@ interface TrainerTableProps {
 const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
   if (!activities || activities.length === 0) {
     return (
-        <Box
-          sx={{
-            alignItems: 'center',
-            display: 'flex',
-            height: '50vh',
-            justifyContent: 'center'
-          }}
-        >
-          <Typography sx={{ textAlign: 'center' }}>No Activities</Typography>
-        </Box>
+      <Box
+        sx={{
+          alignItems: 'center',
+          display: 'flex',
+          height: '50vh',
+          justifyContent: 'center'
+        }}
+      >
+        <Typography sx={{ textAlign: 'center' }}>No Activities</Typography>
+      </Box>
     );
   }
 
@@ -41,10 +42,11 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ textAlign: 'center' }}>Pokemon</TableCell>
-            <TableCell sx={{ textAlign: 'center' }}>Date</TableCell>
-            <TableCell sx={{ textAlign: 'center' }}>Time</TableCell>
-            <TableCell sx={{ textAlign: 'center' }}>Activity</TableCell>
+            <TableCell>Pokemon</TableCell>
+            <TableCell>Pokemon Name</TableCell>
+            <TableCell>Date</TableCell>
+            <TableCell>Time</TableCell>
+            <TableCell>Activity</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -87,6 +89,13 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
 
             return (
               <TableRow key={index}>
+                <TableCell component="th" scope="row">
+                  <img
+                    alt="Pokemon"
+                    src={trainer.pokemon.image_url}
+                    style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
+                    width="100%" />
+                </TableCell>
                 <TableCell>
                   <Typography sx={{ fontWeight: 'bold', mb: 3 }}>
                     {trainer.pokemon.pokemon.toUpperCase()}
