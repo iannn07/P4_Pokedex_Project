@@ -47,7 +47,7 @@ const inventoryReducer = (
 
       const filteredPokemon: InventoryPokemons[] | undefined =
         state.inventory?.filter(
-          (obtainedPokemon) => obtainedPokemon !== pokemon
+          (obtainedPokemon) => obtainedPokemon.pokemon !== pokemon.pokemon
         );
 
       return {
