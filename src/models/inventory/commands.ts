@@ -13,12 +13,18 @@ const inventoryCommand = {
   addInventory: (value: InventoryPokemons): InventoryPokemonsAction => {
     return {
       type: InventoryPokemonsActionType.AddInventory,
-      value
+      value,
     };
   },
   clearInventory: (): InventoryPokemonsAction => {
     return {
-      type: InventoryPokemonsActionType.ClearInventory
+      type: InventoryPokemonsActionType.ClearInventory,
+    };
+  },
+  editInventory: (value: InventoryPokemons): InventoryPokemonsAction => {
+    return {
+      type: InventoryPokemonsActionType.EditInventory,
+      value
     };
   },
   evolveInventory: (
@@ -28,15 +34,16 @@ const inventoryCommand = {
     return {
       evolve,
       pokemon,
-      type: InventoryPokemonsActionType.EvolveInventory
+      type: InventoryPokemonsActionType.EvolveInventory,
     };
   },
+
   removeInventory: (value: InventoryPokemons): InventoryPokemonsAction => {
     return {
       type: InventoryPokemonsActionType.RemoveInventory,
-      value
+      value,
     };
-  }
+  },
 } satisfies Command<RootModel, InventoryPokemonsAction>;
 
 export { inventoryCommand };

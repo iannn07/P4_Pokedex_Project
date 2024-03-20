@@ -20,23 +20,24 @@ enum InventoryPokemonsActionType {
   AddInventory = 'AddInventory',
   RemoveInventory = 'RemoveInventory',
   EvolveInventory = 'EvolveInventory',
-  ClearInventory = 'ClearInventory'
+  ClearInventory = 'ClearInventory',
+  EditInventory = 'EditInventory'
 }
 
 type InventoryPokemonsAction =
-  | {
+  {
     evolve: InventoryPokemons
     pokemon: InventoryPokemons
     type: InventoryPokemonsActionType.EvolveInventory
-  }
-  | {
+  } | {
     type: InventoryPokemonsActionType.AddInventory
     value: InventoryPokemons
-  }
-  | {
+  } | {
     type: InventoryPokemonsActionType.ClearInventory
-  }
-  | {
+  } | {
+    type: InventoryPokemonsActionType.EditInventory
+    value: InventoryPokemons
+  } | {
     type: InventoryPokemonsActionType.RemoveInventory
     value: InventoryPokemons
   };

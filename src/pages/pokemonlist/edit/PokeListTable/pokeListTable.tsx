@@ -63,7 +63,7 @@ const PokeListTable = ({ state, dispatch }: props) => {
     };
 
     setPokemon(updatedData);
-
+    dispatch(command.inventory.editInventory(updatedData));
     dispatch(command.pokemons.edit(updatedData));
   };
 

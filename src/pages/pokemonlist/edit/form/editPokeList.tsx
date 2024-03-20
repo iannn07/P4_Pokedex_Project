@@ -28,6 +28,7 @@ import {
 
 import CustomTextField from '@components/custom/text-field/text-field';
 import { Typography } from '@components/material.js';
+import type { InventoryPokemonsAction } from '@models/inventory/types';
 import type { Pokemons, PokemonsAction } from '@models/pokemon/types';
 import { useCommand } from '@models/store.js';
 import { trainerCommand } from '@models/trainer/commands';
@@ -36,7 +37,9 @@ import type { TrainerAction } from '@models/trainer/types';
 import type PokemonProps from '../pokemonProps';
 
 interface props {
-  readonly dispatch: React.Dispatch<PokemonsAction | TrainerAction>
+  readonly dispatch: React.Dispatch<
+  InventoryPokemonsAction | PokemonsAction | TrainerAction
+  >
   readonly setShowEditCard: React.Dispatch<React.SetStateAction<boolean>>
   readonly showEditCard: boolean
   readonly pokemon: PokemonProps
@@ -70,6 +73,7 @@ const EditPokemonsList = ({
     };
 
     dispatch(trainerCommand(updateTrainerLog));
+    dispatch(command.inventory.editInventory(data));
     dispatch(command.pokemons.edit(data));
   };
 

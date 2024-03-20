@@ -19,9 +19,10 @@ const inventoryReducer = (
 
       const pokemon = action.value;
 
-      const filteredPokemon: InventoryPokemons[] | undefined = state.inventory?.filter(
-        (obtainedPokemon) => obtainedPokemon !== pokemon
-      );
+      const filteredPokemon: InventoryPokemons[] | undefined =
+        state.inventory?.filter(
+          (obtainedPokemon) => obtainedPokemon !== pokemon
+        );
 
       const itemExists: boolean | undefined = state.inventory?.some(
         (obtainedPokemon) => obtainedPokemon === pokemon
@@ -34,9 +35,7 @@ const inventoryReducer = (
 
       return {
         ...state,
-        inventory: filteredPokemon
-          ? [pokemon, ...filteredPokemon]
-          : [pokemon]
+        inventory: filteredPokemon ? [pokemon, ...filteredPokemon] : [pokemon]
       };
     }
     case InventoryPokemonsActionType.RemoveInventory: {
@@ -46,14 +45,30 @@ const inventoryReducer = (
 
       const pokemon = action.value;
 
-      const filteredPokemon: InventoryPokemons[] | undefined = state.inventory?.filter(
-        (obtainedPokemon) => obtainedPokemon !== pokemon
-      );
+      const filteredPokemon: InventoryPokemons[] | undefined =
+        state.inventory?.filter(
+          (obtainedPokemon) => obtainedPokemon !== pokemon
+        );
 
       return {
         ...state,
         inventory: filteredPokemon ? [...filteredPokemon] : []
       };
+    }
+    case InventoryPokemonsActionType.EditInventory: {
+      if (!action.value) {
+        throw new Error('action.value missing in Edit action');
+      }
+
+      const editedPokemon = action.value;
+      if (editedPokemon) {
+        return {
+          ...state,
+          inventory: state.inventory?.map((pokemon) => (pokemon.id === editedPokemon.id ? editedPokemon : pokemon))
+        };
+      }
+
+      return state;
     }
     case InventoryPokemonsActionType.EvolveInventory: {
       if (!action.evolve && !action.pokemon) {
@@ -63,9 +78,10 @@ const inventoryReducer = (
       const evolvedPokemon: InventoryPokemons = action.evolve;
       const currentPokemon: InventoryPokemons = action.pokemon;
 
-      const filteredPokemon: InventoryPokemons[] | undefined = state.inventory?.filter(
-        (obtainedPokemon) => obtainedPokemon !== currentPokemon
-      );
+      const filteredPokemon: InventoryPokemons[] | undefined =
+        state.inventory?.filter(
+          (obtainedPokemon) => obtainedPokemon !== currentPokemon
+        );
 
       if (filteredPokemon === undefined) {
         throw new Error('pokemon not in EVOLVE action');
@@ -82,9 +98,7 @@ const inventoryReducer = (
 
       return {
         ...state,
-        inventory: filteredPokemon
-          ? [evolvedPokemon, ...filteredPokemon]
-          : []
+        inventory: filteredPokemon ? [evolvedPokemon, ...filteredPokemon] : []
       };
     }
     case InventoryPokemonsActionType.ClearInventory:
