@@ -56,13 +56,13 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
                 colors = '#00af7b';
                 break;
               case 'Evolve':
-                colors = '#ff9f43';
+                colors = '#3c9ffa';
                 break;
               case 'Remove':
-                colors = '#ea5455';
+                colors = '#ff9f43';
                 break;
               case 'Delete':
-                colors = '#C3F73A';
+                colors = '#ea5455';
                 break;
 
               default:
