@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/js/multiline-ternary */
 /* eslint-disable sort-keys */
 /* eslint-disable @stylistic/js/linebreak-style */
 /* eslint-disable react/no-array-index-key */
@@ -5,6 +6,7 @@
 import React, { useState } from 'react';
 
 import {
+  Alert,
   Box,
   Button,
   CardContent,
@@ -32,6 +34,8 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
   const [checked, setChecked] = useState<boolean[]>([]);
   const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleChange = (index: number) => {
     const newChecked = [...checked];
@@ -52,7 +56,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
     dispatch(command.pokemons.edit(dataSync));
   };
 
-  const handleEvolve = (
+  const handleEvolve = async (
     pokemon: InventoryPokemons,
     evolution: InventoryPokemons,
     index: number
@@ -75,12 +79,25 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
       isObtained: true
     };
 
-    dispatch(trainerCommand(data));
-    handleChange(index);
-    dispatch(command.inventory.evolveInventory(pokemon, evolution));
+    try {
+      await dispatch(command.inventory.evolveInventory(pokemon, evolution));
+      dispatch(trainerCommand(data));
+      handleChange(index);
 
-    dispatchDataSyncInvent(dataSyncInvent);
-    dispatchDataSyncEvolution(dataSyncEvolution);
+      dispatchDataSyncInvent(dataSyncInvent);
+      dispatchDataSyncEvolution(dataSyncEvolution);
+      setErrorMessage('');
+      setSuccessMessage(`Evolution Success`);
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 1000);
+    } catch (error) {
+      setErrorMessage(`${error}`);
+      handleChange(index);
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+    }
   };
 
   const handleRemove = (pokemon: InventoryPokemons) => {
@@ -103,6 +120,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
   };
 
   return (
+    <>
     <Slide direction="up" in={true} mountOnEnter={true} unmountOnExit={true}>
         <Card
           sx={{
@@ -197,19 +215,19 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
                           <Typography sx={{ fontWeight: 'bold' }} variant="h6">
                             {data.date}
                           </Typography>
+
                           {!data?.evolutions
                             ?.map((evolution) => {
-                              const evolutionExists: Pokemons | undefined = state?.pokemons?.pokemons?.find(
-                                (pokemon) => evolution === pokemon.pokemon
-                              );
+                              const evolutionExists: Pokemons | undefined =
+                                state?.pokemons?.pokemons?.find(
+                                  (pokemon) => evolution === pokemon.pokemon
+                                );
                               // eslint-disable-next-line no-eq-null
                               if (evolutionExists != null) return true;
 
                               return false;
                             })
-                            .some(Boolean)
-                            ? null
-                            : (
+                            .some(Boolean) ? null : (
                               <Button
                                 disabled={false}
                                 key={index}
@@ -234,9 +252,10 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
                           {data?.evolutions?.length > 0 && (
                             <List>
                               {data?.evolutions?.map((evolution, indexEvo) => {
-                                const evolutionExists: Pokemons | undefined = state?.pokemons?.pokemons?.find(
-                                  (pokemon) => pokemon.pokemon === evolution
-                                );
+                                const evolutionExists: Pokemons | undefined =
+                                  state?.pokemons?.pokemons?.find(
+                                    (pokemon) => pokemon.pokemon === evolution
+                                  );
 
                                 const isDisabled = !evolutionExists;
                                 if (!evolutionExists) return null;
@@ -271,6 +290,11 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
           </Grid>
         </Card>
     </Slide>
+      {errorMessage ? <Alert severity="error">{errorMessage}</Alert> : null}
+      {successMessage
+        ? <Alert severity="success">{successMessage}</Alert>
+        : null}
+    </>
   );
 };
 

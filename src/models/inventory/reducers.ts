@@ -71,6 +71,13 @@ const inventoryReducer = (
         throw new Error('pokemon not in EVOLVE action');
       }
 
+      const evolvePokemonExists: boolean | undefined = state.inventory?.some(
+        (obtainedPokemon) => obtainedPokemon.pokemon === evolvedPokemon.pokemon
+      );
+      if (evolvePokemonExists) {
+        throw new Error('Evolved Pokemon already in the inventory');
+      }
+
       evolvedPokemon.date = new Date().toLocaleString();
 
       return {
