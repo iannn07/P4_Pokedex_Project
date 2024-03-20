@@ -64,16 +64,17 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({
               {pokemon.isObtained
                 ? (
                 <CardMedia
+                  component="img"
                   image={pokemon.image_url}
-                  sx={{ height: '14rem', objectFit: 'contain', width: '100%' }} />
+                  sx={{ height: '14rem', objectFit: 'contain' }} />
                 )
                 : (
                 <CardMedia
+                  component="img"
                   image={pokemon.image_url}
                   sx={{
                     height: '14rem',
                     objectFit: 'contain',
-                    width: '100%',
                     filter: 'grayscale(100%)'
                   }} />
                 )}

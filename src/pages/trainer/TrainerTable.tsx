@@ -51,14 +51,22 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
           {activities.map((trainer, index) => {
             // Determine color based on activity type
             let colors = '';
-            if (trainer.activity) {
-              if (trainer.activity.includes('Add')) {
-                colors = 'green';
-              } else if (trainer.activity.includes('Evolve')) {
-                colors = 'orange';
-              } else if (trainer.activity.includes('Remove')) {
-                colors = 'red';
-              }
+            switch (trainer.activity) {
+              case 'Add':
+                colors = '#00af7b';
+                break;
+              case 'Evolve':
+                colors = '#ff9f43';
+                break;
+              case 'Remove':
+                colors = '#ea5455';
+                break;
+              case 'Delete':
+                colors = '#C3F73A';
+                break;
+
+              default:
+                break;
             }
 
             // Split dateTime string into separate date and time components

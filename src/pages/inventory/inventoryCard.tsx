@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 /* eslint-disable @stylistic/js/linebreak-style */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/display-name */
@@ -103,7 +104,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
 
   return (
     <Slide direction="up" in={true} mountOnEnter={true} unmountOnExit={true}>
-      <Box sx={{ overflowX: 'auto' }}>
+      <Card sx={{ overflowX: 'auto' }}>
         <Grid
           container={true}
           spacing={6}
@@ -192,7 +193,8 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
                               state?.pokemons?.pokemons?.find(
                                 (pokemon) => evolution === pokemon.pokemon
                               );
-                            if (evolutionExists !== null) return true;
+                            // eslint-disable-next-line no-eq-null
+                            if (evolutionExists != null) return true;
 
                             return false;
                           })
@@ -259,7 +261,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
             </Grid>
           ))}
         </Grid>
-      </Box>
+      </Card>
     </Slide>
   );
 };
