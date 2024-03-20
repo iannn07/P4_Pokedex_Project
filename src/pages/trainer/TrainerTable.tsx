@@ -49,19 +49,32 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
         </TableHead>
         <TableBody>
           {activities.map((trainer, index) => {
-            // Determine color based on activity type
+            // Determine color and displayed text based on activity type
             let colors = '';
+            let text = '';
             switch (trainer.activity) {
               case 'Add':
+                text = 'Added to inventory';
                 colors = '#00af7b';
                 break;
               case 'Evolve':
-                colors = '#3c9ffa';
+                text = 'Pokemon has evolved';
+                colors = '#ff9f43';
                 break;
               case 'Remove':
+                text = 'Removed from inventory';
+                colors = '#ea5455';
+                break;
+              case 'Create':
+                text = 'Added to pokemon list';
+                colors = '#00af7b';
+                break;
+              case 'Update':
+                text = 'Updated to pokemon list';
                 colors = '#ff9f43';
                 break;
               case 'Delete':
+                text = 'Deleted from pokemon list';
                 colors = '#ea5455';
                 break;
 
@@ -89,7 +102,7 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
                       mb: 3
                     }}
                   >
-                    {trainer.activity.toUpperCase()}
+                    {text.toUpperCase()}
                   </Typography>
                 </TableCell>
               </TableRow>
