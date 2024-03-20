@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 /* eslint-disable @stylistic/js/linebreak-style */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/display-name */
@@ -23,16 +24,16 @@ interface TrainerTableProps {
 const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
   if (!activities || activities.length === 0) {
     return (
-        <Box
-          sx={{
-            alignItems: 'center',
-            display: 'flex',
-            height: '50vh',
-            justifyContent: 'center'
-          }}
-        >
-          <Typography sx={{ textAlign: 'center' }}>No Activities</Typography>
-        </Box>
+      <Box
+        sx={{
+          alignItems: 'center',
+          display: 'flex',
+          height: '50vh',
+          justifyContent: 'center'
+        }}
+      >
+        <Typography sx={{ textAlign: 'center' }}>No Activities</Typography>
+      </Box>
     );
   }
 
@@ -42,6 +43,7 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
         <TableHead>
           <TableRow>
             <TableCell>Pokemon</TableCell>
+            <TableCell>Pokemon Name</TableCell>
             <TableCell>Date</TableCell>
             <TableCell>Time</TableCell>
             <TableCell>Activity</TableCell>
@@ -49,20 +51,33 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
         </TableHead>
         <TableBody>
           {activities.map((trainer, index) => {
-            // Determine color based on activity type
+            // Determine color and displayed text based on activity type
             let colors = '';
+            let text = '';
             switch (trainer.activity) {
               case 'Add':
+                text = 'Added to inventory ✅';
                 colors = '#00af7b';
                 break;
               case 'Evolve':
+                text = 'Pokemon has evolved 😎';
                 colors = '#ff9f43';
                 break;
               case 'Remove':
+                text = 'Removed from inventory ❌';
                 colors = '#ea5455';
                 break;
+              case 'Create':
+                text = `New Pokemon Created! 👌`;
+                colors = '#00af7b';
+                break;
+              case 'Update':
+                text = `Pokemon has been updated 🤩`;
+                colors = '#ff9f43';
+                break;
               case 'Delete':
-                colors = '#C3F73A';
+                text = `Deleted from pokemon list ❌`;
+                colors = '#ea5455';
                 break;
 
               default:
@@ -74,6 +89,13 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
 
             return (
               <TableRow key={index}>
+                <TableCell component="th" scope="row">
+                  <img
+                    alt="Pokemon"
+                    src={trainer.pokemon.image_url}
+                    style={{ maxWidth: '151.406px', maxHeight: '151.406px' }}
+                    width="100%" />
+                </TableCell>
                 <TableCell>
                   <Typography sx={{ fontWeight: 'bold', mb: 3 }}>
                     {trainer.pokemon.pokemon.toUpperCase()}
@@ -81,7 +103,7 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
                 </TableCell>
                 <TableCell>{date}</TableCell>
                 <TableCell>{time}</TableCell>
-                <TableCell>
+                <TableCell sx={{ textWrap: 'wrap' }}>
                   <Typography
                     sx={{
                       color: colors,
@@ -89,7 +111,7 @@ const TrainerTable: React.FC<TrainerTableProps> = ({ activities }) => {
                       mb: 3
                     }}
                   >
-                    {trainer.activity.toUpperCase()}
+                    {text.toUpperCase()}
                   </Typography>
                 </TableCell>
               </TableRow>

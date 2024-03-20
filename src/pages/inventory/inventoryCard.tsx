@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/js/multiline-ternary */
 /* eslint-disable sort-keys */
 /* eslint-disable @stylistic/js/linebreak-style */
 /* eslint-disable react/no-array-index-key */
@@ -5,6 +6,7 @@
 import React, { useState } from 'react';
 
 import {
+  Alert,
   Box,
   Button,
   CardContent,
@@ -16,7 +18,7 @@ import {
   Typography
 } from '@mui/material';
 
-import { ArrowRight, Trash } from '@nxweb/icons/tabler';
+import { ArrowRight, Badges, Pokeball, Trash } from '@nxweb/icons/tabler';
 
 import getColorForType from '@components/custom/type-color/type-color';
 import { Card, Grid } from '@components/material.js';
@@ -32,6 +34,8 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
   const [checked, setChecked] = useState<boolean[]>([]);
   const [state, dispatch] = useStore((store) => store);
   const command = useCommand((cmd) => cmd);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleChange = (index: number) => {
     const newChecked = [...checked];
@@ -52,7 +56,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
     dispatch(command.pokemons.edit(dataSync));
   };
 
-  const handleEvolve = (
+  const handleEvolve = async (
     pokemon: InventoryPokemons,
     evolution: InventoryPokemons,
     index: number
@@ -75,12 +79,25 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
       isObtained: true
     };
 
-    dispatch(trainerCommand(data));
-    handleChange(index);
-    dispatch(command.inventory.evolveInventory(pokemon, evolution));
+    try {
+      await dispatch(command.inventory.evolveInventory(pokemon, evolution));
+      dispatch(trainerCommand(data));
+      handleChange(index);
 
-    dispatchDataSyncInvent(dataSyncInvent);
-    dispatchDataSyncEvolution(dataSyncEvolution);
+      dispatchDataSyncInvent(dataSyncInvent);
+      dispatchDataSyncEvolution(dataSyncEvolution);
+      setErrorMessage('');
+      setSuccessMessage(`Evolution Success`);
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 1000);
+    } catch (error) {
+      setErrorMessage(`${error}`);
+      handleChange(index);
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+    }
   };
 
   const handleRemove = (pokemon: InventoryPokemons) => {
@@ -104,7 +121,31 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
 
   return (
     <Slide direction="up" in={true} mountOnEnter={true} unmountOnExit={true}>
-      <Card sx={{ overflowX: 'auto' }}>
+      <Card
+        sx={{
+          overflowX: 'auto',
+          padding: '10px 40px 25px 40px'
+        }}
+      >
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: '300px 1fr',
+            mb: 1,
+            height: '50px',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}
+        >
+          <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1">
+            Kidnapped Pokemon <Badges />
+            <Pokeball />
+          </Typography>
+          {errorMessage ? <Alert severity="error" sx={{ flexBasis: '100%' }}>{errorMessage}</Alert> : null}
+          {successMessage
+            ? <Alert severity="success">{successMessage}</Alert>
+            : null}
+        </Box>
         <Grid
           container={true}
           spacing={6}
@@ -187,6 +228,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
                         <Typography sx={{ fontWeight: 'bold' }} variant="h6">
                           {data.date}
                         </Typography>
+
                         {!data?.evolutions
                           ?.map((evolution) => {
                             const evolutionExists: Pokemons | undefined =
@@ -198,9 +240,7 @@ const InventoryCard: React.FC<InventoryPokemonsModel> = ({ inventory }) => {
 
                             return false;
                           })
-                          .some(Boolean)
-                          ? null
-                          : (
+                          .some(Boolean) ? null : (
                           <Button
                             disabled={false}
                             key={index}

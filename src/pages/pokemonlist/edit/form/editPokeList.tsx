@@ -30,11 +30,13 @@ import CustomTextField from '@components/custom/text-field/text-field';
 import { Typography } from '@components/material.js';
 import type { Pokemons, PokemonsAction } from '@models/pokemon/types';
 import { useCommand } from '@models/store.js';
+import { trainerCommand } from '@models/trainer/commands';
+import type { TrainerAction } from '@models/trainer/types';
 
 import type PokemonProps from '../pokemonProps';
 
 interface props {
-  readonly dispatch: React.Dispatch<PokemonsAction>
+  readonly dispatch: React.Dispatch<PokemonsAction | TrainerAction>
   readonly setShowEditCard: React.Dispatch<React.SetStateAction<boolean>>
   readonly showEditCard: boolean
   readonly pokemon: PokemonProps
@@ -61,6 +63,13 @@ const EditPokemonsList = ({
       ...pokemon
     };
 
+    const updateTrainerLog = {
+      activity: 'Update',
+      dateTime: new Date().toLocaleString(),
+      pokemon
+    };
+
+    dispatch(trainerCommand(updateTrainerLog));
     dispatch(command.pokemons.edit(data));
   };
 
@@ -77,7 +86,7 @@ const EditPokemonsList = ({
           mountOnEnter={true}
           unmountOnExit={true}
         >
-          <Card sx={{ height: '100%' }}>
+          <Card sx={{ height: '100%', overflow: 'auto' }}>
             <DialogTitle
               component="div"
               sx={{
