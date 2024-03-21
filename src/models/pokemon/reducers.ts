@@ -1,6 +1,6 @@
 import { PokemonsActionType } from './types.js';
 
-import type { Pokemons, PokemonsAction, PokemonsModel } from './types.js';
+import type { PokemonsAction, PokemonsModel } from './types.js';
 
 const pokemonsReducer = (
   state: PokemonsModel = {},
@@ -15,27 +15,9 @@ const pokemonsReducer = (
         };
       }
 
-      const filteredPokemon: Pokemons[] | undefined = state.pokemons?.map(
-        (pokemon) => {
-          const updatedPokemon = action.payload?.pokemons?.find(
-            (newPokemon) => newPokemon.id === pokemon.id
-          );
-
-          if (updatedPokemon) {
-            return {
-              ...updatedPokemon,
-              inInventory: pokemon.inInventory,
-              isObtained: pokemon.isObtained
-            };
-          }
-
-          return pokemon;
-        }
-      );
-
       return {
         ...state,
-        ...filteredPokemon
+        ...action.payload
       };
     }
     case PokemonsActionType.Add: {
